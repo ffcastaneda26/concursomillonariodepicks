@@ -20,6 +20,7 @@ class CreateAdminUserSeeder extends Seeder
             'last_name' => 'General',
             'email' => 'admin@caudillos.com',
             'password' => bcrypt('admincaudillos'),
+            'active'    => 1,
             ]);
 
             $user->assignRole('Admin');
