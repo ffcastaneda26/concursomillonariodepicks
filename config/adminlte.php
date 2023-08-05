@@ -289,6 +289,7 @@ return [
     |
     */
 
+    
     'menu' => [
         // Navbar items:
         [
