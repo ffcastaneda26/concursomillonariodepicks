@@ -154,6 +154,8 @@
     "Edit": "Editar",
     "Delete": "Eliminar",
     "Create": "Crear",
+    "Create New": "Crear Nuevo",
+    "Show": "Ver",
     "Update": "Actualizar",
     "Confirm": "Confirmar",
     "Pause": "Pausar",
@@ -184,5 +186,9 @@
     "Terms of Service": "Términos de Servicio",
     "Privacy Policy": "Política de Privacidad",
     "terms_of_service and :privacy_policy": "Acepto los términos de servicio y política de privacidad",
-    "I agree to the :terms_of_service and :privacy_policy": "Acepto"
+    "I agree to the :terms_of_service and :privacy_policy": "Acepto",
+    "Updated successfully": "Actualizado Satisfactoriamente",
+    "Deleted successfully": "Eliminado Satisfactoriamente",
+    "Created successfully": "Creado Satisfactoriamente"
+
 }

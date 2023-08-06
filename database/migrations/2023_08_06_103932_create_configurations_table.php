@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('score_picks')->default(0)->comment('Puntos en pronósticos');
             $table->integer('minuts_before_picks')->default(5)->comment('Minutos antes para pronóstico');
             $table->boolean('allow_tie')->default(0)->comment('¿Permitir empate?');
-            $table->timestamps();
+
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('configurations');
+        Schema::dropIfExists('configuration');
     }
 };
