@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Team;
+use App\Http\Controllers\Controller;
+
+use App\Models\Round;
 use Illuminate\Http\Request;
 
 /**
- * Class TeamController
+ * Class RoundController
  * @package App\Http\Controllers
  */
-class TeamController extends Controller
+class RoundController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +20,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams = Team::paginate();
+        $rounds = Round::paginate();
 
-        return view('team.index', compact('teams'))
-            ->with('i', (request()->input('page', 1) - 1) * $teams->perPage());
+        return view('round.index', compact('rounds'))
+            ->with('i', (request()->input('page', 1) - 1) * $rounds->perPage());
     }
 
     /**
@@ -31,8 +33,8 @@ class TeamController extends Controller
      */
     public function create()
     {
-        $team = new Team();
-        return view('team.create', compact('team'));
+        $round = new Round();
+        return view('round.create', compact('round'));
     }
 
     /**
@@ -43,11 +45,11 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Team::$rules);
+        request()->validate(Round::$rules);
 
-        $team = Team::create($request->all());
+        $round = Round::create($request->all());
 
-        return redirect()->route('teams.index')
+        return redirect()->route('rounds.index')
             ->with('success', __('Created successfully'));
     }
 
@@ -59,9 +61,9 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        $team = Team::find($id);
+        $round = Round::find($id);
 
-        return view('team.show', compact('team'));
+        return view('round.show', compact('round'));
     }
 
     /**
@@ -72,26 +74,25 @@ class TeamController extends Controller
      */
     public function edit($id)
     {
-        $team = Team::find($id);
+        $round = Round::find($id);
 
-        return view('team.edit', compact('team'));
+        return view('round.edit', compact('round'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  Team $team
+     * @param  Round $round
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Team $team)
+    public function update(Request $request, Round $round)
     {
-        request()->validate(Team::$rules);
+        request()->validate(Round::$rules);
 
-        // dd($request->all());
-        $team->update($request->all());
+        $round->update($request->all());
 
-        return redirect()->route('teams.index')
+        return redirect()->route('rounds.index')
             ->with('success', __('Updated successfully'));
     }
 
@@ -102,9 +103,9 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        $team = Team::find($id)->delete();
+        $round = Round::find($id)->delete();
 
-        return redirect()->route('teams.index')
+        return redirect()->route('rounds.index')
             ->with('success', __('Deleted successfully'));
     }
 }
