@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\Rounds;
+use App\Http\Livewire\SelectRound;
 use App\Http\Livewire\Teams;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,3 +46,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin']
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('current_round',SelectRound::class);

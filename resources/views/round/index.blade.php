@@ -46,8 +46,8 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
 
-											<td>{{ $round->fecha_inicio }}</td>
-											<td>{{ $round->fecha_final }}</td>
+											<td>{{ $round->start_date }}</td>
+											<td>{{ $round->end_date }}</td>
                                             <td class="text-center">
                                                 <img src="{{ $round->active ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
                                                     alt="{{ $round->active ? __('Yes') : 'No' }}"

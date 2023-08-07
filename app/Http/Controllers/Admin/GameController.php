@@ -37,7 +37,7 @@ class GameController extends Controller
     public function create()
     {
         $game = new Game();
-        $rounds = Round::orderBy('fecha_inicio')->get();
+        $rounds = Round::orderBy('start_date')->get();
         $teams  = Team::orderby('name')->get();
         return view('game.create', compact('game','rounds','teams'));
     }
@@ -80,7 +80,7 @@ class GameController extends Controller
      */
     public function edit($id)
     {
-        $rounds = Round::orderBy('fecha_inicio')->get();
+        $rounds = Round::orderBy('start_date')->get();
         $teams  = Team::orderby('name')->get();
         $game = Game::find($id);
 

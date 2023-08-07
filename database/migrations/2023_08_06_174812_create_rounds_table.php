@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('rounds', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_inicio')->unique()->comment('Fecha de inicio');
-            $table->date('fecha_final')->unique()->comment('Fecha finalio');
+            $table->date('start_date')->unique()->comment('Fecha de inicio');
+            $table->date('end_date')->unique()->comment('Fecha finalio');
             $table->boolean('active')->default(0)->comment('¿Jornada Activa?');
             $table->enum('type',['Regular','Divisional','Conferencia'])->default('Regular')->comment('Tipo de Jornada');
         });

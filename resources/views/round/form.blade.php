@@ -2,25 +2,25 @@
     <div class="box-body">
         {{-- Fecha de Inicio --}}
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">{{ Form::label('fecha_inicio') }}</span>
+            <span class="input-group-text" id="basic-addon1">{{ Form::label('start_date') }}</span>
             <input type="date"
-                   name="fecha_inicio"
-                   id="fecha_inicio"
-                   value="{{ $round->fecha_inicio }}"
+                   name="start_date"
+                   id="start_date"
+                   value="{{ $round->start_date }}"
                    size="10"
-                   class="{{ $errors->has('fecha_inicio') ? ' is-invalid' : '' }}">
-            {!! $errors->first('fecha_inicio', '<div class="invalid-feedback">:message</div>') !!}
+                   class="{{ $errors->has('start_date') ? ' is-invalid' : '' }}">
+            {!! $errors->first('start_date', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         {{-- Fecha Final --}}
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">{{ Form::label('fecha_final') }}</span>
+            <span class="input-group-text" id="basic-addon1">{{ Form::label('end_date') }}</span>
             <input type="date"
-                   name="fecha_final"
-                   id="fecha_final"
-                   value="{{ $round->fecha_final }}"
+                   name="end_date"
+                   id="end_date"
+                   value="{{ $round->end_date }}"
                    size="10"
-                   class="{{ $errors->has('fecha_final') ? ' is-invalid' : '' }}">
-            {!! $errors->first('fecha_final', '<div class="invalid-feedback">:message</div>') !!}
+                   class="{{ $errors->has('end_date') ? ' is-invalid' : '' }}">
+            {!! $errors->first('end_date', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
         {{-- Tipo de Jornada --}}

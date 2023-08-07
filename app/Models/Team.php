@@ -52,7 +52,7 @@ class Team extends Model
       +-----------------+
      */
 
-     public function can_be_delete(){
+    public function can_be_delete(){
         if($this->local_games()->count()) return false;
         if($this->visit_games()->count()) return false;
         return true;

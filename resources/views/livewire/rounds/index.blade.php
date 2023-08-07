@@ -41,8 +41,8 @@
                                     @foreach ($records as $record)
                                         <tr>
                                             <td>{{ $record->id }}</td>
-											<td>{{ $record->fecha_inicio }}</td>
-											<td>{{ $record->fecha_final }}</td>
+											<td>{{ $record->start_date }}</td>
+											<td>{{ $record->end_date }}</td>
                                             <td class="text-center">
                                                 <img src="{{ $record->active ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
                                                     alt="{{ $record->active ? __('Yes') : 'No' }}"

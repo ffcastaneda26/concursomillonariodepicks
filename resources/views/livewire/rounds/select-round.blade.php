@@ -1,19 +1,26 @@
 <div>
    <div class="container">
-    @foreach ($rounds as $round)
-    <div class="form-group">
-        <div class="col-sm-6 col-sm-offset-3">
-            <label for="myField" class="control-label">Radio title:</label>
 
-            <label class="radio-inline">
-                <input type="radio" name="myField" value="normal" /> RADIO1
-            </label>
+    <div class="card">
+        <p class="text-center">JORNADAS</p>
+            <div class="card-body">
 
-            <label class="radio-inline">
-                <input type="radio" name="myField" value="high" /> RADIO2
-            </label>
-        </div>
+                @foreach ($rounds as $round)
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <div class="ml-3">
+                            <button wire:click="select_round({{ $round->id }})"
+                                class="btn  waves-effect waves-light
+                                    {{ $current_round->id == $round->id ? 'btn-success'  : '' }}
+                                    {{ $selected_round->id == $round->id ? 'btn-warning' : '' }}"
+                            title="{{ $round->id }}">
+                           {{ $round->id }}
+
+                        </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
     </div>
-    @endforeach
+
    </div>
 </div>

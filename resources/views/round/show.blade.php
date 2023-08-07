@@ -30,11 +30,11 @@
 
                         <div class="form-group">
                             <strong>Fecha Inicio:</strong>
-                            {{ $round->fecha_inicio }}
+                            {{ $round->start_date }}
                         </div>
                         <div class="form-group">
                             <strong>Fecha Final:</strong>
-                            {{ $round->fecha_final }}
+                            {{ $round->end_date }}
                         </div>
                         <div class="form-group">
                             <strong>Type:</strong>
