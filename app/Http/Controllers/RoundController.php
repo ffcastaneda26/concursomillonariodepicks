@@ -48,7 +48,7 @@ class RoundController extends Controller
         $round = Round::create($request->all());
 
         return redirect()->route('rounds.index')
-            ->with('success', 'Round created successfully.');
+            ->with('success', __('Created successfully'));
     }
 
     /**
@@ -91,7 +91,7 @@ class RoundController extends Controller
         $round->update($request->all());
 
         return redirect()->route('rounds.index')
-            ->with('success', 'Round updated successfully');
+            ->with('success', __('Updated successfully'));
     }
 
     /**
@@ -104,6 +104,6 @@ class RoundController extends Controller
         $round = Round::find($id)->delete();
 
         return redirect()->route('rounds.index')
-            ->with('success', 'Round deleted successfully');
+            ->with('success', __('Deleted successfully'));
     }
 }
