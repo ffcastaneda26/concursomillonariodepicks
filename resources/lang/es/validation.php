@@ -193,6 +193,10 @@ return [
         "curp"                      => 'CURP',
         'alias' => 'Alias',
         'short' => 'Corto',
+        'fecha_inicio' => 'Fecha de Inicio',
+        'fecha_final' => 'Fecha Final',
+        'type'  => 'Tipo'
+
    	]
 
 ];

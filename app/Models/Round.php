@@ -5,26 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Team
+ * Class Round
  *
  * @property $id
- * @property $name
- * @property $alias
- * @property $short
- * @property $logo
+ * @property $fecha_inicio
+ * @property $fecha_final
+ * @property $type
  *
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Team extends Model
+class Round extends Model
 {
-    protected $table = 'teams';
+
+    protected $table = 'rounds';
     public $timestamps = false;
     static $rules = [
-		'name'  => 'required',
-		'alias' => 'required',
-		'short' => 'required',
-		'logo'  => 'nullable',
+		'fecha_inicio' => 'required',
+		'fecha_final' => 'required',
+		'type' => 'required',
     ];
 
     protected $perPage = 20;
@@ -34,7 +33,7 @@ class Team extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','alias','short','logo'];
+    protected $fillable = ['fecha_inicio','fecha_final','type'];
 
 
 
