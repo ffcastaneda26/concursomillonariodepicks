@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_inicio')->unique()->comment('Fecha de inicio');
             $table->date('fecha_final')->unique()->comment('Fecha finalio');
+            $table->boolean('active')->default(0)->comment('¿Jornada Activa?');
             $table->enum('type',['Regular','Divisional','Conferencia'])->default('Regular')->comment('Tipo de Jornada');
         });
     }

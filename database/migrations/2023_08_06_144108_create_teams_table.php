@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name',50)->comment('Nombre del equipo');
             $table->string('alias',20)->comment('Alias');
             $table->string('short',3)->comment('Corto para reportes');
-            $table->string('logo',3)->nullable()->default(null)->comment('Alias');
+            $table->string('logo')->nullable()->default(null)->comment('Logotipo');
         });
     }
 

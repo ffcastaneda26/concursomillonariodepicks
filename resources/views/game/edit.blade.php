@@ -11,14 +11,14 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Update') }} Equipo</span>
+                        <span class="card-title">{{ __('Update') }} Juego</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('teams.update', $team->id) }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('games.update', $game->id) }}"  role="form" enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
 
-                            @include('team.form')
+                            @include('game.form')
 
                         </form>
                     </div>

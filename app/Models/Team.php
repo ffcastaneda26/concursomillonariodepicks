@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Team
@@ -36,6 +37,14 @@ class Team extends Model
      */
     protected $fillable = ['name','alias','short','logo'];
 
+    public function local_team(): HasMany
+    {
+        return $this->hasMany(Game::class,'id','local_team_id');
+    }
 
+    public function visit_team(): HasMany
+    {
+        return $this->hasMany(Game::class,'id','visit_team_id');
+    }
 
 }

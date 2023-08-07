@@ -195,7 +195,11 @@ return [
         'short' => 'Corto',
         'fecha_inicio' => 'Fecha de Inicio',
         'fecha_final' => 'Fecha Final',
-        'type'  => 'Tipo'
+        'type'  => 'Tipo',
+        'round_id' => 'Jornada',
+        'local_team_id' => 'Equipo Local',
+        'visit_team_id' => 'Equipo Visita',
+
 
    	]
 

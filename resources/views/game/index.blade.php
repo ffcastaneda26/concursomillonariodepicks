@@ -11,11 +11,11 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                JORNADAS
+                                {{ __('Game') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('rounds.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                <a href="{{ route('games.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Create New') }}
                                 </a>
                               </div>
@@ -33,33 +33,47 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>Id</th>
-										<th>Fecha Inicio</th>
-										<th>Fecha Final</th>
-										<th>¿Activa?</th>
-										<th>Tipo</th>
-
+									    <th>Jornada</th>
+                                        <th>Fecha</th>
+										<th>Local</th>
+										<th>Puntos</th>
+										<th>Visita</th>
+										<th>Puntos</th>
+										<th>Ganador</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($rounds as $round)
+                                    @foreach ($games as $game)
                                         <tr>
                                             <td>{{ ++$i }}</td>
 
-											<td>{{ $round->fecha_inicio }}</td>
-											<td>{{ $round->fecha_final }}</td>
-                                            <td class="text-center">
-                                                <img src="{{ $round->active ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
-                                                    alt="{{ $round->active ? __('Yes') : 'No' }}"
-                                                    height="24px"
-                                                    width="24px">
+											<td>{{ $game->round_id }}</td>
+                                            <td>{{$game->game_day->format('j-F-Y')}} {{$game->game_time->format('h:i A') }}</td>
+											<td>{{ $game->local_team->name }}</td>
+											<td>{{ $game->local_points }}</td>
+											<td>{{ $game->visit_team->name }}</td>
+											<td>{{ $game->visit_points }}</td>
+											<td>
+                                                @switch($game->winner)
+                                                    @case(0)
+                                                        Empate
+                                                        @break
+                                                    @case(1)
+                                                       Local
+                                                        @break
+                                                    @case(2)
+                                                        Visita
+                                                        @break
+                                                    @default
+                                                       Pendiente
+                                                @endswitch
                                             </td>
-											<td>{{ $round->type }}</td>
 
                                             <td>
-                                                <form action="{{ route('rounds.destroy',$round->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('rounds.show',$round->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('rounds.edit',$round->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                <form action="{{ route('games.destroy',$game->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('games.show',$game->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('games.edit',$game->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
@@ -72,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $rounds->links() !!}
+                {!! $games->links() !!}
             </div>
         </div>
     </div>
