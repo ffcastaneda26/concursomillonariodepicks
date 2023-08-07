@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Livewire\Rounds;
+use App\Http\Livewire\Teams;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +22,7 @@ Route::get('/', function () {
 
 Route::middleware([
     'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
+    config('jetstream.auth_session')
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -33,3 +34,14 @@ Route::middleware([
 Route::get('/home', function() {
     return view('home');
 })->name('home')->middleware('auth');
+
+
+
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin'])->group(function () {
+    Route::get('teams',Teams::class)->name('teams');    // Equipos
+    Route::get('rounds',Rounds::class)->name('rounds');  // Jornadas
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

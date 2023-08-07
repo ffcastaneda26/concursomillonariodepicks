@@ -28,7 +28,7 @@ class Team extends Model
 		'logo'  => 'nullable',
     ];
 
-    protected $perPage = 20;
+    // protected $perPage = 20;
 
     /**
      * Attributes that should be mass-assignable.
@@ -37,14 +37,47 @@ class Team extends Model
      */
     protected $fillable = ['name','alias','short','logo'];
 
-    public function local_team(): HasMany
+    public function local_games(): HasMany
     {
-        return $this->hasMany(Game::class,'id','local_team_id');
+        return $this->hasMany(Game::class,'local_team_id');
     }
 
-    public function visit_team(): HasMany
+    public function visit_games(): HasMany
     {
-        return $this->hasMany(Game::class,'id','visit_team_id');
+        return $this->hasMany(Game::class,'visit_team_id');
+    }
+
+    /*+-----------------+
+      | Funciones Apoyo |
+      +-----------------+
+     */
+
+     public function can_be_delete(){
+        if($this->local_games()->count()) return false;
+        if($this->visit_games()->count()) return false;
+        return true;
+    }
+
+    // before delete() method call this
+    protected static function booted () {
+        static::deleting(function(Team $team) {
+             $team->local_games()->delete();
+             $team->visit_games()->delete();
+        });
+    }
+
+
+    /*+-------------------+
+      | Búsquedas         |
+      +-------------------+
+    */
+
+    public function scopeGeneral($query,$valor)
+    {
+
+        if ( trim($valor) != "") {
+            $query->where('name','LIKE',"%$valor%");
+         }
     }
 
 }

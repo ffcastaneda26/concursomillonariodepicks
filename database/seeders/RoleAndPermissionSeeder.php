@@ -92,7 +92,7 @@ class RoleAndPermissionSeeder extends Seeder
                 ->givePermissionTo(['pronosticos', 'resultados-consultar','posiciones-jornada','posiciones-general']);
 
         // or may be done by chaining
-        $role = Role::create(['name' => 'moderator'])
+        $role = Role::create(['name' => 'moderador'])
                 ->givePermissionTo(['partidos','pronosticos', 'resultados-consultar','posiciones-jornada','posiciones-general']);
 
     }

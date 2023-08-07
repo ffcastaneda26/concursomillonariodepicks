@@ -2,14 +2,7 @@
 
 namespace App\Http\Livewire\Traits;
 
-use App\Models\Logia;
-use App\Models\Mason;
-use App\Models\Status;
-use App\Models\Entidad;
-use App\Models\Municipio;
-use App\Models\Profano;
-use App\Models\TipoEstado;
-use Illuminate\Support\Facades\App;
+use App\Models\Round;
 use Illuminate\Support\Facades\Auth;
 
 trait CrudTrait {
@@ -26,30 +19,15 @@ trait CrudTrait {
     public $allow_create=true;
     public $allow_edit=true;
     public $allow_=true;
-
     public $back_route = null;
-    public $predeterminado = false;
-    public $activa = true;
-    public $mostrar_logias = true;
     public $show_back = false;
 
     public $message;
-    private $pagination = 10; //paginación de tabla
-    public $per_page = 10;
+    private $pagination = 8; //paginación de tabla
+    public $per_page = 8;
 
-    public $member_auth_user;
     public $confirm_delete =false;
     public $action_form;
-    public $show_delete_detail = false;
-    public $only_linked = false;
-    public $show_only_linked = true;
-
-    // Permisos
-    public $permission_create;
-    public $permission_edit;
-    public $permission_delete;
-    public $permission_view;
-
 
     // Vistas
     public $view_search = 'common.crud_search';
@@ -68,72 +46,18 @@ trait CrudTrait {
     public $header_card;
 
     // Listas desplegables
-    public $logias          = null;
-    public $distritos       = null;
-    public $entidades       = null;
-    Public $municipios      = null;
-    public $statuses        = null;
-    public $grados          = null;
-    Public $dias_trabajos   = null;
+    public $rounds          = null;
+    public $teams           = null;
     public $logotipo        = null;
     public $imagen_anterior = null;
-    public $puestos         = null;
-    public $reconocimientos = null;
-    public $aficiones       = null;
-    public $escolaridades   = null;
-    public $masones         = null;
-    public $mason           = null;
-    public $estados_civiles = null;
-    public $estados         = null;
-    public $organismos      = null;
-    public $sectores        = null;
-    public $areas           = null;
-    public $profanos        = null;
-    public $formas_de_ingreso = null;
-    public $tipos_estado = null;
-    public $estados_siguientes = null;
-    public $tipos_documento = null;
-
 
     // Registros
-    public $rol_usuario = null;
-    public $logia_usuario = null;
-    public $registro_tipo_estado = null;
-    public $logia       = null;
-    public $sector      = null;
-    public $area        = null;
-    public $profano     = null;
-    public $entidad     = null;
-    public $forma_ingreso=null;
-    public $tipo_estado = null;
-    public $tipo_documento = null;
-    public $radio       = null;
+    public $round   = null;
+    public $team    = null;
 
     // Id de registros
-    public $logia_id    = null;
-    public $sector_id   = null;
-    public $area_id     = null;
-    public $profano_id  = null;
-    public $forma_ingreso_id = null;
-    public $tipo_estado_id  = null;
-    public $tipo_documento_id = null;
-
-
+    public $round_id    = null;
     public $msg_error = null;
-    public $default_status = null;
-
-
-    // Variables para el domicilio
-    public $entidad_id  = 6;
-    public $municipio_id= null;
-    public $municipio   = null;
-    public $localidad   = null;
-    public $direccion   = null;
-    public $colonia     = null;
-    public $codpos      = null;
-
-
-
 
     // Ordenar consultas
     public $sort = 'id';
@@ -148,36 +72,16 @@ trait CrudTrait {
 
 
     /** Lee Entidades Federativas */
-    public function lee_entidades(){
-        $this->entidades    = Entidad::orderby('id')->get();
+    public function lee_jornadas(){
+        $this->entidades    = Round::orderby('id')->get();
     }
 
     /** Entidades para el domicilio */
-    public function lee_entidad(){
-        $this->reset('entidad','municipio_id','municipios','municipio');
-
-        if($this->entidad_id){
-            $this->entidad = Entidad::findOrFail($this->entidad_id);
-            $this->municipios = $this->entidad->municipios()->orderby('id')->get();
+    public function lee_jornada(){
+        if($this->round_id){
+            $this->round = Round::findOrFail($this->round_id);
         }
     }
-
-    /** Lee municipios de una entidad */
-    public function lee_municipios(Entidad $entidad){
-
-        $this->entidad = $entidad;
-        $this->municipios = $this->entidad->municipios()->orderby('nombre')->get();
-
-    }
-
-    /** Lee el municipio */
-    public function lee_municipio(){
-        $this->reset('municipio');
-        if($this->municipio_id){
-            $this->municipio = Municipio::findOrFail($this->municipio_id);
-        }
-    }
-
 
 	/**
 	 * The attributes that are mass assignable.
@@ -203,16 +107,13 @@ trait CrudTrait {
             $this->confirm_delete = false;
             if($modal == 1){
                 $this->isOpen = true;
-                $this->open2 = false;
             }else{
-                $this->isOpen = false;
             }
         }
 
         if($action == 'delete'){
             $this->confirm_delete = true;
             $this->isOpen = false;
-            $this->open2 = false;
         }
 
 	}
@@ -226,8 +127,7 @@ trait CrudTrait {
 	public function closeModal() {
         $this->isOpen = false;
         $this->confirm_delete = false;
-        $this->reset('search','logotipo');
-
+        $this->reset('search');
         $this->resetInputFields();
     }
 
@@ -311,54 +211,6 @@ trait CrudTrait {
         return preg_match($regex, $rfc);
     }
 
-    /** Si rol requiere logia la deja seleccionada si no pone todas */
 
-    public function rol_requiere_logia(){
-        $this->rol_usuario = Auth::user()->roles->first();
-
-        if($this->rol_usuario->require_lodge){
-            $this->logia_usuario    = Auth::user()->logias->first();
-            $this->logia            = $this->logia_usuario;
-            $this->logia_id         = $this->logia_usuario->id;
-            $this->mostrar_logias   = false;
-        }else{
-            $this->logias = Logia::orderby('logia')->where('activa',1)->get();
-            $this->mostrar_logias   = true;
-
-        }
-    }
-
-
-    /** Lee Logia */
-    public function lee_logia(Logia $logia){
-        $this->masones = null;
-        if($this->logia_id){
-            $this->logia = Logia::findOrFail($this->logia_id);
-        }
-
-    }
-
-    /** Lee Tipo de Estado */
-    public function lee_tipo_estado(){
-        $this->tipo_estado = null;
-        if($this->tipo_estado_id){
-            $this->tipo_estado = TipoEstado::findOrFail($this->tipo_estado_id);
-        }
-    }
-
-    /** Hermano  para asignar familiares */
-    public function lee_mason(Mason $mason){
-        $this->mason = $mason;
-    }
-
-    /** Profano  para asignar Algo */
-    public function lee_profano(Profano $profano){
-        $this->profano = $profano;
-    }
-
-    /** Lee registro de estado activo */
-    public function lee_registro_tipo_estado($tipo = 'Logias'){
-        return TipoEstado::Where('nombre',$tipo)->first();
-    }
 
 }

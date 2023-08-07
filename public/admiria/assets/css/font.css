@@ -1,0 +1,68 @@
+<style>
+    .modal {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    #dropdown {
+        border: 2px solid #609;
+        border-radius: 25px;
+        color: black;
+        cursor: pointer;
+        height: 50px;
+        outline: none;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #dropdown option {
+
+        background-color: white;
+        color: black;
+        height: 50%;
+        overflow: hidden;
+    }
+
+    #dropdown option:nth-child(2) {
+
+        margin-top: 20px;
+        margin-bottom: 20px;
+        height: 50%;
+        font-family: "Poppins", sans-serif;
+        font-size: 20px;
+    }
+
+    #dropdown option:nth-child(3) {
+
+        margin-top: 20px;
+        margin-bottom: 20px;
+        height: 50%;
+        font-family: "Roboto ";
+        font-size: 20px;
+    }
+
+    #dropdown option:nth-child(4) {
+
+        margin-top: 20px;
+        margin-bottom: 20px;
+        height: 50%;
+
+        font-family: "Inspiration";
+        font-size: 20px;
+    }
+
+    #dropdown option:nth-child(5) {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        height: 50%;
+        font-family: "Oswald";
+        font-size: 20px;
+    }
+
+    #dropdown option:nth-child(6) {
+        margin-top: 2px;
+        margin-bottom: 2px;
+        height: 50%;
+        font-family: "Smokum";
+        font-size: 20px;
+    }
+</style>

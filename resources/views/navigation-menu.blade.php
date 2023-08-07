@@ -15,6 +15,15 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @role('Admin')
+                        <x-nav-link href="{{ route('teams') }}" :active="request()->routeIs('teams')">
+                           Equipos
+                        </x-nav-link>
+
+                        <x-nav-link href="{{ route('rounds') }}" :active="request()->routeIs('rounds')">
+                            Jornadas
+                         </x-nav-link>
+                    @endrole
                 </div>
             </div>
 
