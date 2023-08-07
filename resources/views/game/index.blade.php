@@ -56,8 +56,8 @@
 											<td>{{ $game->visit_points }}</td>
 											<td>
                                                 @switch($game->winner)
-                                                    @case(0)
-                                                        Empate
+                                                    @case(null)
+                                                        Pendiente
                                                         @break
                                                     @case(1)
                                                        Local
