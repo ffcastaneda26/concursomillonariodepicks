@@ -72,8 +72,8 @@ trait CrudTrait {
 
 
     /** Lee Entidades Federativas */
-    public function lee_jornadas(){
-        $this->entidades    = Round::orderby('id')->get();
+    public function read_rounds(){
+        $this->rounds    = Round::orderby('id')->get();
     }
 
     /** Entidades para el domicilio */

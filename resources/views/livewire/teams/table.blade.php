@@ -1,3 +1,4 @@
+@livewire('select-round')
 <thead>
     <tr class="bg-dark text-white text-center">
         <th class="px-4 py-2"
