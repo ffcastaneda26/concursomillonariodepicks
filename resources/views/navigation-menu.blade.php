@@ -16,6 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @role('Admin')
+                        <x-nav-link href="{{ route('configurations') }}" :active="request()->routeIs('configurations')">
+                            Configuración
+                        </x-nav-link>
                         <x-nav-link href="{{ route('teams') }}" :active="request()->routeIs('teams')">
                            Equipos
                         </x-nav-link>

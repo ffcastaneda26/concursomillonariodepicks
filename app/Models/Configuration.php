@@ -31,6 +31,7 @@ class Configuration extends Model
 		'score_picks'           => 'nullable',
 		'minuts_before_picks'   => 'required',
 		'allow_tie'             => 'nullable',
+        'create_mssing_picks'   => 'nullable'
     ];
 
     protected $perPage = 20;
@@ -40,8 +41,16 @@ class Configuration extends Model
      *
      * @var array
      */
-    protected $fillable = ['website_name','website_url','email','score_picks','minuts_before_picks','allow_tie'];
+    protected $fillable = ['website_name','website_url','email','score_picks','minuts_before_picks','allow_tie','create_mssing_picks'];
 
+    /*+-----------------+
+      | Funciones Apoyo |
+      +-----------------+
+     */
+
+     public function can_be_delete(){
+        return false;
+    }
 
 
 }

@@ -35,14 +35,17 @@
                             {{ $configuration->score_picks }}
                         </div>
                         <div class="form-group">
-                            <strong>Minuts Before Picks:</strong>
+                            <strong>Minutos antes para pronosticar:</strong>
                             {{ $configuration->minuts_before_picks }}
                         </div>
                         <div class="form-group">
-                            <strong>Allow Tie:</strong>
+                            <strong>¿Permite Empates?</strong>
                             {{ $configuration->allow_tie }}
                         </div>
-
+                        <div class="form-group">
+                            <strong>¿Crear pronósticos faltantes?</strong>
+                            {{ $configuration->create_mssing_picks }}
+                        </div>
                     </div>
                 </div>
             </div>

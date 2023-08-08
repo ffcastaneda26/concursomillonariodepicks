@@ -77,7 +77,23 @@
                 </div>
         </div>
 
+        {{-- ¿Generar pronósticos faltantes? --}}
 
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">¿Solicitar Puntos en Pronósticos?</span>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <div class="ml-3">
+                        <label class="radio-inline">
+                            <input type="radio" name="create_mssing_picks" value="1" {{ $configuration->create_mssing_picks ? 'checked' : ''}}/> SI
+                        </label>
+                    </div>
+                    <div class="ml-3">
+                        <label class="radio-inline">
+                            <input type="radio" name="create_mssing_picks" value="0" {{ !$configuration->create_mssing_picks ? 'checked' : ''}}/> NO
+                        </label>
+                    </div>
+                </div>
+        </div>
     </div>
     <div class="box-footer mt20 float-right">
         <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>

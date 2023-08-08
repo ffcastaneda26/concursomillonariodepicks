@@ -57,7 +57,15 @@
                                                     width="24px">
                                             </td>
 											<td>{{ $configuration->minuts_before_picks }}</td>
+
 											<td>
+                                                <img src="{{ $configuration->allow_tie ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
+                                                alt="{{ $configuration->allow_tie ? __('Yes') : 'No' }}"
+                                                height="24px"
+                                                width="24px">
+                                            </td>
+
+                                            <td>
                                                 <img src="{{ $configuration->allow_tie ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
                                                 alt="{{ $configuration->allow_tie ? __('Yes') : 'No' }}"
                                                 height="24px"
