@@ -24,6 +24,27 @@
                             Jornadas
                          </x-nav-link>
                     @endrole
+
+                    @role('jugador')
+                        <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('pics')">
+                            Pronósticos
+                        </x-nav-link>
+
+                        <x-nav-link href="#">
+                            Posiciones x jornada
+                        </x-nav-link>
+
+                        <x-nav-link href="#">
+                            Posiciones General
+                        </x-nav-link>
+
+                        <x-nav-link href="#">
+                           Resultados x Jornada
+                        </x-nav-link>
+
+                    @endrole
+
+
                 </div>
             </div>
 

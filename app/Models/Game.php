@@ -65,6 +65,8 @@ class Game extends Model
 
     }
 
+
+
     public function visit_team(): BelongsTo
     {
         return $this->belongsTo(Team::class,'visit_team_id');
