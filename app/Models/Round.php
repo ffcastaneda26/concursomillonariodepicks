@@ -38,7 +38,10 @@ class Round extends Model
     protected $fillable = ['start_date','end_date','type'];
 
 
-    /** Relaciones */
+    /*+------------+
+       | Relaciones |
+       +------------+
+     */
 
     public function games(): HasMany
     {
@@ -65,5 +68,15 @@ class Round extends Model
         $current_round->active = 1;
         $current_round->save();
         return $current_round;
+     }
+
+     // ¿Es el último partido de la jornada?
+     public function is_last_game($game_id){
+        return $this->games->last()->id == $game_id;
+     }
+
+     // Regresa el último partido de la jornada
+     public function get_last_game_round(){
+        return $this->games->last();
      }
 }

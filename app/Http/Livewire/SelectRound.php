@@ -25,6 +25,9 @@ class SelectRound extends Component
         if(!$this->selected_round){
             $this->selected_round = $this->current_round;
         }
+
+
+        $this->emit('receive_round',$this->selected_round->id);
         return view('livewire.rounds.select-round');
     }
 

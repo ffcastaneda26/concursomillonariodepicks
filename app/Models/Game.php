@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Team;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -56,22 +59,64 @@ class Game extends Model
         'game_date' => 'datetime',
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+    /*+------------+
+       | Relaciones |
+       +------------+
      */
+
+    public function picks(): HasMany
+    {
+        return $this->hasMany(Pick::class);
+    }
+
+    public function round():BelongsTo
+    {
+        return $this->belongsTo(Round::class);
+    }
+
     public function local_team(): BelongsTo
     {
         return $this->belongsTo(Team::class,'local_team_id');
 
     }
 
-
-
     public function visit_team(): BelongsTo
     {
         return $this->belongsTo(Team::class,'visit_team_id');
-
     }
 
+
+    /*+-----------------+
+      | Funciones Apoyo |
+      +-----------------+
+     */
+
+     public function can_be_delete(){
+        return false;
+    }
+
+    // ¿Permite pronosticar?
+    public function allow_pick(){
+        date_default_timezone_set("America/Chihuahua");
+        $configuration = Configuration::first();
+        $fecha_juego = new Carbon($this->game_date);
+        $fecha_juego->subMinute($configuration->minuts_before_picks);
+        $newDateTime = Carbon::now()->subMinute($configuration->minuts_before_picks);
+        return $fecha_juego > $newDateTime;
+    }
+
+    // Pronóstico del juegoy del usuario
+    public function pick_user(){
+       return $this->picks->where('user_id',Auth::user()->id)->first();
+    }
+
+    // Imprime Resultado?
+    public function print_score(){
+        return (!is_null($this->local_points) || !is_null($this->visit_points)) && ($this->local_points != $this->visit_points);
+    }
+
+    public function is_last_game_round(){
+      return $this->round->is_last_game($this->id);
+    }
 
 }
