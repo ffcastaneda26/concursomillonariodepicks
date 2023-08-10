@@ -65,7 +65,7 @@ class Picks extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
         if($this->configuration->create_mssing_picks){
-            $this->games_without_picks(null,$this->current_round->id);
+            $this->create_missing_picks_to_user(null,$this->current_round->id);
         }
         $this->receive_round($this->current_round );
     }

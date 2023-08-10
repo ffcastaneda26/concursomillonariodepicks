@@ -52,20 +52,12 @@ trait FuncionesGenerales
     }
 
 
-    public function games_without_picks($user_id,$round_id){
+
+    public function create_missing_picks_to_user($user_id,$round_id){
 
         if(!$user_id){
             $user_id = Auth::user()->id;
         }
-
-        // $rounds_missing = Round::select('id')->where('id','>=',$round_id)->get()->toArray();
-        // $sql = "SELECT * ";
-        // $sql.= "FROM games ";
-        // $sql.= " WHERE id NOT IN ";
-        // $sql.= "(SELECT game_id FROM picks WHERE user_id=" . $user_id . " AND round_id >=" . $round_id . ") ORDER BY id";
-        // $records = DB::select($sql);
-
-
 
         $games = game::whereDoesntHave('picks', function (Builder $query) {
             $query->where('user_id',Auth::user()->id);
@@ -95,8 +87,4 @@ trait FuncionesGenerales
         }
 
     }
-
-    // public function is_last_game(Round $round,$game_id){
-    //     return $round->games->last()->id == $game_id;
-    // }
 }
