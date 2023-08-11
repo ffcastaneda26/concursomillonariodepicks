@@ -33,7 +33,7 @@
 
                     @endrole
 
-                    @role('jugador')
+                    @role('participante')
 
 
 

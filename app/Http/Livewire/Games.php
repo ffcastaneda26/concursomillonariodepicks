@@ -94,15 +94,11 @@ class Games extends Component
         $this->main_record->save();
         $this->main_record->winner = $this->main_record->local_points > $this->main_record->visit_points ? 1 : 2;
 
-        // TODO::
-        /**  Calificar pronósticos de todos los usuarios
-         * 1) Puntos
-         * 2) Si es el último partido y "acertó" (hit_last_game)
-         */
 
          // Califica los aciertos
         $this->qualify_picks($this->main_record);
 
+        // TODO: Si juega CAUDILLOS su partido, si no el último
         if($this->main_record->is_last_game_round()){
             $this->update_tie_breaker($this->main_record);
         }

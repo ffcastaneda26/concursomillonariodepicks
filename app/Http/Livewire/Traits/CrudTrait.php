@@ -23,8 +23,8 @@ trait CrudTrait {
     public $show_back = false;
 
     public $message;
-    private $pagination = 8; //paginación de tabla
-    public $per_page = 8;
+    private $pagination = 15; //paginación de tabla
+    public $per_page = 15;
 
     public $confirm_delete =false;
     public $action_form;

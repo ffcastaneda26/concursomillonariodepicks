@@ -53,7 +53,9 @@ class Teams extends Component
     public function resetInputFields()
     {
         $this->main_record = new Team();
+        $this->reset('logotipo');
         $this->resetErrorBag();
+
     }
 
     /*+---------------+

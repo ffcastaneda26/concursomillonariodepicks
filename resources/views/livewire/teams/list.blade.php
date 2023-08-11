@@ -6,7 +6,7 @@
         @if ($record->logo)
             <img src="{{Storage::url($record->logo)}}" class="avatar-sm" alt="">
         @else
-
+            SIN LOGO
         @endif
     </td>
     @include('common.crud_actions')

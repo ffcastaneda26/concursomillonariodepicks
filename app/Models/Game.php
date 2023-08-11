@@ -116,6 +116,7 @@ class Game extends Model
     }
 
     public function is_last_game_round(){
+
       return $this->round->is_last_game($this->id);
     }
 
