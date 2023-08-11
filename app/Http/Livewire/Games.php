@@ -93,6 +93,20 @@ class Games extends Component
         }
         $this->main_record->save();
         $this->main_record->winner = $this->main_record->local_points > $this->main_record->visit_points ? 1 : 2;
+
+        // TODO::
+        /**  Calificar pronósticos de todos los usuarios
+         * 1) Puntos
+         * 2) Si es el último partido y "acertó" (hit_last_game)
+         */
+
+         // Califica los aciertos
+        $this->qualify_picks($this->main_record);
+
+        if($this->main_record->is_last_game_round()){
+            $this->update_tie_breaker($this->main_record);
+        }
+
         $this->receive_round( $this->main_record->round);
         $this->close_store('Juego');
 
@@ -123,6 +137,24 @@ class Games extends Component
             $this->round_games = $round->games()->orderby('id')->get();
         }
 
+    }
+
+    private function consulta(){
+        $dif_victoria = $this->main_record->local_points + $this->main_record->visit_points ;
+        $consulta = "UPDATE picks pic,games ga ";
+		$consulta.="SET ";
+		$consulta.="pic.dif_points_local=abs(".$this->main_record->local_points."-pic.local_points),";
+		$consulta.="pic.dif_points_visit= abs(".$this->main_record->visit_points ."-pic.visit_points),";
+		$consulta.="pic.dif_points_total= abs(abs(". $this->main_record->visit_points . "-pic.visit_points)+abs(". $this->main_record->local_points."-pic.local_points)),";
+		$consulta.="hit_local= CASE WHEN pic.local_points=". $this->main_record->local_points . " THEN 1 ELSE 0  END,";
+		$consulta.="hit_visit= CASE WHEN pic.visit_points=". $this->main_record->visit_points  ." THEN 1 ELSE 0  END,";
+		//$consulta.="acerto_ultimo_partido=pic.nivelacierto,";
+		$consulta.="dif_points_winner= CASE WHEN (" . $this->main_record->local_points . ">". $this->main_record->visit_points  . ") THEN abs(pic.local_points - " . $this->main_record->local_points . ") ELSE abs(pic.visit_points - " . $this->main_record->visit_points  . ")  END,";
+		$consulta.="pic.dif_victory=abs(" . $dif_victoria . "-(pic.local_points + pic.visit_points)) ";
+		$consulta.="WHERE ga.id = pic.game_id ";
+		$consulta.="  AND ga.id=" . $this->main_record->id;
+
+        dd($consulta);
     }
 
 }
