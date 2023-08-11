@@ -35,8 +35,8 @@ class Game extends Model
     static $rules = [
 		'round_id'      => 'required|exists:rounds,id',
         'local_team_id' => 'required|exists:teams,id',
-		'local_points'  => 'nullable',
 		'visit_team_id' => 'required|exists:teams,id',
+		'local_points'  => 'nullable',
 		'visit_points'  => 'nullable',
 		'game_day'      => 'required',
 		'game_time'     => 'required',
@@ -117,6 +117,16 @@ class Game extends Model
 
     public function is_last_game_round(){
       return $this->round->is_last_game($this->id);
+    }
+
+    // Ya tiene resultado
+    public function has_result(){
+         return !is_null($this->visit_points) || !is_null($this->local_points);
+    }
+
+    // ¿Gana local?
+    public function win(){
+        return $this->local_points > $this->visit_points ? 'local' : 'visit';
     }
 
 }

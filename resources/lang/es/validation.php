@@ -199,8 +199,8 @@ return [
         'round_id' => 'Jornada',
         'local_team_id' => 'Equipo Local',
         'visit_team_id' => 'Equipo Visita',
-
-
+        'local_points' => 'Puntos Local',
+        'visit_points' => 'Puntos Local',
    	]
 
 ];

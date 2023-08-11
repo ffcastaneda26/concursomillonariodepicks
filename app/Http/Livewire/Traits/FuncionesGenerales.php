@@ -6,6 +6,7 @@ use App\Models\Round;
 use App\Models\Configuration;
 use App\Models\Game;
 use App\Models\Pick;
+use App\Models\Team;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -24,7 +25,8 @@ trait FuncionesGenerales
     public $round_id        = null;
     public $team_id         = null;
     public $game_instance   = null;
-    public $configuration = null;
+    public $configuration   = null;
+
 
 
 
@@ -51,6 +53,11 @@ trait FuncionesGenerales
         $this->round_games = $this->selected_round->games;
     }
 
+
+    // Lee equipos
+    public function read_teams(){
+        $this->teams = Team::orderby('id')->get();
+    }
 
 
     public function create_missing_picks_to_user($user_id,$round_id){

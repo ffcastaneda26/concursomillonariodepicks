@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\Configurations;
+use App\Http\Livewire\Games;
 use App\Http\Livewire\Picks;
 use App\Http\Livewire\Rounds;
 use App\Http\Livewire\SelectRound;
@@ -27,8 +28,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('games',Games::class)->name('games');     // Juegos
+    Route::get('picks',Picks::class)->name('picks');    // Pronósticos
 
-    Route::get('picks',Picks::class)->name('picks'); // Pronósticos
 });
 
 
@@ -42,10 +44,8 @@ Route::get('/home', function() {
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin'])->group(function () {
     Route::get('configurations',Configurations::class)->name('configurations');
     Route::get('teams',Teams::class)->name('teams');     // Equipos
-    Route::get('rounds',Rounds::class)->name('rounds'); // Jornadas
+    Route::get('rounds',Rounds::class)->name('rounds');  // Jornadas
 
 });
-
-
 
 Route::get('current_round',SelectRound::class);

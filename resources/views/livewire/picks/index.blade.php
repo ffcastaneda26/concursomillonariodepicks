@@ -11,9 +11,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                       <div class="card-title">
-
-                       </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover text-xs">

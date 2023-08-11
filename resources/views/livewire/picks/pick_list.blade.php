@@ -3,10 +3,10 @@
     $is_last_game   = $game->is_last_game_round();
     $pick_user      = $game->pick_user();
     $print_score    = $game->print_score();
-    $acerto         = $print_score && $pick_user && $pick_user->winner == $game->winner;
+    $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
 @endphp
 <tr>
-    <td>{{ $game->id }}</td>
+    {{-- <td>{{ $game->id }}</td> --}}
     <td>{{$game->game_day->format('j-M-y')}} {{$game->game_time->format('h:i A') }}</td>
     @include('livewire.picks.pick_visit')
 
