@@ -33,7 +33,7 @@
                 </table>
             @else
                 @include('common.no_records_found')
-            @endif)
+            @endif
         </div>
 
 

@@ -27,13 +27,15 @@
                             Jornadas
                          </x-nav-link>
 
+                         <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
+                            Juegos
+                        </x-nav-link>
+
                     @endrole
 
                     @role('jugador')
 
-                        <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
-                            Juegos
-                        </x-nav-link>
+
 
                         <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('pics')">
                             Pronósticos

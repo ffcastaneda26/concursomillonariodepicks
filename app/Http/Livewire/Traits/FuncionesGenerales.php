@@ -78,7 +78,7 @@ trait FuncionesGenerales
                     'user_id'   => $user_id,
                     'game_id'   => $game->id,
                     'winner'    => $winner
-                ]);
+                    ]);
 
                 if($game->is_last_game_round()){
                     if($winner == 1){
@@ -88,10 +88,38 @@ trait FuncionesGenerales
                         $new_pick->local_points = 0;
                         $new_pick->visit_points = 7;
                     }
+                    $new_pick->total_points = 7;
                 }
                 $new_pick->save();
             }
         }
+
+    }
+
+    public function update_tie_breaker(Game $game){
+        $dif_victoria = $game->local_points + $game->visit_points ;
+        $sql = "UPDATE picks pic,games ga ";
+		$sql.="SET ";
+		$sql.="pic.dif_points_local=abs(".$game->local_points."-pic.local_points),";
+		$sql.="pic.dif_points_visit= abs(".$game->visit_points ."-pic.visit_points),";
+		$sql.="pic.dif_points_total= abs(abs(". $game->visit_points . "-pic.visit_points)+abs(". $game->local_points."-pic.local_points)),";
+		$sql.="hit_local= CASE WHEN pic.local_points=". $game->local_points . " THEN 1 ELSE 0  END,";
+		$sql.="hit_visit= CASE WHEN pic.visit_points=". $game->visit_points  ." THEN 1 ELSE 0  END,";
+		$sql.="hit_level= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END,";
+		$sql.="dif_points_winner= CASE WHEN (" . $game->local_points . ">". $game->visit_points  . ") THEN abs(pic.local_points - " . $game->local_points . ") ELSE abs(pic.visit_points - " . $game->visit_points  . ")  END,";
+		$sql.="pic.dif_victory=abs(" . $dif_victoria . "-(pic.local_points + pic.visit_points)) ";
+		$sql.="WHERE ga.id = pic.game_id ";
+		$sql.="  AND ga.id=" . $game->id;
+
+        return DB::update($sql);
+    }
+
+    public function qualify_picks(Game $game){
+        $sql = "UPDATE picks pic,games ga ";
+		$sql.="SET ";
+		$sql.="hit_level= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END,";
+		$sql.="WHERE ga.id = pic.game_id ";
+		$sql.="  AND ga.id=" . $game->id;
 
     }
 }
