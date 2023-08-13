@@ -70,13 +70,6 @@ class Games extends Component
         return view('livewire.games.index');
     }
 
-
-    public function resetInputFields(){
-        $this->main_record = new Game();
-
-        $this->resetErrorBag();
-    }
-
     /*+---------------+
     | Guarda Registro |
     +-----------------+
@@ -94,9 +87,12 @@ class Games extends Component
         $this->main_record->save();
         $this->main_record->winner = $this->main_record->local_points > $this->main_record->visit_points ? 1 : 2;
 
+        $this->main_record->save();
 
-         // Califica los aciertos
-        $this->qualify_picks($this->main_record);
+        $this->qualify_picks($this->main_record);        // Califica pronósticos
+
+
+        $this->update_positions( $this->selected_round); // Actualiza tabla de aciertos por jornada (POSITIONS)
 
         // TODO: Si juega CAUDILLOS su partido, si no el último
         if($this->main_record->is_last_game_round()){
@@ -108,31 +104,36 @@ class Games extends Component
 
     }
 
+
+    // Restaura campos
+    public function resetInputFields(){
+        $this->main_record = new Game();
+        $this->resetErrorBag();
+    }
+
+
     /*+------------------------------+
     | Lee Registro Editar o Borar  |
     +------------------------------+
     */
 
     public function edit(Game $record){
-
         $this->main_record  = $record;
         $this->record_id    = $record->id;
         $this->openModal();
 
     }
 
-    /*+---------------+
-      | Recibe Juegos |
-      +---------------+
+    /*+----------------+
+      | Recibe Jornada |
+      +----------------+
     */
 
     public function receive_round(Round $round){
-
         if($round){
             $this->selected_round = $round;
             $this->round_games = $round->games()->orderby('id')->get();
         }
-
     }
 
     private function consulta(){
@@ -150,7 +151,6 @@ class Games extends Component
 		$consulta.="WHERE ga.id = pic.game_id ";
 		$consulta.="  AND ga.id=" . $this->main_record->id;
 
-        dd($consulta);
     }
 
 }

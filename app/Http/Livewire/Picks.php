@@ -24,21 +24,21 @@ class Picks extends Component
 
 
     protected $rules = [
-        'main_record.user_id'       => 'required|exists:users,id',
-        'main_record.game_id'       => 'required|exists:games,id',
-        'main_record.winner'        => 'required',
-        'main_record.total_points'  => 'nullable',
-        'main_record.hit_level'  => 'nullable',
-        'main_record.visit_points'  => 'nullable',
-        'main_record.local_points'  => 'nullable',
-        'main_record.dif_points_winner'  => 'nullable',
+        'main_record.user_id'           => 'required|exists:users,id',
+        'main_record.game_id'           => 'required|exists:games,id',
+        'main_record.winner'            => 'required',
+        'main_record.total_points'      => 'nullable',
+        'main_record.hit'               => 'nullable',
+        'main_record.visit_points'      => 'nullable',
+        'main_record.local_points'      => 'nullable',
+        'main_record.dif_points_winner' => 'nullable',
         'main_record.dif_points_total'  => 'nullable',
         'main_record.dif_points_local'  => 'nullable',
         'main_record.dif_points_visit'  => 'nullable',
-        'main_record.hit_last_game'  => 'nullable',
-        'main_record.hit_local'  => 'nullable',
-        'main_record.hit_visit'  => 'nullable',
-        'main_record.dif_victory'  => 'nullable',
+        'main_record.hit_last_game'     => 'nullable',
+        'main_record.hit_local'         => 'nullable',
+        'main_record.hit_visit'         => 'nullable',
+        'main_record.dif_victory'       => 'nullable',
     ];
 
 
@@ -64,9 +64,14 @@ class Picks extends Component
         $round = new Round();
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
-        if($this->configuration->create_mssing_picks){
-            $this->create_missing_picks_to_user(null,$this->current_round->id);
+
+        // ¿Participante y no es el usuario 1?
+        if(Auth::user()->hasRole('participante') && Auth::user()->id != 1){
+            if($this->configuration->create_mssing_picks){
+                $this->create_missing_picks_to_user($this->current_round->id);
+            }
         }
+
         $this->receive_round($this->current_round );
     }
 
@@ -113,6 +118,13 @@ class Picks extends Component
                     $i++;
                 }
             }
+
+            if(Auth::user()->hasRole('participante') && Auth::user()->id != 1){
+                if(!Auth::user()->has_position_record_round($this->selected_round->id)){
+
+                    $this->create_position_record_round_user($this->selected_round->id);
+                }
+            }
         }
 
     }
@@ -130,7 +142,9 @@ class Picks extends Component
         $i=0;
         foreach($this->gamesids as $game){
             $game_pick = Game::findOrFail($game);
-             if($game_pick->allow_pick()){
+
+
+            if($game_pick->allow_pick()){
                 $pick_user = $game_pick->pick_user();
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
@@ -159,7 +173,11 @@ class Picks extends Component
                 }
             }
             $i++;
+
         }
+        // if(!Auth::user()->has_position_record_round($this->selected_round->id)){
+        //     $this->create_position_record_round_user($this->selected_round->id,Auth::user()->id);
+        // }
 
     }
 
@@ -181,6 +199,7 @@ class Picks extends Component
 
     }
 
+    // Validación interna
     private function validate_data(){
         $this->reset('message','error');
 
@@ -228,9 +247,7 @@ class Picks extends Component
             $revisar[$i][1] = $this->old_picks[$i];
             $i++;
         }
-        dd($revisar);
 
-        dd('Los pronósticos  son','Antes:',$this->old_picks,'Ahora',$this->picks);
     }
 
 }

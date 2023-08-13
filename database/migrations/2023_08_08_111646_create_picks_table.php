@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Game::class)->comment('Partido');
             $table->tinyInteger('winner')->nullable()->default(null)->comment('Ganador');
             $table->integer('total_points')->nullable()->default(null)->comment('Puntos totales');
-            $table->tinyInteger('hit_level')->nullable()->default(null)->comment('Nive acierto: 1=Acertó 0=Falló');
+            $table->tinyInteger('hit')->nullable()->default(null)->comment('Nive acierto: 1=Acertó 0=Falló');
             $table->integer('visit_points')->nullable()->default(null)->comment('Puntos Visita');
             $table->integer('local_points')->nullable()->default(null)->comment('Puntos Local');
             $table->integer('dif_points_winner')->nullable()->default(null)->comment('Diferencia de puntos con ganador');

@@ -62,7 +62,7 @@ class Game extends Model
     /*+------------+
        | Relaciones |
        +------------+
-     */
+    */
 
     public function picks(): HasMany
     {

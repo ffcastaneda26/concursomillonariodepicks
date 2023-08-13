@@ -48,6 +48,11 @@ class Round extends Model
         return $this->hasMany(Game::class);
     }
 
+    public function positions(): HasMany
+    {
+        return $this->hasMany(Position::class);
+    }
+
     /*+-----------------+
       | Funciones Apoyo |
       +-----------------+
@@ -55,9 +60,9 @@ class Round extends Model
 
      public function can_be_delete(){
         if($this->games()->count()) return false;
-
         return true;
     }
+
     // Jornada actual segun las fechas de inicio y final
      public function  read_current_round(){
         $dt = Carbon::now();

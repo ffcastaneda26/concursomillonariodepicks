@@ -1,7 +1,5 @@
 <div class="container">
 
-
-
     <div class="card">
         <div class="card-title">
                 <h1>  {{ $game->visit_team->name }} Vs  {{ $game->local_team->name }}   {{ $game->game_day->format('j-F-y')}} {{$game->game_time->format('h:i A') }} </h1>
