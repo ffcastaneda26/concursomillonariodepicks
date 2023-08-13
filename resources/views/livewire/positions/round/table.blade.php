@@ -5,9 +5,9 @@
         <th>Aciertos</th>
         <th>Aciertos</th>
         <th>¿Parido Desempate?</th>
-        <th>Error Total</th>
-        <th>Criterio 4</th>
-        <th>Error Ganador</th>
-        <th>Criterio 6</th>
+        <th>Diferencia Total</th>
+        <th>Best Shot</th>
+        <th>Diferencia con Ganador</th>
+        <th>Diferencia Victoria</th>
     </tr>
 </thead>

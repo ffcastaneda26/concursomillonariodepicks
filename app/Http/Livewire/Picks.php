@@ -75,13 +75,9 @@ class Picks extends Component
       | Regresa Vista con Resultados    |
       +---------------------------------+
     */
-
     public function render(){
-
         return view('livewire.picks.index');
     }
-
-
 
     /*+---------------+
       | Recibe Juegos |
@@ -89,7 +85,6 @@ class Picks extends Component
     */
 
     public function receive_round(Round $round){
-
         if($round){
             $this->selected_round = $round;
             $this->round_games = $round->games()->orderby('id')->get();
@@ -117,6 +112,7 @@ class Picks extends Component
         }
 
     }
+
     /*+---------------+
     | Guarda Registro |
     +-----------------+

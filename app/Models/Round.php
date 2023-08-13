@@ -53,6 +53,8 @@ class Round extends Model
         return $this->hasMany(Position::class);
     }
 
+
+
     /*+-----------------+
       | Funciones Apoyo |
       +-----------------+

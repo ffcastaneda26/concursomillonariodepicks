@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Positions;
 
 use App\Models\Game;
 use App\Models\Pick;
@@ -10,10 +10,11 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
+use App\Models\Position;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 
-class PositionsByRound extends Component
+class ByRound extends Component
 {
     use AuthorizesRequests;
     use WithPagination;
@@ -43,7 +44,11 @@ class PositionsByRound extends Component
 
     public function render(){
 
+        return view('livewire.positions.round.index', [
+            'records' => $this->selected_round->positions()->orderby('position')->paginate(10),
+        ]);
         return view('livewire.positions.round.index');
+
     }
 
 
@@ -53,7 +58,6 @@ class PositionsByRound extends Component
     */
 
     public function receive_round(Round $round){
-
         if($round){
             $this->selected_round = $round;
         }
