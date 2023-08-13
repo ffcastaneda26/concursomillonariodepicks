@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Game;
 use App\Models\Pick;
-use App\Models\Team;
 use App\Models\Round;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -57,7 +56,6 @@ class Picks extends Component
     public function mount(){
         $this->read_configuration();
         $this->manage_title = 'Pronósticos';
-        $this->view_form    = 'livewire.picks.form';
         $this->view_table   = 'livewire.picks.table';
         $this->view_list    = 'livewire.picks.list';
         $this->rounds = $this->read_rounds();
@@ -118,8 +116,6 @@ class Picks extends Component
                     $i++;
                 }
             }
-
-
         }
 
     }

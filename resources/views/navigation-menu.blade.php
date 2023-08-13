@@ -35,13 +35,12 @@
 
                     @role('participante')
 
-
-
-                        <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('pics')">
+                        <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
                             Pronósticos
                         </x-nav-link>
 
-                        <x-nav-link href="#">
+
+                        <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
                             Posiciones x jornada
                         </x-nav-link>
 

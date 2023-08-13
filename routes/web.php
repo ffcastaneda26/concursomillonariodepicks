@@ -3,6 +3,7 @@
 use App\Http\Livewire\Configurations;
 use App\Http\Livewire\Games;
 use App\Http\Livewire\Picks;
+use App\Http\Livewire\PositionsByRound;
 use App\Http\Livewire\Rounds;
 use App\Http\Livewire\SelectRound;
 use App\Http\Livewire\Teams;
@@ -28,8 +29,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('games',Games::class)->name('games');     // Juegos
-    Route::get('picks',Picks::class)->name('picks');    // Pronósticos
+    Route::get('games',Games::class)->name('games');                                        // Juegos
+    Route::get('picks',Picks::class)->name('picks');                                        // Pronósticos
+    Route::get('positions-by-round',PositionsByRound::class)->name('positions-by-round');    // Pronósticos
+
 
 });
 
