@@ -115,9 +115,11 @@ class Game extends Model
         return (!is_null($this->local_points) || !is_null($this->visit_points)) && ($this->local_points != $this->visit_points);
     }
 
+    // TODO: Cambiar el ID del equipo por algo que esté configurado
     public function is_last_game_round(){
-
-      return $this->round->is_last_game($this->id);
+        return  ($this->local_team_id==1 || $this->visit_team_id == 1)
+            && ($this->local_team_id !=1 || $this->visit_team_id !=1  && $this->round->is_last_game($this->id));
+    //   return $this->round->is_last_game($this->id);
     }
 
     // Ya tiene resultado
