@@ -43,7 +43,7 @@ class PositionsByRound extends Component
 
     public function render(){
 
-        return view('livewire.positionsbyround.positions-by-round');
+        return view('livewire.positions.round.index');
     }
 
 

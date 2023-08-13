@@ -56,8 +56,6 @@ class Picks extends Component
     public function mount(){
         $this->read_configuration();
         $this->manage_title = 'Pronósticos';
-        $this->view_table   = 'livewire.picks.table';
-        $this->view_list    = 'livewire.picks.list';
         $this->rounds = $this->read_rounds();
         $round = new Round();
         $this->current_round = $round->read_current_round();
