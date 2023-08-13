@@ -33,7 +33,7 @@ class Position extends Model
     use HasFactory;
 
     protected $table = 'positions';
-    public $timestamps = false;
+
 
     static $rules = [
         'round_id'          => 'required|exists:rounds,id',

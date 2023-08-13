@@ -21,17 +21,6 @@ class Games extends Component
 
     protected $listeners = ['receive_round'];
 
-    // protected $rules = [
-    //     'main_record.round_id'      => 'required|exists:rounds,id',
-    //     'main_record.local_team_id' => 'required|exists:teams,id',
-    //     'main_record.visit_team_id' => 'required|exists:teams,id',
-    //     'main_record.local_points'  => 'required|numeric',
-    //     'main_record.visit_points'  => 'required|numeric',
-    //     'main_record.game_day'      => 'required',
-    //     'main_record.game_time'     => 'required',
-    //     'main_record.game_date'     => 'required',
-    //     'main_record.winner'        => 'nullable',
-    // ];
 
     protected $rules = [
         'main_record.local_points' => 'required|numeric',
@@ -91,13 +80,17 @@ class Games extends Component
 
         $this->qualify_picks($this->main_record);        // Califica pronósticos
 
-
-        $this->update_positions( $this->selected_round); // Actualiza tabla de aciertos por jornada (POSITIONS)
-
-        // TODO: Si juega CAUDILLOS su partido, si no el último
+        // TODO: Si juega CAUDILLOS su partido, si no el último (Partido de desempate)
         if($this->main_record->is_last_game_round()){
             $this->update_tie_breaker($this->main_record);
         }
+
+        if($this->main_record->is_last_game_round()){
+        }
+
+
+        $this->update_total_hits_positions( $this->selected_round); // Actualiza tabla de aciertos por jornada (POSITIONS)
+        $this->update_positions(); // Asigna posiciones en tabla de POSITIONS
 
         $this->receive_round( $this->main_record->round);
         $this->close_store('Juego');

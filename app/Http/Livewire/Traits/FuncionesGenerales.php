@@ -106,6 +106,37 @@ trait FuncionesGenerales
 
     // Actualia criterios de desempate
     public function update_tie_breaker(Game $game){
+
+        // Inicializa campos de desempate;
+        $sql = "UPDATE positions ";
+		$sql.="SET dif_winner_points=NULL,";
+        $sql.="dif_total_points=NULL,";
+        $sql.="dif_local_points=NULL,";
+        $sql.="dif_visit_points=NULL,";
+        $sql.="dif_victory=NULL,";
+        $sql.="best_shot=NULL,";
+        $sql.="hit_last_game=0,";
+        $sql.="hit_visit=0,";
+        $sql.="hit_local=0,";
+        $sql.="hit_last_game=NULL";
+
+        DB::update($sql);
+
+        $sql = "UPDATE picks ";
+		$sql.="SET dif_points_local=NULL,";
+        $sql.="dif_points_visit=NULL,";
+        $sql.="dif_points_total=NULL,";
+        $sql.="hit_local=0,";
+        $sql.="hit_visit=0,";
+        $sql.="hit=0,";
+        $sql.="hit_last_game=0,";
+        $sql.="dif_points_winner=NULL,";
+        $sql.="dif_victory=NULL ";
+        DB::update($sql);
+
+
+
+
         $dif_victoria = $game->local_points + $game->visit_points ;
         $sql = "UPDATE picks pic,games ga ";
 		$sql.="SET ";
@@ -115,14 +146,22 @@ trait FuncionesGenerales
 		$sql.="hit_local= CASE WHEN pic.local_points=". $game->local_points . " THEN 1 ELSE 0  END,";
 		$sql.="hit_visit= CASE WHEN pic.visit_points=". $game->visit_points  ." THEN 1 ELSE 0  END,";
 		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END,";
+        $sql.="hit_last_game= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END,";
 		$sql.="dif_points_winner= CASE WHEN (" . $game->local_points . ">". $game->visit_points  . ") THEN abs(pic.local_points - " . $game->local_points . ") ELSE abs(pic.visit_points - " . $game->visit_points  . ")  END,";
 		$sql.="pic.dif_victory=abs(" . $dif_victoria . "-(pic.local_points + pic.visit_points)) ";
 		$sql.="WHERE ga.id = pic.game_id ";
 		$sql.="  AND ga.id=" . $game->id;
-
         return DB::update($sql);
     }
 
+    // Actualiza si acertó el último partido
+    public function update_hit_last_game(Game $game){
+        $sql = "UPDATE picks pic,games ga ";
+
+        $sql.="WHERE ga.id = pic.game_id ";
+		$sql.="  AND ga.id=" . $game->id;
+        return DB::update($sql);
+    }
     // // Califica los pronósticos
     public function qualify_picks(Game $game){
         $sql = "UPDATE picks pic,games ga ";
@@ -130,7 +169,6 @@ trait FuncionesGenerales
 		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
 		$sql.="WHERE ga.id = pic.game_id ";
 		$sql.="  AND ga.id=" . $game->id;
-
         DB::update($sql);
     }
 
@@ -148,10 +186,19 @@ trait FuncionesGenerales
     }
 
     // Crea puntos x jornada
-    public function update_positions(Round $round){
+    public function update_total_hits_positions(Round $round){
 
         $hits = User::role('participante')
-                    ->select('users.id as user_id','rounds.id as round_id',DB::raw('SUM(picks.hit) as hits'))
+                    ->select('users.id as user_id','rounds.id as round_id',
+                                DB::raw('SUM(picks.hit) as hits'),
+                                DB::raw('SUM(picks.dif_points_total) as dif_total_points'),
+                                DB::raw('SUM(picks.dif_points_local) as dif_local_points'),
+                                DB::raw('SUM(picks.dif_points_visit) as dif_visit_points'),
+                                DB::raw('SUM(picks.dif_points_winner) as dif_winner_points'),
+                                DB::raw('SUM(picks.dif_victory) as dif_victory'),
+                                DB::raw('SUM(picks.hit_last_game) as hit_last_game'),
+                                DB::raw('SUM(picks.hit_local) as hit_local'),
+                                DB::raw('SUM(picks.hit_visit) as hit_visit'),)
                     ->Join('picks', 'picks.user_id', '=', 'users.id')
                     ->Join('games', 'picks.game_id', '=', 'games.id')
                     ->Join('rounds', 'games.round_id', '=', 'rounds.id')
@@ -162,27 +209,63 @@ trait FuncionesGenerales
                     ->get();
 
         if(!empty($hits)){
-
             foreach($hits as $hit){
-
                 $user = User::findOrFail($hit->user_id);
-
                 if(!$user->has_position_record_round($hit->round_id)){
                    $position_record =  $this->create_position_record_round_user($hit->round_id,$user->id);
                 }
-
-
-
                 $position_record = Position::where('user_id',$user->id)
                                             ->where('round_id',$hit->round_id)
                                             ->first();
 
-
                 $position_record->hits = $hit->hits;
+                $position_record->dif_winner_points = $hit->dif_winner_points;
+                $position_record->dif_total_points  = $hit->dif_total_points;
+                $position_record->dif_local_points  = $hit->dif_local_points;
+                $position_record->dif_visit_points  = $hit->dif_visit_points;
+                $position_record->dif_victory       = $hit->dif_victory;
+                $position_record->hit_last_game     = $hit->hit_last_game;
+                $position_record->hit_visit         = $hit->hit_visit;
+                $position_record->hit_local         = $hit->hit_local;
+                $position_record->best_shot         = $hit->dif_local_points > $hit->dif_visit_points ? $hit->dif_visit_points
+                                                                                                      : $hit->dif_local_points;
                 $position_record->save();
-
-
             }
         }
+
+
+
     }
+
+    // Asigna posición a tabla de POSITIONS
+
+    public function update_positions(){
+        $this->update_positions_to_null();
+
+        $positions = Position::orderbyDesc('hits')
+                            ->orderby('dif_total_points')
+                            ->orderby('best_shot')
+                            ->orderby('dif_winner_points')
+                            ->orderby('dif_local_points')
+                            ->orderbyDesc('hit_last_game')
+                            ->orderby('dif_victory')
+                            ->orderby('created_at')
+                            ->get();
+
+        $i=1;
+        foreach($positions as $position){
+            $position->position = $i++;
+            $position->save();
+        }
+
+    }
+
+    // Actualiza posiciones a NULL
+    public function update_positions_to_null(){
+        $sql = "UPDATE positions ";
+		$sql.="SET position=NULL ";
+        DB::update($sql);
+    }
+
+    // Inicializa campos de desempate
 }

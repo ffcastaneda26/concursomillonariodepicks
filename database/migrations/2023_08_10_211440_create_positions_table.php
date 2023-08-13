@@ -24,10 +24,12 @@ return new class extends Migration
             $table->tinyInteger('dif_local_points')->nullable()->default(null)->comment('Dif Puntos local');
             $table->tinyInteger('dif_visit_points')->nullable()->default(null)->comment('Dif Puntos visitar');
             $table->tinyInteger('dif_victory')->nullable()->default(null)->comment('Dif de la victoria');
+            $table->tinyInteger('best_shot')->nullable()->default(null)->comment('Mejor acierto');
             $table->boolean('hit_last_game')->nullable()->default(0)->comment('¿Acertó ultimo juego?');
             $table->boolean('hit_visit')->nullable()->default(0)->comment('¿Acertó al marcador visitante?');
             $table->boolean('hit_local')->nullable()->default(0)->comment('¿Acertó al marcador local');
             $table->tinyInteger('position')->nullable()->default(null)->comment('Posición en la jornada');
+            $table->timestamps();
         });
     }
 

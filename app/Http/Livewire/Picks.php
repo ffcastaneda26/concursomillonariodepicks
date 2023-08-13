@@ -119,12 +119,7 @@ class Picks extends Component
                 }
             }
 
-            if(Auth::user()->hasRole('participante') && Auth::user()->id != 1){
-                if(!Auth::user()->has_position_record_round($this->selected_round->id)){
 
-                    $this->create_position_record_round_user($this->selected_round->id);
-                }
-            }
         }
 
     }
@@ -175,9 +170,7 @@ class Picks extends Component
             $i++;
 
         }
-        // if(!Auth::user()->has_position_record_round($this->selected_round->id)){
-        //     $this->create_position_record_round_user($this->selected_round->id,Auth::user()->id);
-        // }
+
 
     }
 

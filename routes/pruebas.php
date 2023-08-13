@@ -2,6 +2,7 @@
 
 use App\Models\Game;
 use App\Models\Pick;
+use App\Models\Position;
 use App\Models\User;
 use App\Models\Round;
 use Illuminate\Support\Facades\DB;
@@ -55,4 +56,21 @@ Route::get('sumar_aciertos/{round}',function(Round $round){
     }
 
 
+});
+
+Route::get('posiciones',function(){
+    $positions = Position::orderbyDesc('hits')
+                         ->orderby('created_at')
+                         ->get();
+    echo '<table border="1">';
+    echo '<tr><th>CORREO</th><th>ACIERTOS</th></tr>';
+
+        foreach($positions as $position){
+            echo '<tr>';
+                echo '<td>' . $position->user->name . '</td>';
+                echo '<td>' . $position->hits . '</td>';
+            echo '</tr>';
+        }
+
+    echo '</table>';
 });
