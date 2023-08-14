@@ -1,4 +1,4 @@
-<div>
+<div class="mt-5">
     @livewire('select-round')
     <div class="container-fluid mt-2">
         @if(isset($message))

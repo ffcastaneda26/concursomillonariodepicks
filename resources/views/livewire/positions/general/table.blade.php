@@ -3,10 +3,8 @@
         <th>Pos</th>
         <th>Participante  </th>
         <th>Aciertos</th>
-        <th>¿Partido Desempate?</th>
-        <th>Error Total</th>
-        <th>Best Shot</th>
-        <th>Error Ganador</th>
-        <th>Diferencia Victoria</th>
+        <th>¿Paridos Desempate?</th>
+        <th>Error Acumulado</th>
     </tr>
 </thead>
+

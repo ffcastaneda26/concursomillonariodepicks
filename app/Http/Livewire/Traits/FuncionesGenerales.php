@@ -28,7 +28,7 @@ trait FuncionesGenerales
     public $team_id         = null;
     public $game_instance   = null;
     public $configuration   = null;
-    public $round_positions = null;
+    public $round_positions     = null;
 
 
 
@@ -268,5 +268,23 @@ trait FuncionesGenerales
         DB::update($sql);
     }
 
-    // Inicializa campos de desempate
+    // Lee y calcula para poner la tabla General de Posiciones
+
+    public function read_records_to_general_positions(){
+        $positions = User::role('participante')
+                        ->select('users.first_name as first_name',
+                                'users.last_name as last_name',
+                                DB::raw('SUM(positions.hits) as hits'),
+                                DB::raw('SUM(positions.hit_last_game)    as hit_last_games'),
+                                DB::raw('SUM(positions.dif_total_points) as dif_total_points'))
+            ->Join('positions', 'positions.user_id', '=', 'users.id')
+            ->where('users.active','1')
+            ->groupBy('users.id')
+            ->orderbyDesc('hits')
+            ->orderbyDesc('hit_last_games')
+            ->orderby('dif_total_points')
+            ->paginate(15);
+
+        return $positions;
+    }
 }

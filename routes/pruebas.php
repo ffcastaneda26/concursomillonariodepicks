@@ -75,24 +75,20 @@ Route::get('posiciones',function(){
     echo '</table>';
 });
 
-Route::get('tabla-posiciones/{round}',function(Round $round){
-    dd($round->positions);
 
-    $positions = Position::Wherehas('round',function($query) use ($round){
-                                $query->id = $round;})
-                         ->orderbyDesc('position')
-                         ->get();
+Route::get('tabla-posiciones',function(){
+    $positions = User::role('participante')
+                        ->select('users.first_name',
+                                'users.last_name',
+                                DB::raw('SUM(positions.hits) as hits'),
+                                DB::raw('SUM(positions.hit_last_game)    as hit_last_games'),
+                                DB::raw('SUM(positions.dif_total_points) as dif_total_points'))
+            ->Join('positions', 'positions.user_id', '=', 'users.id')
+            ->where('users.active','1')
+            ->groupBy('users.id')
+            ->orderby('hits')
+            ->orderby('hit_last_games')
+            ->orderby('dif_total_points')
+            ->paginate(15);
     dd($positions);
-
-    echo '<table border="1">';
-    echo '<tr><th>CORREO</th><th>ACIERTOS</th></tr>';
-
-        foreach($positions as $position){
-            echo '<tr>';
-                echo '<td>' . $position->user->name . '</td>';
-                echo '<td>' . $position->hits . '</td>';
-            echo '</tr>';
-        }
-
-    echo '</table>';
 });

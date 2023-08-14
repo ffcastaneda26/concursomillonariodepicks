@@ -27,8 +27,8 @@ class ByRound extends Component
 
     public function mount(){
         $this->manage_title = 'Posiciones x Jornada';
-        $this->view_table   = 'livewire.positionsbyround.table';
-        $this->view_list    = 'livewire.positionsbyround.list';
+        $this->view_table   = null;
+        $this->view_list    = null;
         $this->rounds = $this->read_rounds();
         $round = new Round();
         $this->current_round = $round->read_current_round();

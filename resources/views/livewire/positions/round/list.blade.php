@@ -2,7 +2,6 @@
     <td>{{ $position->position }}</td>
     <td>{{ $position->user->name }}</td>
     <td align="center">{{ $position->hits }}</td>
-    <td align="center">{{ $position->hit_last_game }}</td>
 
     <td align="center"><img src="{{ $position->hit_last_game  ? asset('images/afirmativo.png') : asset('images/negativo.png') }}"
         alt="X" width="17" height="17">

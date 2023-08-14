@@ -1,5 +1,5 @@
 <div>
-   <div class="container">
+   <div class="container mt-2">
 
     <div class="card">
         <p class="text-center">JORNADAS</p>

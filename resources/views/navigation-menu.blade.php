@@ -35,22 +35,30 @@
 
                     @role('participante')
 
-                        <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
-                            Pronósticos
-                        </x-nav-link>
+                            <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
+                                Juegos
+                            </x-nav-link>
+
+                            <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
+                                Pronósticos
+                            </x-nav-link>
 
 
-                        <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
-                            Posiciones x jornada
-                        </x-nav-link>
+                            <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
+                                Posiciones Jornada
+                            </x-nav-link>
 
-                        <x-nav-link href="#">
-                            Posiciones General
-                        </x-nav-link>
+                            <x-nav-link href="{{ route('positions-general') }}" :active="request()->routeIs('positions-general')">
+                                Posiciones General
+                            </x-nav-link>
 
-                        <x-nav-link href="#">
-                           Resultados x Jornada
-                        </x-nav-link>
+                            <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
+                            Resultados Jornada
+                            </x-nav-link>
+
+                            <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
+                                Tabla Pronósticos
+                            </x-nav-link>
 
 
                     @endrole
