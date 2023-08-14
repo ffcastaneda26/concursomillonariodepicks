@@ -37,8 +37,8 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('picks',Picks::class)->name('picks');                                // Pronósticos
     Route::get('positions-by-round',ByRound::class)->name('positions-by-round');    // Posiciones x Jornada
     Route::get('positions-general',General::class)->name('positions-general');      // Posiciones General
-    Route::get('results-by-round',Results::class)->name('results-by-round');        // Resultados x Jornada
-    Route::get('picks-review',PicksReview::class)->name('picks-review');            // Tabla de pronósticos
+    // Route::get('results-by-round',Results::class)->name('results-by-round');        // Resultados x Jornada
+   // Route::get('picks-review',PicksReview::class)->name('picks-review');            // Tabla de pronósticos
 });
 
 

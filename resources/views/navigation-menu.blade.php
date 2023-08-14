@@ -52,13 +52,18 @@
                                 Posiciones General
                             </x-nav-link>
 
-                            <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
-                            Resultados Jornada
-                            </x-nav-link>
+                            @if (Route::has('results-by-round'))
+                                <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
+                                    Resultados Jornada
+                                </x-nav-link>
+                            @endif
 
-                            <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
-                                Tabla Pronósticos
-                            </x-nav-link>
+                            @if (Route::has('picks-review'))
+                                <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
+                                    Resultados Jornada
+                                </x-nav-link>
+                            @endif
+
 
 
                     @endrole
