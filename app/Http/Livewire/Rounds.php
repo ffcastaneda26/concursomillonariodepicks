@@ -15,7 +15,7 @@ class Rounds extends Component
     {
 
         return view('livewire.rounds.index', [
-            'records' => Round::paginate(5),
+            'records' => Round::paginate(15),
         ]);
     }
 }

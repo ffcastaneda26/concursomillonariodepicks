@@ -28,9 +28,8 @@ trait FuncionesGenerales
     public $team_id         = null;
     public $game_instance   = null;
     public $configuration   = null;
-    public $round_positions     = null;
-
-
+    public $round_positions = null;
+    public $round_picks     = null;
 
 
     // Lee configuración
