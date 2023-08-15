@@ -33,8 +33,7 @@
                                 </table>
 
 
-
-                                <button wire:click="store" class="btn btn-primary float-right">PROCESAR</button>
+                                <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
                             </div>
                         </div>
                     </div>

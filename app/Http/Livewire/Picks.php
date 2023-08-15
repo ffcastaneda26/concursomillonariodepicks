@@ -158,7 +158,7 @@ class Picks extends Component
                 }
             }
             $i++;
-
+            $this->show_alert('success','Pronósticos Guardados Satisfactoriamente');
         }
 
 
