@@ -3,7 +3,7 @@
         <th>Pos</th>
         <th>Participante  </th>
         <th>Aciertos</th>
-        <th>¿Paridos Desempate?</th>
+        <th>¿Paritidos Desempate?</th>
         <th>Error Acumulado</th>
     </tr>
 </thead>
