@@ -6,12 +6,10 @@ use App\Http\Livewire\Picks;
 use App\Http\Livewire\PicksReview;
 use App\Http\Livewire\Positions\ByRound;
 use App\Http\Livewire\Positions\General;
-use App\Http\Livewire\PositionsByRound;
 use App\Http\Livewire\Results;
 use App\Http\Livewire\Rounds;
 use App\Http\Livewire\SelectRound;
 use App\Http\Livewire\Teams;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
