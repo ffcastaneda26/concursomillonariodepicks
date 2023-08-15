@@ -20,7 +20,9 @@
             @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                            Dashboard
+                        </a>
                     @else
                         <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">INGRESAR</a>
 
@@ -32,16 +34,23 @@
             @endif
 
             <div class="grid h-screen place-items-center">
-                @if (Route::has('login'))
-
-                <div class="flex items-center">
-                        <a href="{{ route('login') }}" class="focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                            <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
-                        </a>
-                </div>
+                @auth
+                    <a href="{{ url('/dashboard') }}">
+                        <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
+                    </a>
                 @else
-                    <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
-                @endif
+                    @if (Route::has('login'))
+                        <div class="flex items-center">
+                                <a href="{{ route('login') }}" class="focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                                    <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
+                                </a>
+                        </div>
+                    @else
+                        <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
+                    @endif
+                @endauth
+
+
 
 
             </div>

@@ -4,12 +4,12 @@
         @if($pick_user && $game->has_result())
 
             @if($acerto)
-                <img src="{{ asset('images/afirmativo.png') }}" alt="X" width="17" height="17">
+                <img src="{{ asset('images/afirmativo.png') }}" width="25" height="25">
              @else
-                <img src="{{ asset('images/negativo.png') }}" alt="NO" width="17" height="17">
+                <img src="{{ asset('images/negativo.png') }}"   width="25" height="25">
             @endif
         @else
-            <img src="{{ asset('images/balon.png') }}" alt="X" width="17" height="17">
+            <img src="{{ asset('images/balon.png') }}" alt="X" width="25" height="25">
         @endif
     </td>
 
