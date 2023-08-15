@@ -28,7 +28,7 @@
                          </x-nav-link>
 
                          <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
-                            Juegos
+                            Partidos
                         </x-nav-link>
 
                     @endrole
@@ -36,31 +36,30 @@
                     @role('participante')
 
                             <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
-                                Juegos
+                                Partidos
                             </x-nav-link>
 
                             <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
                                 Pronósticos
                             </x-nav-link>
 
-
+                            @if (Route::has('results-by-round'))
+                                <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
+                                    Tabla de Pronósticos
+                                </x-nav-link>
+                            @endif
                             <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
-                                Posiciones Jornada
+                                Posiciones por Jornada
                             </x-nav-link>
 
                             <x-nav-link href="{{ route('positions-general') }}" :active="request()->routeIs('positions-general')">
-                                Posiciones General
+                                Posiciones Generales
                             </x-nav-link>
 
-                            @if (Route::has('results-by-round'))
-                                <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
-                                    Resultados Jornada
-                                </x-nav-link>
-                            @endif
 
                             @if (Route::has('picks-review'))
                                 <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
-                                    Resultados Jornada
+                                    Resultados por Jornada
                                 </x-nav-link>
                             @endif
 
