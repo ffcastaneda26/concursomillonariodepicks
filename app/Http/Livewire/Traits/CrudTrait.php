@@ -21,6 +21,10 @@ trait CrudTrait {
     public $allow_=true;
     public $back_route = null;
     public $show_back = false;
+    public $predeterminado = false;
+    public $entidades       = null;
+    Public $municipios      = null;
+
 
     public $message;
     private $pagination = 15; //paginación de tabla

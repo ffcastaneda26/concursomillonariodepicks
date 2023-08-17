@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Livewire\Configurations;
+use App\Http\Livewire\Entidades;
 use App\Http\Livewire\Games;
+use App\Http\Livewire\Municipios;
 use App\Http\Livewire\Picks;
 use App\Http\Livewire\PicksReview;
 use App\Http\Livewire\Positions\ByRound;
@@ -48,9 +50,12 @@ Route::get('/home', function() {
 
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin'])->group(function () {
-    Route::get('configurations',Configurations::class)->name('configurations');
-    Route::get('teams',Teams::class)->name('teams');     // Equipos
-    Route::get('rounds',Rounds::class)->name('rounds');  // Jornadas
+    Route::get('configurations',Configurations::class)->name('configurations'); // Configuración General
+    Route::get('entidades',Entidades::class)->name('entidades');        // Entidades Federativas
+    Route::get('municipios',Municipios::class)->name('municipios');     // municipios Federativas
+
+    Route::get('teams',Teams::class)->name('teams');                    // Equipos
+    Route::get('rounds',Rounds::class)->name('rounds');                 // Jornadas
 
 });
 
