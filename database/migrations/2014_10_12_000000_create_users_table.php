@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('gender',['Hombre','Mujer'])->default('Hombre')->comment('Sexo');
             $table->date('birthday')->nullable()->default(null)->comment('Fecha Nacimiento');
             $table->boolean('adult')->default(0)->comment('¿Es Adulto?');
-            $table->boolean('accept_terms_service')->default(0)->comment('¿Aceptó Términos y Condiciones?');
+            $table->boolean('accept_terms')->default(0)->comment('¿Aceptó Términos y Condiciones?');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
