@@ -6,104 +6,122 @@
 
         <x-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-            <div class="row align-items-start">
+        {{-- <div class="flex justify-center items-center h-screen"> --}}
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
+                {{-- Nombre y apellido --}}
 
-                <div>
-                    <x-label for="first_name" value="{{ __('First Name') }}" />
-                    <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="name" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nombre</label>
+                        <input type="text" name="first_name" :value="old('first_name')" class="mt-1 p-2 w-full border rounded-md" required autofocus autocomplete="name" maxlength="50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Apellido</label>
+                        <input type="text" name="last_name" :value="old('last_name')" class="mt-1 p-2 w-full border rounded-md" required maxlength="50">
+                    </div>
                 </div>
 
-                <div class="mt-2">
-                    <x-label for="last_name" value="{{ __('Last Name') }}" />
-                    <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="name" />
+                {{-- Correo y Teléfono --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Correo</label>
+                        <input type="email"
+                                name="email"
+                                :value="old('email')"
+                                class="mt-1 p-2 w-full border rounded-md"
+                                       required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Teléfono (Números)</label>
+                        <input type="text"
+                                name="phone"
+                                :value="old('phone')"
+                                class="mt-1 p-2 w-full border rounded-md"
+                                required
+                                maxlength="10"
+                                minlength="10"
+                                pattern="[0-9]+">
+                    </div>
                 </div>
 
-                <div class="mt-2">
-                    <x-label for="email" value="{{ __('Email') }}" />
-                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                {{-- Fecha de Nacimiento y Curp --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fecha Nacimiento</label>
+                           <input type="date"
+                                name="birthday"
+                                max="{{Carbon\Carbon::now()->subYear(18)->format('Y-m-d')}}"
+                                :value="old('birthday')"
+                                class="mt-1 p-2 w-full border rounded-md"
+                                required
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Curp</label>
+                        <input type="text"
+                                name="curp"
+                                :value="old('curp')"
+                                class="mt-1 p-2 w-full border rounded-md"
+                                required
+                                maxlength="18"
+                                minlength="18"
+                                pattern="^[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]$"
+                        >
+                    </div>
                 </div>
 
-                <div class="mt-2">
-                    <x-label for="phone" value="Teléfono" />
-                    <x-input id="phone"
-                            class="block mt-1 w-full"
-                            type="text"
-                            name="phone"
-                            :value="old('phone')"
-                            required
-                            maxlength="10"
-                            minlength="10" />
+                {{-- Contraseña y confirmación --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+                        <input type="password"  name="password" class="mt-1 p-2 w-full border rounded-md" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Confirme Contraseña</label>
+                        <input type="password"  name="password_confirmation" class="mt-1 p-2 w-full border rounded-md" required>
+                    </div>
                 </div>
 
+                <div class="row align-items-start">
 
 
-            <div class="mt-2">
-                    <label class="control-label">Fecha Nacimiento<span style="color:red;">*</span></label>
-                    <input type="date"
-                            class="form-control"
-                            name="birthday"
-                            max="{{Carbon\Carbon::now()->subYear(18)->format('Y-m-d')}}"
-                            :value="old('birthday')"
-                            required>
-            </div>
+                    @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                        <div class="mt-4">
+                            <x-label for="terms">
+                                <div class="flex items-center">
+                                    <x-checkbox name="terms" id="terms" required />
 
-            <div>
-                <x-label for="curp" value="{{ __('Curp') }}" />
-                <x-input id="curp"
-                        class="block mt-1 w-full"
-                        type="text"
-                        name="curp" :value="old('curp')"
-                        maxlength="18"
-                        minlength="18"
-                        required />
-            </div>
-
-            <div class="mt-2">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-2">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ml-2">
-                                Acepto los <a target="_blank" href="{{ route('terms.show') }} "
+                                    <div class="ml-2">
+                                        Acepto los <a target="_blank" href="{{ route('terms.show') }} "
+                                                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                                                        {{ __('Terms of Service')  }}
+                                                    </a>
+                                        y <a target="_blank" href="{{ route('policy.show') }} "
                                                 class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                                {{ __('Terms of Service')  }}
+                                                {{ __('Privacy Policy')  }}
                                             </a>
-                                y <a target="_blank" href="{{ route('policy.show') }} "
-                                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                        {{ __('Privacy Policy')  }}
-                                    </a>
-                                {{-- {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Privacy Policy').'</a>',
-                                ]) !!} --}}
-                            </div>
+                                    </div>
+                                </div>
+                            </x-label>
                         </div>
-                    </x-label>
+                    @endif
                 </div>
-            @endif
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
+                <div class="flex items-center justify-end mt-4">
+                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
+                        {{ __('Already registered?') }}
+                    </a>
 
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
+                    <x-button class="ml-4">
+                        {{ __('Register') }}
+                    </x-button>
+                </div>
+            </form>
+        {{-- </div> --}}
+
     </x-authentication-card>
 </x-guest-layout>
