@@ -8,28 +8,64 @@
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
+            <div class="row align-items-start">
+
+                <div>
+                    <x-label for="first_name" value="{{ __('First Name') }}" />
+                    <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="name" />
+                </div>
+
+                <div class="mt-2">
+                    <x-label for="last_name" value="{{ __('Last Name') }}" />
+                    <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="name" />
+                </div>
+
+                <div class="mt-2">
+                    <x-label for="email" value="{{ __('Email') }}" />
+                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                </div>
+
+                <div class="mt-2">
+                    <x-label for="phone" value="Teléfono" />
+                    <x-input id="phone"
+                            class="block mt-1 w-full"
+                            type="text"
+                            name="phone"
+                            :value="old('phone')"
+                            required
+                            maxlength="10"
+                            minlength="10" />
+                </div>
+
+
+
+            <div class="mt-2">
+                    <label class="control-label">Fecha Nacimiento<span style="color:red;">*</span></label>
+                    <input type="date"
+                            class="form-control"
+                            name="birthday"
+                            max="{{Carbon\Carbon::now()->subYear(18)->format('Y-m-d')}}"
+                            :value="old('birthday')"
+                            required>
+            </div>
 
             <div>
-                <x-label for="first_name" value="{{ __('First Name') }}" />
-                <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="name" />
+                <x-label for="curp" value="{{ __('Curp') }}" />
+                <x-input id="curp"
+                        class="block mt-1 w-full"
+                        type="text"
+                        name="curp" :value="old('curp')"
+                        maxlength="18"
+                        minlength="18"
+                        required />
             </div>
 
-            <div class="mt-4">
-                <x-label for="last_name" value="{{ __('Last Name') }}" />
-                <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
+            <div class="mt-2">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             </div>
 
-            <div class="mt-4">
+            <div class="mt-2">
                 <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
