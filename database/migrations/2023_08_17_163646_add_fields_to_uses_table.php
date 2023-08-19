@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('change_password')->default(0)->after('linkedin')->comment('¿Necesita Cambiar Clave?');
-            $table->string('curp',18)->nullable()->default(null)->after('birthday')->comment('Curp');
+            $table->string('curp',18)->unique()->nullable()->default(null)->after('birthday')->comment('Curp');
             $table->boolean('authorized')->default(0)->after('adult')->comment('¿Autorizado (Se verificaron credenciales)?');
             $table->foreignIdFor(Entidad::class)->after('change_password')->default(6)->comment('Entidad Federativa');
             $table->foreignIdFor(Municipio::class)->after('entidad_id')->default(164)->comment('Municipio');

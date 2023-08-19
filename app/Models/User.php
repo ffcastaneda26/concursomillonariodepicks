@@ -50,21 +50,27 @@ class User extends Authenticatable
     ];
 
 
-    public function setEmailAttribute($value)
+    // public function setEmailAttribute($value)
+    // {
+    //     $this->attributes['email'] =  strtolower($value);
+    // }
+
+    protected function firstName(): Attribute
     {
-        $this->attributes['email'] =  strtolower($value);
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => ucwords(strtolower($value)),
+        );
     }
 
-    public function setFirstNameAttribute($value)
-    {
-        $this->attributes['first_name'] =  ucwords($value);
-    }
 
-    public function setLastNameAttribute($value)
+    protected function lastName(): Attribute
     {
-        $this->attributes['last_name'] =  ucwords($value);
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => ucwords(strtolower($value)),
+        );
     }
-
 
     protected function name(): Attribute
     {
@@ -74,6 +80,7 @@ class User extends Authenticatable
     }
 
 
+
     protected function fullName(): Attribute
     {
         return Attribute::make(
@@ -81,6 +88,13 @@ class User extends Authenticatable
         );
     }
 
+
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => strtolower($value),
+        );
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -101,7 +115,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'birthday'  => 'datetime:Y-m-d',
+        'birthday'          => 'datetime:Y-m-d',
     ];
 
     /**

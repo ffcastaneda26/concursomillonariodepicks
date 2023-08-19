@@ -73,6 +73,41 @@
                     </div>
                 </div>
 
+                {{-- Hombre o Mujer --}}
+                <div class="mt-2">
+                    <div class="flex justify-between">
+                        <!--Botón para Hombre-->
+                        <div class="inline-block ml-5">
+                          <input
+                            class="relative float-left -ml-[1.5rem] mr-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-neutral-300 before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:border-neutral-600 dark:checked:border-primary dark:checked:after:border-primary dark:checked:after:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:border-primary dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                            type="radio"
+                            name="gender"
+                            id="hombre"
+                            value="Hombre"
+                            required/>
+                            <label class=" ml-2 mt-px inline-block pl-[0.15rem] hover:cursor-pointer" for="hombre">
+                                <img src="{{ asset('images/hombre.png') }}" alt="Hombre" width="25" height="25">
+                            </label
+                          >
+                        </div>
+
+                        <!--Botón para Mujer -->
+                        <div class="inline-block ml-5">
+                            <input
+                                class="relative float-right h-5 w-5 appearance-none rounded-full border-2 border-solid checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:border-neutral-600 dark:checked:border-primary dark:checked:after:border-primary dark:checked:after:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:border-primary dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+                                type="radio"
+                                name="gender"
+                                id="mujer"
+                                value="Mujer"
+                                required/>
+                            <label class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"for="mujer">
+                                <img src="{{ asset('images/mujer.png') }}" alt="Mujer" width="25" height="25">
+                            </label>
+
+                        </div>
+                      </div>
+                </div>
+
                 {{-- Contraseña y confirmación --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
@@ -86,9 +121,24 @@
                     </div>
                 </div>
 
+
+                {{-- Aceptar ser mayor de edad --}}
                 <div class="row align-items-start">
+                        <div class="mt-4">
+                            <x-label for="adult">
+                                <div class="flex items-center">
+                                    <x-checkbox name="adult" id="adult" required />
+                                    <div class="ml-2">
+                                        <label for="" class="underline text-sm text-red-600 dark:text-gray-400 hover:text-red-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:focus:ring-offset-gray-800">
+                                            ACEPTO SER MAYOR DE EDAD
+                                        </label>
+                                    </div>
+                            </x-label>
+                        </div>
+                </div>
 
-
+                {{-- Aceptar términos y condiciones como la política de privacidad --}}
+                <div class="row align-items-start">
                     @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                         <div class="mt-4">
                             <x-label for="terms">
