@@ -41,39 +41,51 @@
 
                     @endrole
 
-                    @role('participante')
-
-                            <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
-                                Partidos
+                    @auth
+                        @if(!Auth::user()->paid)
+                            <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                                <script async   src="https://js.stripe.com/v3/buy-button.js"> </script>
+                                <stripe-buy-button
+                                    buy-button-id="buy_btn_1NhTzSG2UqMVjdJhbchOp1dP"
+                                    publishable-key="pk_test_51NhHU2G2UqMVjdJhSv2kF1wE7Yc7hJQG93HQsjtGq9QqFaoQiQMYrK7OM5G1NwK1f5PuESMsTO6PspW1rXpwqg5100xgSNl6RB"
+                                >
+                                </stripe-buy-button>
                             </x-nav-link>
+                        @else
+                            @role('participante')
 
-                            <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
-                                Pronósticos
-                            </x-nav-link>
-
-                            @if (Route::has('results-by-round'))
-                                <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
-                                    Tabla de Pronósticos
+                                <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
+                                    Partidos
                                 </x-nav-link>
-                            @endif
-                            <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
-                                Posiciones por Jornada
-                            </x-nav-link>
 
-                            <x-nav-link href="{{ route('positions-general') }}" :active="request()->routeIs('positions-general')">
-                                Posiciones Generales
-                            </x-nav-link>
-
-
-                            @if (Route::has('picks-review'))
-                                <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
-                                    Resultados por Jornada
+                                <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
+                                    Pronósticos
                                 </x-nav-link>
-                            @endif
+
+                                @if (Route::has('results-by-round'))
+                                    <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
+                                        Tabla de Pronósticos
+                                    </x-nav-link>
+                                @endif
+                                <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
+                                    Posiciones por Jornada
+                                </x-nav-link>
+
+                                <x-nav-link href="{{ route('positions-general') }}" :active="request()->routeIs('positions-general')">
+                                    Posiciones Generales
+                                </x-nav-link>
 
 
+                                @if (Route::has('picks-review'))
+                                    <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
+                                        Resultados por Jornada
+                                    </x-nav-link>
+                                @endif
 
-                    @endrole
+                        @endrole
+
+                        @endif
+                    @endauth
 
 
                 </div>

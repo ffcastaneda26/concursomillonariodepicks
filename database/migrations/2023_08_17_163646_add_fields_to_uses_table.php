@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('codpos',5)->nullable()->default(null)->after('municipio_id')->comment('Código Postal');
             $table->string('ine_anverso', 2048)->nullable()->default(null)->after('codpos')->comment('Credencial INE Anverso');
             $table->string('ine_reverso', 2048)->nullable()->default(null)->after('ine_anverso')->comment('Credencial INE Reverso');
+            $table->string('stripe_session')->unique()->nullable()->default(null)->after('authorized')->comment('Id Sesión de stripe');
+            $table->boolean('paid')->default(0)->after('stripe_session')->comment('¿Ya pagó?');
         });
     }
 
@@ -39,6 +41,8 @@ return new class extends Migration
             $table->dropColumn('codpos');
             $table->dropColumn('ine_anverso');
             $table->dropColumn('ine_reverso');
+            $table->dropColumn('stripe_session');
+            $table->dropColumn('paid');
         });
     }
 };

@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Livewire\Configurations;
-use App\Http\Livewire\Entidades;
 use App\Http\Livewire\Games;
-use App\Http\Livewire\Municipios;
 use App\Http\Livewire\Picks;
+use App\Http\Livewire\Teams;
+use App\Http\Livewire\Rounds;
+use App\Http\Livewire\Results;
+use App\Http\Livewire\Entidades;
+use App\Http\Livewire\Municipios;
 use App\Http\Livewire\PicksReview;
+use App\Http\Livewire\SelectRound;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\Configurations;
+use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Positions\ByRound;
 use App\Http\Livewire\Positions\General;
-use App\Http\Livewire\Results;
-use App\Http\Livewire\Rounds;
-use App\Http\Livewire\SelectRound;
-use App\Http\Livewire\Teams;
-use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
@@ -29,6 +30,16 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('positions-general',General::class)->name('positions-general');      // Posiciones General
     Route::get('results-by-round',Results::class)->name('results-by-round');        // Resultados x Jornada
    // Route::get('picks-review',PicksReview::class)->name('picks-review');            // Tabla de pronósticos
+
+   Route::get('/suscribe/{sesion_id}',function($sesion_id){                         // Registrar el pago
+        if (Auth::check() && $sesion_id) {
+            $user= Auth::user();
+            $user->stripe_session = $sesion_id;
+            $user->paid = 1;
+            $user->save();
+        }
+        return redirect()->route('dashboard');
+    });
 });
 
 
@@ -50,3 +61,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin']
 });
 
 Route::get('current_round',SelectRound::class);
+
+
+
+

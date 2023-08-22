@@ -54,6 +54,7 @@ class CreateNewUser implements CreatesNewUsers
             $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
         };
 
+        $stripeCustomer = $user->createAsStripeCustomer();
         return $user;
     }
 }
