@@ -56,7 +56,6 @@ class DataUsers extends Component
         $this->view_table   = 'livewire.games.table';
         $this->view_list    = 'livewire.games.list';
         $this->allow_create = true;
-
         $this->lee_entidades();
         if(Auth::user()->entidad_id){
             $this->entidad_id = Auth::user()->entidad_id;
@@ -69,7 +68,6 @@ class DataUsers extends Component
         if(Auth::user()->codpos){
             $this->codpos = Auth::user()->codpos;
         }
-
         $this->lee_entidad();
     }
 
@@ -79,6 +77,18 @@ class DataUsers extends Component
     */
 
     public function render(){
+        if(Auth::user()->entidad_id){
+            $this->entidad_id = Auth::user()->entidad_id;
+        }
+
+        if(Auth::user()->municipio_id){
+            $this->municipio_id = Auth::user()->municipio_id;
+        }
+
+        if(Auth::user()->codpos){
+            $this->codpos = Auth::user()->codpos;
+        }
+
         return view('livewire.datausers.index');
     }
 
@@ -149,6 +159,7 @@ class DataUsers extends Component
             Auth::user()->municipio_id = $this->municipio_id;
             Auth::user()->codpos = $this->codpos;
             Auth::user()->save();
+            Auth::user()->refresh();
             $message = 'Datos Complementarios Actualizados';
             $this->show_alert('success',$message);
             $this->closeModal();
