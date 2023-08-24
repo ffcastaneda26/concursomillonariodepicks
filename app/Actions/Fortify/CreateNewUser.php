@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
@@ -22,6 +23,8 @@ class CreateNewUser implements CreatesNewUsers
     {
         $max_birtdhay = Carbon::now()->subYear(18);
 
+
+
         Validator::make($input, [
             'first_name'=> ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -34,7 +37,15 @@ class CreateNewUser implements CreatesNewUsers
             'adult'     =>  ['accepted', 'required'],
         ])->validate();
 
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify',[
+            'secret'    => '6LeMws4nAAAAAPUAbE2g24I9qfuAdvsakfcz_5E9',
+            'response'  =>$input['g-recaptcha-response']
+        ])->object();
 
+
+        if(!$response->success && $response->score >= 0.7){
+           return false;
+        }
         $user= User::create([
             'first_name'    => $input['first_name'],
             'last_name'     => $input['last_name'],

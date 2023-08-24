@@ -204,7 +204,10 @@ return [
         'ine_anverso'   => 'Frontal',
         'ine_reverso'   =>  'Reverso',
         'codpos'        => 'Código Postal',
-        'confirmar'     => 'Este campo '
+        'confirmar'     => 'Este campo ',
+        'birthday'      => 'Fecha de Nacimiento',
+        'terms'         => 'Debe Aceptar los Términos y Condiciones',
+        'adult'         => 'Debe aceptar que es mayor de edad'
    	]
 
 ];

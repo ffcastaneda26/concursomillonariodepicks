@@ -4,21 +4,25 @@
             <x-authentication-card-logo />
         </x-slot>
 
-        <x-validation-errors class="mb-4" />
+        {{-- <x-validation-errors class="mb-4" /> --}}
 
-        {{-- <div class="flex justify-center items-center h-screen"> --}}
-            <form method="POST" action="{{ route('register') }}">
+        <div class="flex justify-center items-center h-screen">
+            <form id="demo-form" method="POST" action="{{ route('register') }}">
                 @csrf
                 {{-- Nombre y apellido --}}
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Nombre(s)</label>
-                        <input type="text" name="first_name" :value="old('first_name')" class="mt-1 p-2 w-full border rounded-md" required autofocus autocomplete="name" maxlength="50">
+                        <input type="text" name="first_name" :value="old('first_name')"
+                                class="mt-1 p-2 w-full border rounded-md"
+                                required autofocus autocomplete="name" maxlength="50">
+                        @error('first_name')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Apellido(s)</label>
                         <input type="text" name="last_name" :value="old('last_name')" class="mt-1 p-2 w-full border rounded-md" required maxlength="50">
+                        @error('last_name')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
                     </div>
                 </div>
 
@@ -30,7 +34,9 @@
                                 name="email"
                                 :value="old('email')"
                                 class="mt-1 p-2 w-full border rounded-md"
-                                       required>
+                                required>
+                        @error('email')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                     </div>
 
                     <div>
@@ -43,6 +49,8 @@
                                 maxlength="10"
                                 minlength="10"
                                 pattern="[0-9]+">
+                        @error('phone')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                     </div>
                 </div>
 
@@ -57,6 +65,8 @@
                                 class="mt-1 p-2 w-full border rounded-md"
                                 required
                         >
+                        @error('birthday')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                     </div>
 
                     <div>
@@ -70,6 +80,8 @@
                                 minlength="18"
                                 pattern="^[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]$"
                         >
+                        @error('curp')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                     </div>
                 </div>
 
@@ -89,6 +101,8 @@
                                 <img src="{{ asset('images/hombre.png') }}" alt="Hombre" width="25" height="25">
                             </label
                           >
+                        @error('gender')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                         </div>
 
                         <!--Botón para Mujer -->
@@ -105,7 +119,7 @@
                             </label>
 
                         </div>
-                      </div>
+                    </div>
                 </div>
 
                 {{-- Contraseña y confirmación --}}
@@ -113,11 +127,14 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Contraseña</label>
                         <input type="password"  name="password" class="mt-1 p-2 w-full border rounded-md" required>
+                        @error('password')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Confirme Contraseña</label>
                         <input type="password"  name="password_confirmation" class="mt-1 p-2 w-full border rounded-md" required>
+                        @error('password_confirmation')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                     </div>
                 </div>
 
@@ -135,6 +152,7 @@
                                     </div>
                             </x-label>
                         </div>
+                        @error('adult')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
                 </div>
 
                 {{-- Aceptar términos y condiciones como la política de privacidad --}}
@@ -158,6 +176,8 @@
                                 </div>
                             </x-label>
                         </div>
+                        @error('terms')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+
                     @endif
                 </div>
 
@@ -166,12 +186,22 @@
                         {{ __('Already registered?') }}
                     </a>
 
-                    <x-button class="ml-4">
+                    <x-button class="ml-4 g-recaptcha"
+                                data-sitekey="6LeMws4nAAAAANplVRimJKeXbC4snnd4R-Es262a"
+                                data-callback='onSubmit'
+                                data-action='submit'>
                         {{ __('Register') }}
                     </x-button>
                 </div>
             </form>
-        {{-- </div> --}}
+        </div>
 
     </x-authentication-card>
+    {{-- Recapcha solo en este formulario --}}
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script>
+            function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+            }
+        </script>
 </x-guest-layout>
