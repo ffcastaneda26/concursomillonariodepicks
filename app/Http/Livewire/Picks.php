@@ -54,6 +54,9 @@ class Picks extends Component
 
 
     public function mount(){
+        if(!Auth::user()->paid){
+            return redirect()->route('dashboard');
+        }
         $this->read_configuration();
         $this->manage_title = 'Pronósticos';
         $this->rounds = $this->read_rounds();

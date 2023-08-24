@@ -201,6 +201,10 @@ return [
         'visit_team_id' => 'Equipo Visita',
         'local_points' => 'Puntos Local',
         'visit_points' => 'Puntos Local',
+        'ine_anverso'   => 'Frontal',
+        'ine_reverso'   =>  'Reverso',
+        'codpos'        => 'Código Postal',
+        'confirmar'     => 'Este campo '
    	]
 
 ];

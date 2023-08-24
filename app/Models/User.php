@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use function Illuminate\Events\queueable;
-
+use function PHPUnit\Framework\isNull;
 
 class User extends Authenticatable
 {
@@ -179,9 +179,16 @@ class User extends Authenticatable
 
     }
 
-    // ¿Tiene datos complementarios?
+    // ¿Tiene datos complementarios?)
     public function has_suplementary_data(){
-        return $this->entidad_id || $this->municipio_id || $this->codpos || $this->ine_anverso || $this->ine_reverso;
+
+
+       return  !is_null($this->entidad_id);
+
+            // || !is_null($this->municipio_id)
+            // || !is_null($this->codpos)
+            // || !is_null($this->ine_anverso)
+            // || !is_null($this->ine_reverso);
     }
 
     public function has_all_suplementary_data(){

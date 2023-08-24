@@ -34,7 +34,7 @@ class Municipio extends Model
      */
 
     public function can_be_delete(){
-        return true;
+        return false;
     }
 
 

@@ -134,9 +134,6 @@ trait FuncionesGenerales
         $sql.="dif_victory=NULL ";
         DB::update($sql);
 
-
-
-
         $dif_victoria = $game->local_points + $game->visit_points ;
         $sql = "UPDATE picks pic,games ga ";
 		$sql.="SET ";

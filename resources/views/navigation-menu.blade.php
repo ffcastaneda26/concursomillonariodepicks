@@ -42,7 +42,7 @@
                     @endrole
 
                     @auth
-                        @if(!Auth::user()->paid)
+                        @if(!Auth::user()->paid && !Auth::user()->hasrole('Admin'))
                             <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                                 <script async   src="https://js.stripe.com/v3/buy-button.js"> </script>
                                 <stripe-buy-button
