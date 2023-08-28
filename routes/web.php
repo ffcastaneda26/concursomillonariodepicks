@@ -11,20 +11,25 @@ use App\Http\Livewire\PicksReview;
 use App\Http\Livewire\SelectRound;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Configurations;
+use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DataUsers;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Positions\ByRound;
 use App\Http\Livewire\Positions\General;
 use App\Http\Livewire\UsersData;
+use App\Models\Configuration;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(function () {
+
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $configuration_record = Configuration::first();
+        return view('dashboard',compact('configuration_record'));
     })->name('dashboard');
+
     Route::get('games',Games::class)->name('games');                                // Juegos
     Route::get('picks',Picks::class)->name('picks');                                // Pronósticos
     Route::get('positions-by-round',ByRound::class)->name('positions-by-round');    // Posiciones x Jornada

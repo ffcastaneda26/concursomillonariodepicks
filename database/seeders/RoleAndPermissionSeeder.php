@@ -29,60 +29,13 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'posiciones-general']);
         // create permissions
         $permissions = [
-            'usuario-listar',
-            'usuario-crear',
-            'usuario-editar',
-            'usuario-ver',
-            'usuario-borrar',
-            'rol-listar',
-            'rol-crear',
-            'rol-editar',
-            'rol-ver',
-            'rol-borrar',
-            'permiso-listar',
-            'permiso-crear',
-            'permiso-editar',
-            'permiso-ver',
-            'permiso-borrar',
-            'equipo-listar',
-            'equipo-crear',
-            'equipo-editar',
-            'equipo-ver',
-            'equipo-borrar',
-            'jornada-listar',
-            'jornada-crear',
-            'jornada-editar',
-            'jornada-ver',
-            'jornada-borrar',
-            'partido-listar',
-            'partido-crear',
-            'partido-editar',
-            'partido-ver',
-            'partido-borrar',
-            'pronostico-listar',
-            'pronostico-crear',
-            'pronostico-editar',
-            'pronostico-ver',
-            'pronostico-borrar',
-            'resultado-jornada-listar',
-            'resultado-jornada-crear',
-            'resultado-jornada-editar',
-            'resultado-jornada-ver',
-            'resultado-jornada-borrar',
-            'resultado-general-listar',
-            'resultado-general-crear',
-            'resultado-general-editar',
-            'resultado-general-ver',
-            'resultado-general-borrar',
-            'pago-listar',
-            'pago-crear',
-            'pago-editar',
-            'pago-ver',
-            'pago-borrar',
+
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+        if(count($permissions)){
+            foreach ($permissions as $permission) {
+                Permission::create(['name' => $permission]);
+            }
         }
 
 

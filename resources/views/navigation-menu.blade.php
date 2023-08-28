@@ -1,5 +1,9 @@
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
+    @php
+        use App\Models\Configuration;
+        $configuration_record = Configuration::first();
+    @endphp
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
@@ -15,98 +19,10 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @role('Admin')
-                        <x-nav-link href="{{ route('configurations') }}" :active="request()->routeIs('configurations')">
-                            Configuración
-                        </x-nav-link>
 
-                        <x-nav-link href="{{ route('entidades') }}" :active="request()->routeIs('entidades')">
-                            Entidades
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('municipios') }}" :active="request()->routeIs('municipios')">
-                            Municipios
-                        </x-nav-link>
+                    @include('menus.admin')
 
-                        <x-nav-link href="{{ route('teams') }}" :active="request()->routeIs('teams')">
-                           Equipos
-                        </x-nav-link>
-
-                        <x-nav-link href="{{ route('rounds') }}" :active="request()->routeIs('rounds')">
-                            Jornadas
-                         </x-nav-link>
-
-                         <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
-                            Partidos
-                        </x-nav-link>
-
-                    @endrole
-
-                    @auth
-                        @if(!Auth::user()->paid && !Auth::user()->hasrole('Admin'))
-                            <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                                <script async   src="https://js.stripe.com/v3/buy-button.js"> </script>
-                                <stripe-buy-button
-                                    buy-button-id="buy_btn_1NhTzSG2UqMVjdJhbchOp1dP"
-                                    publishable-key="pk_test_51NhHU2G2UqMVjdJhSv2kF1wE7Yc7hJQG93HQsjtGq9QqFaoQiQMYrK7OM5G1NwK1f5PuESMsTO6PspW1rXpwqg5100xgSNl6RB"
-                                >
-                                </stripe-buy-button>
-                            </x-nav-link>
-                        @else
-                            @role('participante')
-                                @if(!Auth::user()->has_all_suplementary_data())
-                                    <x-nav-link href="{{ route('data-users') }}" :active="request()->routeIs('data-users')">
-                                        Datos Complementarios
-                                    </x-nav-link>
-                                @else
-
-                                    @if (Route::has('games'))
-                                        <x-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
-                                            Partidos
-                                        </x-nav-link>
-                                    @endif
-
-                                    @if (Route::has('picks'))
-                                        <x-nav-link href="{{ route('picks') }}" :active="request()->routeIs('picks')">
-                                            Pronósticos
-                                        </x-nav-link>
-                                    @endif
-
-                                    @if (Route::has('results-by-round'))
-                                        <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
-                                            Tabla de Pronósticos
-                                        </x-nav-link>
-                                    @endif
-
-                                    @if (Route::has('positions-by-round'))
-                                        <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
-                                            Posiciones por Jornada
-                                        </x-nav-link>
-                                    @endif
-
-                                    @if (Route::has('positions-general'))
-                                        <x-nav-link href="{{ route('positions-general') }}" :active="request()->routeIs('positions-general')">
-                                            Posiciones Generales
-                                        </x-nav-link>
-                                    @endif
-
-                                    @if (Route::has('picks-review'))
-                                        <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
-                                            Resultados por Jornada
-                                        </x-nav-link>
-                                    @endif
-
-                                    @if (Route::has('data-users'))
-                                        <x-nav-link href="{{ route('data-users') }}" :active="request()->routeIs('data-users')">
-                                            Datos Complementarios
-                                        </x-nav-link>
-                                    @endif
-                                @endif
-
-                            @endrole
-
-                        @endif
-
-                    @endauth
+                    @include('menus.participant')
 
 
                 </div>
@@ -233,9 +149,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            {{-- Según Rol conectado --}}
+            @include('menus.admin')
+            @include('menus.participant')
         </div>
 
         <!-- Responsive Settings Options -->

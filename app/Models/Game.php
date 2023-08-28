@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class Game
@@ -69,6 +70,11 @@ class Game extends Model
         return $this->hasMany(Pick::class);
     }
 
+    public function team_tie_breaker(): HasMany
+    {
+        return $this->hasMany(Configuration::class);
+    }
+
     public function round():BelongsTo
     {
         return $this->belongsTo(Round::class);
@@ -117,10 +123,26 @@ class Game extends Model
 
     // TODO: Cambiar el ID del equipo por algo que esté configurado
     public function is_last_game_round(){
-        return  ($this->local_team_id==1 || $this->visit_team_id == 1);
+        $configuration_record = Configuration::first();
+
+        // return  ($this->local_team_id==1 || $this->visit_team_id == 1);
+
+        if( $configuration_record->use_team_to_tie_breaker){
+            return ( $this->local_team_id == $configuration_record->team_id  || $this->visit_team_id == $configuration_record->team_id);
+        }
+
+        return $this->round->get_last_game_round()->id == $this->id;
+
 
     }
 
+    // ¿Es el partido del desempate?
+
+    public function is_game_tie_breaker(){
+        $configuration_record = Configuration::first();
+        return $configuration_record->use_team_to_tie_breaker
+           && ( $this->local_team_id == $configuration_record->team_id  || $this->visit_team_id == $configuration_record->team_id);
+    }
     // Ya tiene resultado
     public function has_result(){
          return !is_null($this->visit_points) || !is_null($this->local_points);

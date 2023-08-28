@@ -32,6 +32,7 @@ trait FuncionesGenerales
     public $round_picks     = null;
 
 
+
     // Lee configuración
     public function read_configuration(){
         $this->configuration = Configuration::first();
@@ -59,6 +60,7 @@ trait FuncionesGenerales
     // Lee equipos
     public function read_teams(){
         $this->teams = Team::orderby('id')->get();
+
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Configuration;
 use Carbon\Carbon;
 use App\Models\User;
 use Laravel\Jetstream\Jetstream;
@@ -60,12 +61,17 @@ class CreateNewUser implements CreatesNewUsers
             'active'        => 1
         ]);
 
+        $configuration_record = Configuration::first();
 
-        if(env('ASSIGN_ROLE_PARTICIPANT',false)){
+        if($configuration_record && $configuration_record->assig_role_to_user){
             $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
-        };
+        }
 
-        $stripeCustomer = $user->createAsStripeCustomer();
+
+        if($configuration_record && $configuration_record->add_user_to_stripe){
+            $stripeCustomer = $user->createAsStripeCustomer();
+        }
+
         return $user;
     }
 }
