@@ -7,7 +7,7 @@
         {{-- <x-validation-errors class="mb-4" /> --}}
 
         <div class="flex justify-center items-center h-screen">
-            <form id="demo-form" method="POST" action="{{ route('register') }}">
+            <form id="demo-formx" method="POST" action="{{ route('register') }}">
                 @csrf
                 {{-- Nombre y apellido --}}
 
@@ -186,22 +186,26 @@
                         {{ __('Already registered?') }}
                     </a>
 
-                    <x-button class="ml-4 g-recaptcha"
-                                data-sitekey="6LeMws4nAAAAANplVRimJKeXbC4snnd4R-Es262a"
-                                data-callback='onSubmit'
-                                data-action='submit'>
-                        {{ __('Register') }}
-                    </x-button>
+                        <x-button class="ml-4 g-recaptcha"
+                                    data-sitekey="6LeMws4nAAAAANplVRimJKeXbC4snnd4R-Es262a"
+                                    data-callback='onSubmit'
+                                    data-action='submit'>
+                            {{ __('Register') }}
+                        </x-button>
+
                 </div>
             </form>
         </div>
 
     </x-authentication-card>
     {{-- Recapcha solo en este formulario --}}
-        <script src="https://www.google.com/recaptcha/api.js"></script>
-        <script>
-            function onSubmit(token) {
-            document.getElementById("demo-form").submit();
-            }
-        </script>
+        @if(env('USE_RECAPTCHA',false))
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+            <script>
+                function onSubmit(token) {
+                document.getElementById("demo-form").submit();
+                }
+            </script>
+        @endif
+
 </x-guest-layout>

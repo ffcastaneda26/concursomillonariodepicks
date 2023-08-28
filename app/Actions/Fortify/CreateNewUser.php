@@ -38,15 +38,19 @@ class CreateNewUser implements CreatesNewUsers
             'adult'     =>  ['accepted', 'required'],
         ])->validate();
 
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify',[
-            'secret'    => '6LeMws4nAAAAAPUAbE2g24I9qfuAdvsakfcz_5E9',
-            'response'  =>$input['g-recaptcha-response']
-        ])->object();
+        if(env('USE_RECAPTCHA',false)){
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify',[
+                'secret'    => '6LeMws4nAAAAAPUAbE2g24I9qfuAdvsakfcz_5E9',
+                'response'  =>$input['g-recaptcha-response']
+            ])->object();
 
 
-        if(!$response->success && $response->score >= 0.7){
-           return false;
+            if(!$response->success && $response->score >= 0.7){
+               return false;
+            }
+
         }
+
         $user= User::create([
             'first_name'    => $input['first_name'],
             'last_name'     => $input['last_name'],
