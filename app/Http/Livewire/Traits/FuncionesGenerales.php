@@ -167,7 +167,6 @@ trait FuncionesGenerales
 		$sql.="SET ";
 		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
 		$sql.="WHERE ga.id = pic.game_id ";
-		$sql.="  AND ga.id=" . $game->id;
         DB::update($sql);
     }
 
@@ -188,7 +187,7 @@ trait FuncionesGenerales
     public function update_total_hits_positions(Round $round){
 
         $hits = User::role('participante')
-                    ->select('users.id as user_id','rounds.id as round_id',
+                    ->select('users.id as user_id',
                                 DB::raw('SUM(picks.hit) as hits'),
                                 DB::raw('SUM(picks.dif_points_total) as dif_total_points'),
                                 DB::raw('SUM(picks.dif_points_local) as dif_local_points'),
@@ -200,21 +199,21 @@ trait FuncionesGenerales
                                 DB::raw('SUM(picks.hit_visit) as hit_visit'),)
                     ->Join('picks', 'picks.user_id', '=', 'users.id')
                     ->Join('games', 'picks.game_id', '=', 'games.id')
-                    ->Join('rounds', 'games.round_id', '=', 'rounds.id')
                     ->where('games.round_id',$round->id)
                     ->where('users.active','1')
                     ->groupBy('users.id')
-                    ->groupBy('rounds.id')
                     ->get();
+
 
         if(!empty($hits)){
             foreach($hits as $hit){
+
                 $user = User::findOrFail($hit->user_id);
-                if(!$user->has_position_record_round($hit->round_id)){
-                   $position_record =  $this->create_position_record_round_user($hit->round_id,$user->id);
+                if(!$user->has_position_record_round($round->id)){
+                   $position_record =  $this->create_position_record_round_user($round->id,$user->id);
                 }
                 $position_record = Position::where('user_id',$user->id)
-                                            ->where('round_id',$hit->round_id)
+                                            ->where('round_id',$round->id)
                                             ->first();
 
                 $position_record->hits = $hit->hits;
