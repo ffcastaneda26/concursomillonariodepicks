@@ -207,7 +207,7 @@ return [
         'confirmar'     => 'Este campo ',
         'birthday'      => 'Fecha de Nacimiento',
         'terms'         => 'Debe Aceptar los Términos y Condiciones',
-        'adult'         => 'Debe aceptar que es mayor de edad'
+        'adult'         => 'Mayor de edad'
    	]
 
 ];

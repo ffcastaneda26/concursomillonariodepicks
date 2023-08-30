@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
@@ -35,29 +36,14 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'password',
+        'change_password',
+        'active',
         'phone',
-        'gender',
-        'birthday',
-        'curp',
-        'facebook',
-        'youtube',
-        'instagram',
-        'tweeter',
-        'tiktok',
-        'pinterest',
-        'snapshat',
-        'linkedin',
         'adult',
         'accept_terms',
-        'password',
-        'active',
+        'paid'
     ];
-
-
-    // public function setEmailAttribute($value)
-    // {
-    //     $this->attributes['email'] =  strtolower($value);
-    // }
 
     protected function firstName(): Attribute
     {
@@ -146,6 +132,10 @@ class User extends Authenticatable
         return $this->hasMany(Position::class);
     }
 
+    public function profile():HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
 
     /*+-----------------+
       | Funciones Apoyo |
@@ -185,10 +175,6 @@ class User extends Authenticatable
 
        return  !is_null($this->entidad_id);
 
-            // || !is_null($this->municipio_id)
-            // || !is_null($this->codpos)
-            // || !is_null($this->ine_anverso)
-            // || !is_null($this->ine_reverso);
     }
 
     public function has_all_suplementary_data(){
