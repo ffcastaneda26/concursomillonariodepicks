@@ -93,6 +93,7 @@ class Teams extends Component
     public function edit(Team $record){
         $this->main_record      = $record;
         $this->record_id        = $record->id;
+        $this->imagen_anterior = $this->main_record->logotipo;
         $this->openModal();
     }
 
@@ -102,9 +103,6 @@ class Teams extends Component
     */
     public function destroy(Team $record)
     {
-
-        // if($record->local_games()->count()) $record->local_games()->delete();
-        // if($record->visit_games()->count()) $record->visit_games()->delete();
 
         $this->delete_record($record, __('Equipo Eliminado Satisfactoriamente!!'));
     }

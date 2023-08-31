@@ -32,13 +32,7 @@ class Profile extends Model
     }
 
     // Setters y Getters
-    protected function curp(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-            set: fn (string $value) => ucwords(strtolower($value)),
-        );
-    }
+
 
     protected $casts = [
         'birthday'          => 'datetime:Y-m-d',

@@ -125,34 +125,13 @@
                 })
             }
 
-            function confirm_modal2(id) {
-                var record = id;
-                Swal.fire({
-                    title: "{{ __('Are you sure?') }}",
-                    text: "{{ __('You will not be able to revert this!') }}",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: "{{ __('Yes, delete it!') }}",
-                    cancelButtonText: "{{ __('Cancel') }}",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('destroy', record);
-                        Swal.fire(
-                            "{{ __('Deleted!') }}",
-                            "{{ __('Your record has been deleted.') }}",
-                            'success'
-                        )
-                    }
-                })
-            }
+
 
             //  Confirmar Grabar Datos Complementarios
             function confirm_user_data() {
                 Swal.fire({
                     title: "¿Está Seguro?",
-                    text: "Al aceptarlo no podrá realizar cambios a menos que se comunique con un administrador",
+                    text: "Al aceptarlo no podrá realizar cambios a menos que se comunique con un administrador. Los datos se validarán y si son correctos se grabarán",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -161,11 +140,11 @@
                     cancelButtonText: "{{ __('Cancel') }}",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.livewire.emit('store_data', record);
+                        window.livewire.emit('store_data');
                         Swal.fire(
                             "Listo!",
-                            "Sus Datos Han Sido Gurdados",
-                            'success'
+                            "Actualizando Datos",
+                            'warning'
                         )
                     }
                 })

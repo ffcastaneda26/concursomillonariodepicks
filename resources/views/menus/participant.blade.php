@@ -9,9 +9,9 @@
             </stripe-buy-button>
         </x-nav-link>
     @else
-        @role('participante')
 
-            @if(!Auth::user()->has_all_suplementary_data() &&  $configuration_record->require_data_user_to_continue)
+        @role('participante')
+            @if(!Auth::user()->has_suplementary_data() &&  $configuration_record->require_data_user_to_continue)
                 <x-nav-link href="{{ route('data-users') }}" :active="request()->routeIs('data-users')">
                     Datos Complementarios
                 </x-nav-link>

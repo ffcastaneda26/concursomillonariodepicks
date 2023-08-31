@@ -3,7 +3,10 @@
         <x-slot name="logo">
             <x-authentication-card-logo />
         </x-slot>
-
+        <div class="grid grid-row grid-cols-1 text-center">
+            <p class="font-bold italic">Introducir nombre completo (Nombres y Apellidos)</p>
+            <p class="font-extrabold underlin">Serán verificados con un documento oficial</p>
+        </div>
         {{-- <x-validation-errors class="mb-4" /> --}}
 
         <form method="POST" action="{{ route('register') }}">
@@ -89,10 +92,6 @@
                                 class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
                                 {{ __('Terms of Service')  }}
                             </a>
-                                {{-- {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!} --}}
                             </div>
                             @error('terms')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
 

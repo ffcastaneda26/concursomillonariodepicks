@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('adult')->default(0)->comment('¿Es Adulto?');
             $table->boolean('accept_terms')->default(0)->comment('¿Aceptó Términos y Condiciones?');
             $table->boolean('paid')->default(0)->comment('¿Ya pagó?');
+            $table->string('stripe_session')->unique()->nullable()->default(null)->comment('Id Sesión de stripe');
             $table->timestamps();
 
         });

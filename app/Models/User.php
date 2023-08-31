@@ -171,15 +171,9 @@ class User extends Authenticatable
 
     // ¿Tiene datos complementarios?)
     public function has_suplementary_data(){
-
-
-       return  !is_null($this->entidad_id);
-
+        return $this->profile()->count();
     }
 
-    public function has_all_suplementary_data(){
-        return $this->entidad_id && $this->municipio_id && $this->codpos && $this->ine_anverso && $this->ine_reverso;
-    }
 
     // Sincronizar con STRIPE
     protected static function booted(): void

@@ -16,16 +16,15 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->default(6)->comment('Usuario');
+            $table->foreignIdFor(User::class)->comment('Usuario');
             $table->enum('gender',['Hombre','Mujer'])->default('Hombre')->comment('Sexo');
             $table->date('birthday')->nullable()->default(null)->comment('Fecha Nacimiento');
             $table->string('curp',18)->unique()->nullable()->default(null)->comment('Curp');
-            $table->foreignIdFor(Entidad::class)->default(6)->comment('Entidad Federativa');
-            $table->foreignIdFor(Municipio::class)->default(164)->comment('Municipio');
+            $table->foreignIdFor(Entidad::class)->comment('Entidad Federativa');
+            $table->foreignIdFor(Municipio::class)->comment('Municipio');
             $table->string('codpos',5)->nullable()->default(null)->comment('Código Postal');
             $table->string('ine_anverso', 2048)->nullable()->default(null)->comment('Credencial INE Anverso');
             $table->string('ine_reverso', 2048)->nullable()->default(null)->comment('Credencial INE Reverso');
-            $table->string('stripe_session')->unique()->nullable()->default(null)->comment('Id Sesión de stripe');
         });
     }
 
