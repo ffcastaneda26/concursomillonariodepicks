@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -21,9 +23,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->truncateTables([
+            'positions',
+            'picks',
             'user_roles',
             'role_permissions',
             'user_permissions',
+            'profiles',
             'users',
             'roles',
             'permissions',
@@ -33,6 +38,23 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             CreateAdminUserSeeder::class,
         ]);
+
+        // Crea usuarios ficticios
+        $count_users = 200;
+        User::factory()
+                ->count($count_users)
+                ->hasProfile(1)
+                ->create([
+                    'adult'  => 1,
+                    'paid'  => 1,
+                    'active' => 1
+                ]);
+
+        $users = User::where('id','>',1)->orderBy('id')->get();
+        foreach( $users as $user){
+            $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
+            $user->create_missing_picks();
+        }
     }
 
     protected function truncateTables(array $tables) {

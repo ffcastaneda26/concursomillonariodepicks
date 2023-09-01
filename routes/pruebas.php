@@ -2,14 +2,18 @@
 
 use App\Models\Game;
 use App\Models\Pick;
-use App\Models\Position;
 use App\Models\User;
 use App\Models\Round;
+use App\Models\Entidad;
+use App\Models\Profile;
+use App\Models\Position;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 
 
 Route::get('/juegos_sin_pronostico_usuario_conectado',function(){
@@ -91,4 +95,23 @@ Route::get('tabla-posiciones',function(){
             ->orderby('dif_total_points')
             ->paginate(15);
     dd($positions);
+});
+
+
+Route::get('crear-perfil/{user}',function(User $user){
+    $datos = User::orderBy('id','DESC')->limit(20)->get();
+    dd($datos);
+    dd( $user->create_missing_picks());
+
+    $entidad = Entidad::all()->random();
+    dd($entidad,$entidad->municipios->random());
+    if(!$user->profile){
+        $profile = new Profile();
+        $profile->user_id = $user->id;
+        $profile->save();
+
+    }
+    $user->refresh();
+    dd($user->profile);
+    dd($user->first_name . ' ' . $user->last_name. '->' . $user->email);
 });

@@ -16,6 +16,7 @@ use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use function Illuminate\Events\queueable;
 use function PHPUnit\Framework\isNull;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -185,5 +186,34 @@ class User extends Authenticatable
         }));
     }
 
+    // Asignarle los pronósticos que falten
+    public function create_missing_picks(){
+
+        $games = Game::where('game_date','>=',now())->get();
+        foreach($games as $game){
+            if($game->allow_pick()){
+                $winner = mt_rand(1,2);
+                $new_pick = Pick::create([
+                    'user_id'   => $this->id,
+                    'game_id'   => $game->id,
+                    'winner'    => $winner
+                    ]);
+
+                if($game->is_last_game_round()){
+                    if($winner == 1){
+                        $new_pick->local_points = 7;
+                        $new_pick->visit_points = 0;
+                    }else{
+                        $new_pick->local_points = 0;
+                        $new_pick->visit_points = 7;
+                    }
+                    $new_pick->total_points = 7;
+                }
+                $new_pick->save();
+
+            }
+        }
+
+    }
 
 }
