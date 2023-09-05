@@ -3,12 +3,12 @@
         Configuración
     </x-nav-link>
 
-    <x-nav-link href="{{ route('entidades') }}" :active="request()->routeIs('entidades')">
+    {{-- <x-nav-link href="{{ route('entidades') }}" :active="request()->routeIs('entidades')">
         Entidades
     </x-nav-link>
     <x-nav-link href="{{ route('municipios') }}" :active="request()->routeIs('municipios')">
         Municipios
-    </x-nav-link>
+    </x-nav-link> --}}
 
     <x-nav-link href="{{ route('teams') }}" :active="request()->routeIs('teams')">
     Equipos

@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             'user_roles',
             'role_permissions',
             'user_permissions',
-            'profiles',
             'users',
             'roles',
             'permissions',
@@ -40,21 +39,22 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Crea usuarios ficticios
-        $count_users = 200;
-        User::factory()
-                ->count($count_users)
-                ->hasProfile(1)
-                ->create([
-                    'adult'  => 1,
-                    'paid'  => 1,
-                    'active' => 1
-                ]);
+        $count_users = 0;
+        if($count_users){
+            User::factory()
+            ->count($count_users)
+            ->create([
+                'adult'  => 1,
+                'paid'  => 1,
+                'active' => 1
+            ]);
 
-        $users = User::where('id','>',1)->orderBy('id')->get();
-        foreach( $users as $user){
-            $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
-            $user->create_missing_picks();
+            $users = User::where('id','>',1)->orderBy('id')->get();
+            foreach( $users as $user){
+                $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
+            }
         }
+
     }
 
     protected function truncateTables(array $tables) {

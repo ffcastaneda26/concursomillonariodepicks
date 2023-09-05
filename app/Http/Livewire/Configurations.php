@@ -25,12 +25,10 @@ class Configurations extends Component
         'main_record.minuts_before_picks'           => 'required|numeric',
         'main_record.allow_tie'                     => 'nullable',
         'main_record.create_mssing_picks'           => 'nullable',
-        'main_record.require_payment_to_continue'   => 'nullable',
-        'main_record.require_data_user_to_continue' => 'nullable',
         'main_record.assig_role_to_user'            => 'nullable',
-        'main_record.add_user_to_stripe'            => 'nullable',
         'main_record.use_team_to_tie_breaker'       => 'nullable',
     ];
+
 
     public $configuration;
 
@@ -38,8 +36,6 @@ class Configurations extends Component
     public $score_picks                     = false;
     public $allow_tie                       = false;
     public $create_mssing_picks             = false;
-    public $require_payment_to_continue     = false;
-    public $require_data_user_to_continue   = false;
     public $assig_role_to_user              = false;
     public $add_user_to_stripe              = false;
     public $use_team_to_tie_breaker         = false;
@@ -91,10 +87,7 @@ class Configurations extends Component
         $this->main_record->score_picks = $this->score_picks ? 1 : 0;
         $this->main_record->allow_tie = $this->allow_tie ? 1 : 0;
         $this->main_record->create_mssing_picks = $this->create_mssing_picks ? 1 : 0;
-        $this->main_record->require_payment_to_continue = $this->require_payment_to_continue ? 1 : 0;
-        $this->main_record->require_data_user_to_continue = $this->require_data_user_to_continue ? 1 : 0;
         $this->main_record->assig_role_to_user = $this->assig_role_to_user ? 1 : 0;
-        $this->main_record->add_user_to_stripe = $this->add_user_to_stripe ? 1 : 0;
         $this->main_record->use_team_to_tie_breaker = $this->use_team_to_tie_breaker ? 1 : 0;
 
         if(!$this->use_team_to_tie_breaker){
@@ -119,8 +112,6 @@ class Configurations extends Component
         $this->score_picks                  = $record->score_picks;
         $this->allow_tie                    = $record->allow_tie;
         $this->create_mssing_picks          = $record->create_mssing_picks;
-        $this->require_payment_to_continue  = $record->require_payment_to_continue;
-        $this->require_data_user_to_continue= $record->require_data_user_to_continue;
         $this->assig_role_to_user           = $record->assign_role_to_user;
         $this->add_user_to_stripe           = $record->add_user_to_stripe;
         $this->use_team_to_tie_breaker      = $record->use_team_to_tie_breaker;

@@ -22,7 +22,7 @@ class Teams extends Component
     protected $rules = [
         'main_record.name' => 'required|min:3|max:50|unique:teams,name',
         'main_record.alias' => 'required|min:3|max:20|unique:teams,alias',
-        'main_record.short' => 'required|min:3|max:3|unique:teams,short',
+        'main_record.short' => 'required|min:2|max:3|unique:teams,short',
         'main_record.logo' => 'nullable',
 
     ];
@@ -68,8 +68,8 @@ class Teams extends Component
                                                                   : 'required|min:3|max:50|unique:teams,name';
         $this->rules['main_record.alias'] = $this->main_record->id ? "required|min:3|max:20|unique:teams,alias,{$this->main_record->id}"
                                                                   : 'required|min:3|max:20|unique:teams,alias';
-        $this->rules['main_record.short'] = $this->main_record->id ? "required|min:3|max:3|unique:teams,short,{$this->main_record->id}"
-                                                                  : 'required|min:3|max:3|unique:teams,short';
+        $this->rules['main_record.short'] = $this->main_record->id ? "required|min:2|max:3|unique:teams,short,{$this->main_record->id}"
+                                                                  : 'required|min:2|max:3|unique:teams,short';
         $this->validate();
 
 

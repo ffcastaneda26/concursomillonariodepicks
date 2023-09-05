@@ -34,8 +34,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'name',
+        'alias',
         'email',
         'password',
         'change_password',
@@ -46,36 +46,11 @@ class User extends Authenticatable
         'paid'
     ];
 
-    protected function firstName(): Attribute
+    protected function Name(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => ucfirst($value),
             set: fn (string $value) => ucwords(strtolower($value)),
-        );
-    }
-
-
-    protected function lastName(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-            set: fn (string $value) => ucwords(strtolower($value)),
-        );
-    }
-
-    protected function name(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value, array $attributes) => ucwords($this->first_name) . ' ' .  ucwords($this->last_name ) . ' ' . ucwords($this->materno),
-        );
-    }
-
-
-
-    protected function fullName(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value, array $attributes) => ucwords($this->first_name) . ' ' .  ucwords($this->last_name ) . ' ' . ucwords($this->materno),
         );
     }
 
@@ -84,6 +59,13 @@ class User extends Authenticatable
     {
         return Attribute::make(
             set: fn (string $value) => strtolower($value),
+        );
+    }
+
+    protected function alias(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => ucwords(strtolower($value)),
         );
     }
 
@@ -105,8 +87,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'birthday'          => 'datetime:Y-m-d',
+        'email_verified_at' => 'datetime'
     ];
 
     /**
@@ -133,10 +114,7 @@ class User extends Authenticatable
         return $this->hasMany(Position::class);
     }
 
-    public function profile():HasOne
-    {
-        return $this->hasOne(Profile::class);
-    }
+
 
     /*+-----------------+
       | Funciones Apoyo |
@@ -170,21 +148,7 @@ class User extends Authenticatable
 
     }
 
-    // ¿Tiene datos complementarios?)
-    public function has_suplementary_data(){
-        return $this->profile()->count();
-    }
 
-
-    // Sincronizar con STRIPE
-    protected static function booted(): void
-    {
-        static::updated(queueable(function (User $customer) {
-            if ($customer->hasStripeId()) {
-                $customer->syncStripeCustomerDetails();
-            }
-        }));
-    }
 
     // Asignarle los pronósticos que falten
     public function create_missing_picks(){

@@ -104,40 +104,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col">
 
-                    {{-- ¿Requiere pago para continuar? --}}
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">¿Requiere Pago Para Continuar?</span>
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" wire:model="require_payment_to_continue" class="btn-check" name="require_payment_to_continue" id="require_payment_to_continue_yes" value="1">
-                                <label class="mr-2 btn btn-outline-success" for="require_payment_to_continue_yes">
-                                    <img src="{{asset('images/afirmativo.png')}}" alt="SI" width="24px" height="24px">
-                                </label>
-
-                                <input type="radio" wire:model="require_payment_to_continue" class="btn-check ml-4" name="require_payment_to_continue" id="require_payment_to_continue_no" value="0">
-                                <label class="ml-5 btn btn-outline-danger" for="require_payment_to_continue_no">
-                                    <img src="{{asset('images/negativo.png')}}" alt="NO" width="24px" height="24px">
-                                </label>
-                            </div>
-                    </div>
-
-                    {{-- ¿Requiere datos complementarios para continuar? --}}
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">¿Requiere Datos Complementarios Para Continuar?</span>
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" wire:model="require_data_user_to_continue" class="btn-check" name="require_data_user_to_continue" id="require_data_user_to_continue_yes" value="1">
-                                <label class="mr-2 btn btn-outline-success" for="require_data_user_to_continue_yes">
-                                    <img src="{{asset('images/afirmativo.png')}}" alt="SI" width="24px" height="24px">
-                                </label>
-
-                                <input type="radio" wire:model="require_data_user_to_continue" class="btn-check ml-4" name="require_data_user_to_continue" id="require_data_user_to_continue_no" value="0">
-                                <label class="ml-5 btn btn-outline-danger" for="require_data_user_to_continue_no">
-                                    <img src="{{asset('images/negativo.png')}}" alt="NO" width="24px" height="24px">
-                                </label>
-                            </div>
-                    </div>
-                </div>
 
                 {{-- ¿Asignar role al registrarse? --}}
                 <div class="input-group mb-3">
@@ -155,22 +122,6 @@
                         </div>
                 </div>
 
-
-                {{-- ¿Crear usuario en stripe? --}}
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">¿Crear Usuario en Stripe?</span>
-                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" wire:model="add_user_to_stripe" class="btn-check" name="add_user_to_stripe" id="add_user_to_stripe_yes" value="1">
-                            <label class="mr-2 btn btn-outline-success" for="add_user_to_stripe_yes">
-                                <img src="{{asset('images/afirmativo.png')}}" alt="SI" width="24px" height="24px">
-                            </label>
-
-                            <input type="radio" wire:model="add_user_to_stripe" class="btn-check ml-4" name="add_user_to_stripe" id="add_user_to_stripe_no" value="0">
-                            <label class="ml-5 btn btn-outline-danger" for="add_user_to_stripe_no">
-                                <img src="{{asset('images/negativo.png')}}" alt="NO" width="24px" height="24px">
-                            </label>
-                        </div>
-                </div>
 
                 {{-- ¿Usar Equipo para partido de desempate? --}}
                 <div class="input-group mb-3">

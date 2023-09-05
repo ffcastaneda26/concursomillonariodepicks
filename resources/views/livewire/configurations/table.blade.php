@@ -9,10 +9,7 @@
                 <th>Minutos Pronóstico</th>
                 <th>¿Empates?</th>
                 <th>¿Crear Pronósticos?</th>
-                <th>¿Pago Para Continuar?</th>
-                <th>¿Datos P/Continuar?</th>
                 <th>¿Rol en Registro?</th>
-                <th>¿Crear en Stripe?</th>
                 <th>¿Equipo para desempate?</th>
                 <th></th>
             </tr>
@@ -46,19 +43,6 @@
                         width="24px">
                     </td>
 
-                    <td align="center">
-                        <img src="{{ $configuration->require_payment_to_continue ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
-                        alt="{{ $configuration->require_payment_to_continue ? __('Yes') : 'No' }}"
-                        height="24px"
-                        width="24px">
-                    </td>
-
-                    <td align="center">
-                        <img src="{{ $configuration->require_data_user_to_continue ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
-                        alt="{{ $configuration->require_data_user_to_continue ? __('Yes') : 'No' }}"
-                        height="24px"
-                        width="24px">
-                    </td>
 
                     <td align="center">
                         <img src="{{ $configuration->assig_role_to_user ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
@@ -67,12 +51,6 @@
                         width="24px">
                     </td>
 
-                    <td align="center">
-                        <img src="{{ $configuration->add_user_to_stripe ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"
-                        alt="{{ $configuration->add_user_to_stripe ? __('Yes') : 'No' }}"
-                        height="24px"
-                        width="24px">
-                    </td>
 
                     <td align="center">
                         <img src="{{ $configuration->use_team_to_tie_breaker ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"

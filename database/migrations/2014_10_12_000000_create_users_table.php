@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name',50)->comment('Nombre(s)');
-            $table->string('last_name',50)->comment('Apellidos(s)');
+            $table->string('name',50)->comment('Nombre(s)');
+            $table->string('alias',15)->unique()->comment('Alias');
             $table->string('email')->unique()->comment('Correo');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -28,7 +28,6 @@ return new class extends Migration
             $table->boolean('adult')->default(0)->comment('¿Es Adulto?');
             $table->boolean('accept_terms')->default(0)->comment('¿Aceptó Términos y Condiciones?');
             $table->boolean('paid')->default(0)->comment('¿Ya pagó?');
-            $table->string('stripe_session')->unique()->nullable()->default(null)->comment('Id Sesión de stripe');
             $table->timestamps();
 
         });

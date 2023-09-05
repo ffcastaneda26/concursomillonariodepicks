@@ -5,25 +5,29 @@
         </x-slot>
         <div class="grid grid-row grid-cols-1 text-center">
             <p class="font-bold italic">Introducir nombre completo (Nombres y Apellidos)</p>
-            <p class="font-extrabold underlin">Serán verificados con un documento oficial</p>
+            <p class="font-extrabold underlin">El ALIAS es requerido</p>
         </div>
         {{-- <x-validation-errors class="mb-4" /> --}}
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
-            <div class="flex flex-grow justify-between md:flex-cols-2 gap-2">
+            <div class="grid grid-row grid-cols-1">
                 <div>
                     <x-label for="name" value="Nombre(s)" />
-                    <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" maxlength="50" required autofocus autocomplete="name" />
-                    @error('first_name')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
-                </div>
-                <div>
-                    <x-label for="name" value="Apellido(s)" />
-                    <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" maxlength="50" required />
-                    @error('last_name')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+                    <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" maxlength="50" required autofocus autocomplete="name" />
+                    @error('name')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
                 </div>
             </div>
-            <div class="flex flex-grow justify-between md:flex-cols-2 gap-2">
+
+            <div class="grid grid-row grid-cols-1 mt-2">
+                <div>
+                    <x-label for="alias" value="Alias: Mínimo 6 y Máximo 12 Carácteres" />
+                    <x-input id="alias" class="block mt-1 w-full" type="text" name="alias" :value="old('alias')" maxlength="12" minlength="6" required />
+                    @error('alias')<div class="badge rounded-pill bg-danger">{{ $message }}</div>@enderror
+                </div>
+            </div>
+
+            <div class="flex flex-grow justify-between md:flex-cols-2 gap-2 mt-2">
                 <div class="mt-4">
                     <x-label for="email" value="Correo" />
                     <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />

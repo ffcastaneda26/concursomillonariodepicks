@@ -1,7 +1,12 @@
 <tr>
     <td>{{ $game->game_day->format('j-M-y')}} {{$game->game_time->format('h:i A') }}</td>
 
-    {{-- <td>{{ $game->visit_team->short }}</td> --}}
+    <td align="center">
+        <label for="">
+
+                {{ $game->handicap != 0 ? number_format($game->handicap, 1, '.', ',') : '-' }}
+        </label>
+    </td>
     <td>
         @if ($game->visit_team->logo)
             <img src="{{Storage::url($game->visit_team->logo)}}" class="avatar-sm" alt="" width="100px" height="100px">
@@ -10,6 +15,8 @@
 
     <td>{{ $game->visit_team->alias }}</td>
     <td align="center"><input type="text" value="{{ $game->visit_points }}" disabled size="3"></td>
+
+
     <td align="center"><input type="text" value="{{ $game->local_points }}" disabled size="3"></td>
     <td>
         @if ($game->local_team->logo)

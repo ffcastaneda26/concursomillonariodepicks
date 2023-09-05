@@ -30,6 +30,8 @@ return new class extends Migration
             $table->tinyInteger('hit_local')->nullable()->default(null)->comment('¿Acertó local');
             $table->tinyInteger('hit_visit')->nullable()->default(null)->comment('¿Acertó visita');
             $table->integer('dif_victory')->nullable()->default(null)->comment('Dif absoluta puntos total del partido - puntos totales pronosticados');
+            $table->boolean('selected')->default(0)->comment('¿Seleccionado?');
+
             $table->timestamps();
         });
     }

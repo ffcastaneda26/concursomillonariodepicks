@@ -21,10 +21,7 @@ return new class extends Migration
             $table->integer('minuts_before_picks')->default(5)->comment('Minutos antes para pronóstico');
             $table->boolean('allow_tie')->default(0)->comment('¿Permitir empate?');
             $table->boolean('create_mssing_picks')->default(0)->comment('¿Crear pronósticos faltantes?');
-            $table->boolean('require_payment_to_continue')->default(1)->comment('¿Require pago para continuar?');
-            $table->boolean('require_data_user_to_continue')->default(1)->comment('¿Requiere datos complementarios para continuar?');
             $table->boolean('assig_role_to_user')->default(0)->comment('¿Asignar Rol al registrarse?');
-            $table->boolean('add_user_to_stripe')->default(0)->comment('¿Agregar usuario a Stripe?');
             $table->boolean('use_team_to_tie_breaker')->default(0)->comment('¿Usar un Equipo para desempate?');
             $table->foreignIdFor(Team::class)->comment('Equipo para desempate');
         });

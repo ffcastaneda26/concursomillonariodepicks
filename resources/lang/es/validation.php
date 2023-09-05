@@ -116,6 +116,7 @@ return [
 	'uploaded' => ':attribute no se pudo subir.',
 	'url' => 'El formato de :attribute es inválido.',
 	'uuid' => ':attribute debe ser un UUID válido.',
+    'decimal' => ':attribute debe ser tener slo un decimal.',
 
 	/*
 		    |--------------------------------------------------------------------------
@@ -207,7 +208,8 @@ return [
         'confirmar'     => 'Este campo ',
         'birthday'      => 'Fecha de Nacimiento',
         'terms'         => 'Debe Aceptar los Términos y Condiciones',
-        'adult'         => 'Mayor de edad'
+        'adult'         => 'Mayor de edad',
+        'handicap'      => 'Linea'
    	]
 
 ];

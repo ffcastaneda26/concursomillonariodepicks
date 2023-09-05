@@ -36,23 +36,19 @@
             <div class="grid h-screen place-items-center">
                 @auth
                     <a href="{{ url('/dashboard') }}">
-                        <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
+                        <img class="rounded-xs" src="{{ asset('images/logo.jfif') }}" width="250px" height="250px">
                     </a>
                 @else
                     @if (Route::has('login'))
                         <div class="flex items-center">
                                 <a href="{{ route('login') }}" class="focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                                    <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
+                                    <img class="rounded-xs" src="{{ asset('images/logo.jfif') }}" width="250px" height="250px">
                                 </a>
                         </div>
                     @else
-                        <img class="rounded-xs" src="{{asset('images/caudillos.png')}}" alt="CAUDILLOS" width="250px" height="250px">
+                        <img class="rounded-xs" src="{{ asset('images/logo.jfif') }}" width="250px" height="250px">
                     @endif
                 @endauth
-
-
-
-
             </div>
 
         </div>
