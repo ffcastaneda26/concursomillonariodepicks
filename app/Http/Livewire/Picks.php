@@ -38,6 +38,8 @@ class Picks extends Component
         'main_record.hit_local'         => 'nullable',
         'main_record.hit_visit'         => 'nullable',
         'main_record.dif_victory'       => 'nullable',
+        'main_record.selected'          => 'nullable',
+
     ];
 
 
@@ -56,10 +58,7 @@ class Picks extends Component
     public function mount(){
         $this->read_configuration();
 
-        if($this->configuration->require_payment_to_continue && !Auth::user()->paid){
-            return redirect()->route('dashboard');
-        }
-
+        // TODO:: Revisar cuando se le debe permitir continuar
 
         $this->manage_title = 'Pronósticos';
         $this->rounds = $this->read_rounds();
