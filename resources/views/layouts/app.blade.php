@@ -125,31 +125,6 @@
                 })
             }
 
-
-
-            //  Confirmar Grabar Datos Complementarios
-            function confirm_user_data() {
-                Swal.fire({
-                    title: "¿Está Seguro?",
-                    text: "Al aceptarlo no podrá realizar cambios a menos que se comunique con un administrador. Los datos se validarán y si son correctos se grabarán",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: "SI, Continuar",
-                    cancelButtonText: "{{ __('Cancel') }}",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.livewire.emit('store_data');
-                        Swal.fire(
-                            "Listo!",
-                            "Actualizando Datos",
-                            'warning'
-                        )
-                    }
-                })
-            }
-
         </script>
         {{-- Finaliza Admiria --}}
     </body>
