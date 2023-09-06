@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Round
@@ -59,6 +60,14 @@ class Round extends Model
         return $this->throughgames()->haspicks();
     }
 
+    public function user_picks(User $user=null): HasManyThrough
+    {
+        if(!$user){
+            $user=Auth::user();
+        }
+
+        return $this->throughgames()->haspicks()->where('user_id',$user->id)->orderby('game_id');
+    }
 
 
     /*+-----------------+
