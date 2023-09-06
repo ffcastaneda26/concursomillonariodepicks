@@ -23,10 +23,13 @@ class Configurations extends Component
         'main_record.email'                         => 'required|email',
         'main_record.score_picks'                   => 'nullable',
         'main_record.minuts_before_picks'           => 'required|numeric',
+        'main_record.picks_to_select'               => 'required|numeric',
         'main_record.allow_tie'                     => 'nullable',
         'main_record.create_mssing_picks'           => 'nullable',
         'main_record.assig_role_to_user'            => 'nullable',
         'main_record.use_team_to_tie_breaker'       => 'nullable',
+
+
     ];
 
 

@@ -55,7 +55,7 @@ class Results extends Component
             $this->reset('gamesids');
             $this->selected_round = $round;
             $this->gamesids[]   = $round->games()->select('id')->orderby('id')->get()->toArray();
-            $this->round_games  = $round->games()->orderby('id')->get();
+            $this->round_games  = $round->games()->orderby('game_date')->get();
 
            $this->users_with_picks_round = User::role('participante')
                             ->wherehas('picks',function(Builder $query) use ($round){

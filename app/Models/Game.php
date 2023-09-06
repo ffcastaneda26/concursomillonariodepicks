@@ -102,11 +102,18 @@ class Game extends Model
     }
 
     // ¿Permite pronosticar?
+    // $axojuego= $this->game_date->format('Y');
+    // $mesjuego= $this->game_date->format('m');
+    // $diajuego= $this->game_date->format('d');
+    // $hhjuego = $this->game_date->format('H');
+    // $mmjuego = $this->game_date->format('i');
+    // dd( $this->game_date->format('i'));
+    // $fecha_juego   = new Carbon($this->game_date);
+
     public function allow_pick(){
         date_default_timezone_set("America/Chihuahua");
         $configuration = Configuration::first();
         $fecha_juego = new Carbon($this->game_date);
-        $fecha_juego->subMinute($configuration->minuts_before_picks);
         $newDateTime = Carbon::now()->subMinute($configuration->minuts_before_picks);
         return $fecha_juego > $newDateTime;
     }

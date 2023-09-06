@@ -109,6 +109,7 @@ trait FuncionesGenerales
     // Actualia criterios de desempate
     public function update_tie_breaker(Game $game){
 
+        // TODO: Revisar por qué borra posiciones y picks sin una condicion
         // Inicializa campos de desempate;
         $sql = "UPDATE positions ";
 		$sql.="SET dif_winner_points=NULL,";
@@ -163,10 +164,12 @@ trait FuncionesGenerales
     }
     // // Califica los pronósticos
     public function qualify_picks(Game $game){
+
         $sql = "UPDATE picks pic,games ga ";
 		$sql.="SET ";
 		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
 		$sql.="WHERE ga.id = pic.game_id ";
+        $sql.="  AND ga.id = " . $game->id;
         DB::update($sql);
     }
 
@@ -201,6 +204,7 @@ trait FuncionesGenerales
                     ->Join('games', 'picks.game_id', '=', 'games.id')
                     ->where('games.round_id',$round->id)
                     ->where('users.active','1')
+                    ->where('picks.selected')
                     ->groupBy('users.id')
                     ->get();
 
@@ -216,7 +220,7 @@ trait FuncionesGenerales
                                             ->where('round_id',$round->id)
                                             ->first();
 
-                $position_record->hits = $hit->hits;
+                $position_record->hits              = $hit->hits;
                 $position_record->dif_winner_points = $hit->dif_winner_points;
                 $position_record->dif_total_points  = $hit->dif_total_points;
                 $position_record->dif_local_points  = $hit->dif_local_points;

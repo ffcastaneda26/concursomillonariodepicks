@@ -7,6 +7,8 @@
                 <th>Correo</th>
                 <th>¿Pedir Resultados?</th>
                 <th>Minutos Pronóstico</th>
+                <th>Pronósticos a Seleccionar</th>
+
                 <th>¿Empates?</th>
                 <th>¿Crear Pronósticos?</th>
                 <th>¿Rol en Registro?</th>
@@ -26,6 +28,8 @@
                             width="24px">
                     </td>
                     <td align="center">{{ $configuration->minuts_before_picks }}</td>
+                    <td align="center">{{ $configuration->picks_to_select }}</td>
+
 
                     <td align="center">
                         <img src="{{ $configuration->allow_tie ? asset('images/afirmativo.png') : asset('images/negativo.png')}}"

@@ -7,7 +7,7 @@
 
         <th>Puntos Local </th>
         <th colspan="2">Local</th>
-
+        <th>Línea </th>
 
         @role('Admin')
             <th>Editar</th>

@@ -39,7 +39,6 @@ class Picks extends Component
         'main_record.hit_visit'         => 'nullable',
         'main_record.dif_victory'       => 'nullable',
         'main_record.selected'          => 'nullable',
-
     ];
 
 
@@ -47,13 +46,16 @@ class Picks extends Component
 
     public $gamesids= array();
     public $picks = array();
+    public $selected = array();
+
     public $message = null;
     public $games_to_pick = array();
     public $old_picks = array();
     public $points_visit_last_game = null;
     public $points_local_last_game = null;
     public $error;
-
+    public $allow_select = true;
+    public $picks_allowed = array();
 
     public function mount(){
         $this->read_configuration();
@@ -84,6 +86,19 @@ class Picks extends Component
         return view('livewire.picks.index');
     }
 
+
+    /** Cuenta los seleccionados */
+    public function count_selected(int $indice){
+        if($this->selected[$indice]){
+            $this->picks_allowed[$indice] = true;
+        }else{
+            $this->picks_allowed[$indice] = false;
+        }
+
+        $this->allow_select = count($this->selected) < $this->configuration->picks_to_select;
+
+    }
+
     /*+---------------+
       | Recibe Juegos |
       +---------------+
@@ -91,12 +106,17 @@ class Picks extends Component
 
     public function receive_round(Round $round){
         if($round){
+
             $this->selected_round = $round;
-            $this->round_games = $round->games()->orderby('id')->get();
+            $this->round_games = $round->games()->orderby('game_date')->get();
+
             $i=0;
-            $this->reset('gamesids','games_to_pick','picks','points_visit_last_game','points_local_last_game','error','message');
+            $this->reset('selected','gamesids','games_to_pick','picks','points_visit_last_game','points_local_last_game','error','message');
+
             foreach($this->round_games as $game){
                 $this->gamesids[$i] = $game->id;
+                $this->picks_allowed[$i] = false;
+                // $this->selected[$i+1] =  $game->id;
                 if($game->pick_user()){
                     $this->picks[$i]=$game->pick_user()->winner;
                     if($game->is_last_game_round()){
@@ -128,21 +148,24 @@ class Picks extends Component
 
         if(!$this->validate_data()) return;
 
+        dd($this->selected);
         // Actualizamos los pronósticos
         $i=0;
-        foreach($this->gamesids as $game){
+          foreach($this->gamesids as $game){
             $game_pick = Game::findOrFail($game);
 
 
             if($game_pick->allow_pick()){
                 $pick_user = $game_pick->pick_user();
+
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
                     // Si es el último partido actualizamos los puntos y determinamos ganador
                     if($game_pick->is_last_game_round()){
                         $pick_user->local_points = $this->points_local_last_game;
                         $pick_user->visit_points = $this->points_visit_last_game;
-                        $pick_user->winner = $pick_user->local_points > $pick_user->visit_points ? 1 : 2;
+
+                        $pick_user->winner = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
                     }
 
                     $pick_user->save();
@@ -156,7 +179,7 @@ class Picks extends Component
                     if($game->is_last_game_round()){
                         $new_pick->local_points = $this->points_local_last_game;
                         $new_pick->visit_points = $this->points_visit_last_game;
-                        $new_pick->winner       = $new_pick->local_points > $new_pick->visit_points ? 1 : 2;
+                        $new_pick->winner       = $new_pick->local_points + $game_pick->handicap >= $new_pick->visit_points ? 1 : 2;
                     }
 
                     $new_pick->save();
@@ -190,6 +213,15 @@ class Picks extends Component
     // Validación interna
     private function validate_data(){
         $this->reset('message','error');
+        // TODO: Validar que los partidos seleccionados sean los pronosticados
+
+        dd(count($this->selected));
+        if(count($this->selected) != $this->configuration->picks_to_select ){
+            $this->message = "Debe Marcar " . $this->configuration->picks_to_select . " pronósticos";
+            $this->error = 'Cantidad de Pronósticos';
+            return false;
+        }
+
 
         if(count($this->gamesids) != count($this->picks)){
             $this->message = "Faltan pronósticos";

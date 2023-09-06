@@ -3,8 +3,7 @@
 
     <td align="center">
         <label for="">
-
-                {{ $game->handicap != 0 ? number_format($game->handicap, 1, '.', ',') : '-' }}
+                {{ $game->handicap != 0 ? number_format($game->handicap*-1, 1, '.', ',') : '-' }}
         </label>
     </td>
     <td>
@@ -24,6 +23,11 @@
         @endif
     </td>
     <td>{{ $game->local_team->alias }}</td>
+    <td align="center">
+        <label for="">
+                {{ $game->handicap != 0 ? number_format($game->handicap, 1, '.', ',') : '-' }}
+        </label>
+    </td>
     @role('Admin')
         <td  class="px-1 text-center">
             {{-- TODO:: ¿Se le puede/debe bloquear al administrador? --}}

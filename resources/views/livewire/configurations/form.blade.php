@@ -53,6 +53,17 @@
                             maxlength="4">
                 </div>
 
+                {{-- Pronposticos a seleccionar --}}
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Pronósticos a Seleccionar</span>
+                    <input type="number"
+                            wire:model="main_record.picks_to_select"
+                            required
+                            class="mb-2 {{ $errors->has('picks_to_select') ? ' is-invalid' : '' }}"
+                            size="3"
+                            maxlength="4">
+                </div>
+
 
                 <div class="flex flex-row justify-between">
                     {{-- ¿Pedir Resultados? --}}

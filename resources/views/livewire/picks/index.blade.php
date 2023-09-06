@@ -18,6 +18,8 @@
                                         <tr class="bg-dark text-white text-center">
                                             {{-- <th>Id</th> --}}
                                             <th>Fecha</th>
+                                            <th>Selecciona</th>
+
                                             <th colspan="3">Visita</th>
                                             <th colspan="3">Pronóstico  </th>
                                             <th colspan="3">Local</th>
@@ -27,7 +29,7 @@
                                     <tbody>
                                         @foreach ($round_games as $game)
                                             <input wire:model='gamesids.{{ $loop->index }}' type="text" class="hidden"/>
-                                            @include('livewire.picks.pick_list')
+                                              @include('livewire.picks.pick_list')
                                         @endforeach
                                     </tbody>
                                 </table>
