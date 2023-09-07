@@ -6,16 +6,12 @@
     $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
 @endphp
 <tr>
-    <td>{{ $game->id }}</td>
     <td>{{$game->game_day->format('j-M-y')}} {{$game->game_time->format('h:i A') }}</td>
     <td>
-
         <input type="checkbox"
                wire:model='selected.{{  $game->id }}'
-               name="selected-{{ $game->id }}"
                {{ !$allow_pick   ? 'disabled' : ''}}
-               {{-- {{ $selected[ $game->id] == $game->id ? 'checked' : ''}} --}}
-               {{ isset($pick_user) && $pick_user->selected  ? 'checked' : ''}}
+               {{ $pick_user->selected  ? 'checked' : ''}}
         />
     </td>
 

@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Livewire\Games;
-use App\Http\Livewire\Picks;
 use App\Http\Livewire\Teams;
 use App\Http\Livewire\Rounds;
 use App\Http\Livewire\Results;
 use App\Http\Livewire\SelectRound;
 use App\Http\Livewire\Configurations;
+use App\Http\Livewire\Picks;
+
 use App\Http\Livewire\PicksRoundUser;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Positions\ByRound;

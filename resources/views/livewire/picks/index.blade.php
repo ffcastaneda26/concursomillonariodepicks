@@ -19,7 +19,6 @@
                                             {{-- <th>Id</th> --}}
                                             <th>Fecha</th>
                                             <th>Selecciona</th>
-
                                             <th colspan="3">Visita</th>
                                             <th colspan="3">Pronóstico  </th>
                                             <th colspan="3">Local</th>
