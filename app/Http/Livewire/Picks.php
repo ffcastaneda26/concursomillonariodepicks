@@ -96,7 +96,7 @@ class Picks extends Component
     public function receive_round(Round $round){
         if($round){
             $this->selected_round = $round;
-            $this->round_games = $round->games()->orderby('game_date')->get();
+            $this->round_games = $round->games()->get();
 
             $i=0;
             $this->reset('selected','gamesids','picks','points_visit_last_game','points_local_last_game','error','message');

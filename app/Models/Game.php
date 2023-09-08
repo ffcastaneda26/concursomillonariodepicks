@@ -8,27 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-/**
- * Class Game
- *
- * @property $id
- * @property $round_id
- * @property $local_team_id
- * @property $local_points
- * @property $visit_team_id
- * @property $visit_points
- * @property $game_day
- * @property $game_time
- * @property $game_date
- * @property $winner
- *
- * @property Team $team
- * @property Team $team
- * @package App
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
 class Game extends Model
 {
     protected $table = 'games';
@@ -41,7 +21,6 @@ class Game extends Model
 		'visit_points'  => 'nullable',
 		'game_day'      => 'required',
 		'game_time'     => 'required',
-		'game_date'     => 'required',
 		'winner'        => 'nullable',
     ];
 
@@ -52,12 +31,11 @@ class Game extends Model
      *
      * @var array
      */
-    protected $fillable = ['round_id','local_team_id','local_points','visit_team_id','visit_points','game_day','game_time','game_date','winner'];
+    protected $fillable = ['round_id','local_team_id','local_points','visit_team_id','visit_points','game_day','game_time','winner'];
 
     protected $casts = [
         'game_day'  => 'datetime:Y-m-d',
         'game_time' => 'datetime:hh:mm',
-        'game_date' => 'datetime',
     ];
 
     /*+------------+
@@ -102,18 +80,11 @@ class Game extends Model
     }
 
     // ¿Permite pronosticar?
-    // $axojuego= $this->game_date->format('Y');
-    // $mesjuego= $this->game_date->format('m');
-    // $diajuego= $this->game_date->format('d');
-    // $hhjuego = $this->game_date->format('H');
-    // $mmjuego = $this->game_date->format('i');
-    // dd( $this->game_date->format('i'));
-    // $fecha_juego   = new Carbon($this->game_date);
 
     public function allow_pick(){
         date_default_timezone_set("America/Chihuahua");
         $configuration = Configuration::first();
-        $fecha_juego = new Carbon($this->game_date);
+        $fecha_juego = new Carbon($this->game_day);
         $newDateTime = Carbon::now()->subMinute($configuration->minuts_before_picks);
         return $fecha_juego > $newDateTime;
     }

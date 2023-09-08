@@ -55,7 +55,7 @@ class Results extends Component
             $this->reset('gamesids');
             $this->selected_round = $round;
             $this->gamesids[]   = $round->games()->select('id')->orderby('id')->get()->toArray();
-            $this->round_games  = $round->games()->orderby('game_date')->get();
+            $this->round_games  = $round->games()->orderby('game_day')->orderby('game_time')->get();
 
            $this->users_with_picks_round = User::role('participante')
                             ->wherehas('picks',function(Builder $query) use ($round){
@@ -63,24 +63,6 @@ class Results extends Component
                                     $query->where('round_id',$round->id);
                                 });
                             })->get();
-
-            // dd( $this->users_with_picks_round);
-            // $users = User::role('participante')->whereHas('picks',function(Builder $query){
-            //     $query->wherehas('game',function(Builder $query){
-            //         $query->where('round_id',$round->id);
-            //     })->get();
-            // dd($users);
-            // $this->round_picks  = $round->picks()
-            //                             ->orderby('user_id')
-            //                             ->get();
-
         }
     }
-
-
 }
-
-
-
-
-

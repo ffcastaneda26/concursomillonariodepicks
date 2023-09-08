@@ -47,7 +47,7 @@ class Round extends Model
 
     public function games(): HasMany
     {
-        return $this->hasMany(Game::class)->orderby('game_date');
+        return $this->hasMany(Game::class)->orderby('game_day')->orderby('game_time');
     }
 
     public function positions(): HasMany
