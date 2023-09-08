@@ -273,8 +273,7 @@ trait FuncionesGenerales
 
     public function read_records_to_general_positions(){
         $positions = User::role('participante')
-                        ->select('users.first_name as first_name',
-                                'users.last_name as last_name',
+                        ->select('users.name as name',
                                 DB::raw('SUM(positions.hits) as hits'),
                                 DB::raw('SUM(positions.hit_last_game)    as hit_last_games'),
                                 DB::raw('SUM(positions.dif_total_points) as dif_total_points'))
