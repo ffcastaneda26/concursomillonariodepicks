@@ -11,9 +11,13 @@
         <td>
         <input type="checkbox"
                wire:model='selected.{{  $game->id }}'
+               class="{{ !$allow_pick  ? 'bg-danger' : ''}}"
                {{ !$allow_pick   ? 'disabled' : ''}}
                {{ isset($pick_user) && $pick_user->selected  ? 'checked' : ''}}
         />
+        @if(!$allow_pick)
+            <span class="badge rounded-pill bg-danger">NO EDITABLE</span>
+        @endif
     </td>
 
 
