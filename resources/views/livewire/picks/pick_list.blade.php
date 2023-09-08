@@ -4,10 +4,11 @@
     $pick_user      = $game->pick_user();
     $print_score    = $game->print_score();
     $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
+
 @endphp
 <tr>
-    <td>{{$game->game_day->format('j-M-y')}} {{$game->game_time->format('h:i A') }}</td>
-    <td>
+    <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td>
+        <td>
         <input type="checkbox"
                wire:model='selected.{{  $game->id }}'
                {{ !$allow_pick   ? 'disabled' : ''}}

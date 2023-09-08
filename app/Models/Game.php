@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -35,8 +36,29 @@ class Game extends Model
 
     protected $casts = [
         'game_day'  => 'datetime:Y-m-d',
-        'game_time' => 'datetime:hh:mm',
     ];
+
+
+
+    /*+-----------------------------------------+
+      | Setters y Getters de varios Campos      |
+      +-----------------------------------------+
+    */
+    public function getHourAttribute()
+    {
+        $hour_game      = intval(substr($this->game_time,0,2));
+        $minutes_game   = intval(substr($this->game_time,3,2));
+
+        if($hour_game > 12){
+            $hour_game = $hour_game - 12;
+            $meridian  = 'P.M.';
+        }else{
+            $meridian  = 'A.M.';
+        }
+
+        return $hour_game . ':' .  $minutes_game . ' ' . $meridian;
+        return strtoupper($this->first_name) . ' ' . strtoupper($this->last_name);
+    }
 
     /*+------------+
        | Relaciones |
@@ -82,11 +104,26 @@ class Game extends Model
     // ¿Permite pronosticar?
 
     public function allow_pick(){
-        date_default_timezone_set("America/Chihuahua");
+        date_default_timezone_set(env('TIMEZONE','America/Mexico_City'));
+
         $configuration = Configuration::first();
-        $fecha_juego = new Carbon($this->game_day);
-        $newDateTime = Carbon::now()->subMinute($configuration->minuts_before_picks);
-        return $fecha_juego > $newDateTime;
+        // Extrae año-mes-dia hh:mm
+        $year_game      = substr($this->game_day,0,4);
+        $month_game     = substr($this->game_day,5,2);
+        $day_game       = substr($this->game_day,8,2);
+        $hour_game      = substr($this->game_time,0,2);
+        $minutes_game   = substr($this->game_time,3,2);
+
+        // Convierte a tiempo unix y calcula diferencia
+        $unix_time_game = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game);
+
+        $unix_time_to_pick = $configuration->minuts_before_picks * 60;
+        $diff_time_to_pick = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time();
+
+
+        return mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time() > $configuration->minuts_before_picks * 60;
+
+
     }
 
     // Pronóstico del juegoy del usuario
