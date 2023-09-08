@@ -11,7 +11,7 @@
         <td>
         <input type="checkbox"
                wire:model='selected.{{  $game->id }}'
-               class="{{ !$allow_pick  ? 'bg-danger' : ''}}"
+
                {{ !$allow_pick   ? 'disabled' : ''}}
                {{ isset($pick_user) && $pick_user->selected  ? 'checked' : ''}}
         />
@@ -31,7 +31,6 @@
     @else
         @include('livewire.picks.pick_pick_result')
     @endif
-
     @include('livewire.picks.picks_local')
 
 
