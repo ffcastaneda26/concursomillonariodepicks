@@ -11,7 +11,7 @@
         <input type="checkbox"
                wire:model='selected.{{  $game->id }}'
                {{ !$allow_pick   ? 'disabled' : ''}}
-               {{ $pick_user->selected  ? 'checked' : ''}}
+               {{ isset($pick_user) && $pick_user->selected  ? 'checked' : ''}}
         />
     </td>
 
