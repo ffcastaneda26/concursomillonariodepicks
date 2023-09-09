@@ -68,9 +68,10 @@ trait FuncionesGenerales
     public function create_missing_picks_to_user($round_id){
         $games = game::whereDoesntHave('picks', function (Builder $query) {
             $query->where('user_id',Auth::user()->id);
-            })->where('round_id','>=',$round_id)
-              ->get();
+            })->Selectable()
+            ->get();
 
+        dd($games);
 
         foreach($games as $game){
             if($game->allow_pick()){
