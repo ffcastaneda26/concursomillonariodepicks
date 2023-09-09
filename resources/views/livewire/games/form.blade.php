@@ -8,10 +8,10 @@
             <label class="input-group-text mb-2">Fecha</label>
             <label class="input-group-text mb-2">Hora</label>
             <label class="input-group-text mb-2">Visita</label>
-            <label class="input-group-text mb-2">Local</label>
             <label class="input-group-text mb-2">Pts Visita</label>
+            <label class="input-group-text mb-2">Local</label>
             <label class="input-group-text mb-2">Pts Local</label>
-            <label class="input-group-text mb-2">Línea</label>
+               <label class="input-group-text mb-2">Línea</label>
         </div>
 
         {{-- Controles para los datos --}}
