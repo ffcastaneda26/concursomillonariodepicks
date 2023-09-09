@@ -123,7 +123,7 @@ class Picks extends Component
 
 
     public function store(){
-
+        $this->reset('message');
         if(!$this->validate_data()) return;
 
         $i=0;
@@ -167,6 +167,8 @@ class Picks extends Component
             }
             $i++;
         }
+        $this->message = "PRONOSTICOS ACTUALIZADOS ";
+        $this->error = "success";
         $this->show_alert('success','Pronósticos Guardados Satisfactoriamente');
 
 
@@ -182,7 +184,7 @@ class Picks extends Component
         }
 
         if($this->picks_selected  != $this->configuration->picks_to_select ){
-            $this->message = "Debe Marcar " . $this->configuration->picks_to_select . " pronósticos";
+            $this->message = "Pronósticos NO ACTUALIZADOS Debe Marcar " . $this->configuration->picks_to_select . " pronósticos";
             $this->error = 'Cantidad de Pronósticos';
             return false;
         }

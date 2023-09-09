@@ -1,11 +1,16 @@
 <div class="mt-5">
     @livewire('select-round')
     <div class="container-fluid mt-2">
-        @if(isset($message))
-            <div class="text-red-600 text-danger text-center text-3xl">
-                <h1>{{ $message }}</h1>
+        <div class="flex justify-between">
+            <div >
+               @if(isset($message))
+                    <h1 class=" {{ $error !='success' ? 'text-red-600 text-danger ' : 'text-success bg-green-400' }}text-center text-3xl">{{ $message }}</h1>
+                @endif
             </div>
-        @endif
+            <div class="float-right">
+                <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
+            </div>
+        </div>
 
         @if(isset($round_games ))
             <div class="row">
@@ -34,9 +39,17 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <div class="flex justify-between">
+                                        <div >
+                                           @if(isset($message))
+                                                <h1 class=" {{ $error !='success' ? 'text-red-600 text-danger ' : 'text-success bg-green-400' }}text-center text-3xl">{{ $message }}</h1>
+                                            @endif
+                                        </div>
+                                        <div class="float-right">
+                                            <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
 
-
-                                <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
+                                        </div>
+                                </div>
                             </div>
                         </div>
                     </div>
