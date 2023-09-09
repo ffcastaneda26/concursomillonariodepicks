@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Crea usuarios ficticios
-        $count_users = 0;
+        $count_users = 30;
         if($count_users){
             User::factory()
             ->count($count_users)

@@ -1,6 +1,29 @@
 
 TRUNCATE positions;
 TRUNCATE picks;
+-- Resultado de un partido
+SELECT us.name AS NOMBRE,
+		 vt.short AS VISITANTE,
+ 		 lt.short AS LOCAL,
+		 if(ga.winner=1,'Local','Visita') AS Ganador,
+		 IF(pic.winner=1,'Local','Visita') AS PROOSTICO_QUIEN_GANA,
+		 if(ga.winner=pic.winner,'Acerttó','Falló') AS Resultado,
+		 pic.local_points AS "PRON PTOS LOCALES",
+		 ga.local_points AS "PTSO LOCAL",
+		 pic.visit_points AS "PRON PTOS VISITA",
+		 ga.visit_points AS "PTOS VISITA",
+		 ga.handicap as "HANDICAP",
+		 ga.local_points + ga.handicap AS  "PTOS NETOS LOCAL",
+		 if(ga.local_points + ga.handicap >= ga.visit_points,"Local","Visita") AS GNETO
+FROM users us,games ga,picks pic,teams lt,teams vt
+WHERE us.id = pic.user_id
+  AND ga.id = pic.game_id
+  AND lt.id = ga.local_team_id
+  AND vt.id = ga.visit_team_id
+  AND  ga.id = 1
+
+
+
 
 
 SELECT 'Pronósticos=' as Tipo,COUNT(*) as total FROM picks

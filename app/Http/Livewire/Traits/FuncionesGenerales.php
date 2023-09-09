@@ -59,8 +59,7 @@ trait FuncionesGenerales
 
     // Lee equipos
     public function read_teams(){
-        $this->teams = Team::orderby('id')->get();
-
+        return $this->teams = Team::orderby('id')->get();
     }
 
 
@@ -68,33 +67,27 @@ trait FuncionesGenerales
     public function create_missing_picks_to_user($round_id){
         $games = game::whereDoesntHave('picks', function (Builder $query) {
             $query->where('user_id',Auth::user()->id);
-            })->Selectable()
-            ->get();
-
-        dd($games);
+            })->get();
 
         foreach($games as $game){
-            if($game->allow_pick()){
-                $winner = mt_rand(1,2);
-                $new_pick = Pick::create([
-                    'user_id'   => Auth::user()->id,
-                    'game_id'   => $game->id,
-                    'winner'    => $winner
-                    ]);
+            $winner = mt_rand(1,2);
+            $new_pick = Pick::create([
+                'user_id'   => Auth::user()->id,
+                'game_id'   => $game->id,
+                'winner'    => $winner
+                ]);
 
-                if($game->is_last_game_round()){
-                    if($winner == 1){
-                        $new_pick->local_points = 7;
-                        $new_pick->visit_points = 0;
-                    }else{
-                        $new_pick->local_points = 0;
-                        $new_pick->visit_points = 7;
-                    }
-                    $new_pick->total_points = 7;
+            if($game->is_last_game_round()){
+                if($winner == 1){
+                    $new_pick->local_points = 7;
+                    $new_pick->visit_points = 0;
+                }else{
+                    $new_pick->local_points = 0;
+                    $new_pick->visit_points = 7;
                 }
-                $new_pick->save();
-
+                $new_pick->total_points = 7;
             }
+            $new_pick->save();
         }
 
         // Si el usuario no tiene registro en tabla POSITIONS lo crea

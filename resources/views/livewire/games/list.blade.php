@@ -1,5 +1,6 @@
 <tr>
-    <td>{{ $game->game_day->format('j-M-y')}} {{$game->game_time->format('h:i A') }}</td>
+
+    <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td>
 
     <td align="center">
         <label for="">

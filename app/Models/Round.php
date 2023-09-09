@@ -30,7 +30,10 @@ class Round extends Model
 		'type' => 'required',
     ];
 
-    protected $perPage = 20;
+    protected $casts = [
+        'start_date'  => 'datetime:Y-m-d',
+        'end_date'  => 'datetime:Y-m-d',
+    ];
 
     /**
      * Attributes that should be mass-assignable.

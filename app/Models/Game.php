@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Models\Team;
+use App\Models\Configuration;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,35 +13,24 @@ class Game extends Model
 {
     protected $table = 'games';
     public $timestamps = false;
-    static $rules = [
-		'round_id'      => 'required|exists:rounds,id',
-        'local_team_id' => 'required|exists:teams,id',
-		'visit_team_id' => 'required|exists:teams,id',
-		'local_points'  => 'nullable',
-		'visit_points'  => 'nullable',
-		'game_day'      => 'required',
-		'game_time'     => 'required',
-		'winner'        => 'nullable',
+
+    protected $fillable = ['round_id',
+                            'local_team_id',
+                            'local_points',
+                            'visit_team_id',
+                            'visit_points',
+                            'game_day',
+                            'game_time',
+                            'winner'
     ];
-
-    protected $perPage = 20;
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['round_id','local_team_id','local_points','visit_team_id','visit_points','game_day','game_time','winner'];
 
     protected $casts = [
         'game_day'  => 'datetime:Y-m-d',
     ];
 
-
-
-    /*+-----------------------------------------+
-      | Setters y Getters de varios Campos      |
-      +-----------------------------------------+
+    /*+---------------------+
+      | Setters y Getters   |
+      +---------------------+
     */
     public function getHourAttribute()
     {
@@ -60,6 +48,16 @@ class Game extends Model
         return strtoupper($this->first_name) . ' ' . strtoupper($this->last_name);
     }
 
+
+    public function setGameDateAttribute()
+    {
+        $year_game      = substr($this->game_day,0,4);
+        $month_game     = substr($this->game_day,5,2);
+        $day_game       = substr($this->game_day,8,2);
+        $hour_game      = substr($this->game_time,0,2);
+        $minutes_game   = substr($this->game_time,3,2);
+        $this->attributes['game_date'] = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game);
+    }
     /*+------------+
        | Relaciones |
        +------------+
@@ -105,25 +103,13 @@ class Game extends Model
 
     public function allow_pick(){
         date_default_timezone_set(env('TIMEZONE','America/Mexico_City'));
-
         $configuration = Configuration::first();
-        // Extrae año-mes-dia hh:mm
         $year_game      = substr($this->game_day,0,4);
         $month_game     = substr($this->game_day,5,2);
         $day_game       = substr($this->game_day,8,2);
         $hour_game      = substr($this->game_time,0,2);
         $minutes_game   = substr($this->game_time,3,2);
-
-        // Convierte a tiempo unix y calcula diferencia
-        $unix_time_game = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game);
-
-        $unix_time_to_pick = $configuration->minuts_before_picks * 60;
-        $diff_time_to_pick = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time();
-
-
         return mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time() > $configuration->minuts_before_picks * 60;
-
-
     }
 
     // Pronóstico del juegoy del usuario
@@ -136,11 +122,9 @@ class Game extends Model
         return (!is_null($this->local_points) || !is_null($this->visit_points)) && ($this->local_points != $this->visit_points);
     }
 
-    // TODO: Cambiar el ID del equipo por algo que esté configurado
+    // ¿Es el último partido de la jornada?
     public function is_last_game_round(){
         $configuration_record = Configuration::first();
-
-        // return  ($this->local_team_id==1 || $this->visit_team_id == 1);
 
         if( $configuration_record->use_team_to_tie_breaker){
             return ( $this->local_team_id == $configuration_record->team_id  || $this->visit_team_id == $configuration_record->team_id);
@@ -158,12 +142,13 @@ class Game extends Model
         return $configuration_record->use_team_to_tie_breaker
            && ( $this->local_team_id == $configuration_record->team_id  || $this->visit_team_id == $configuration_record->team_id);
     }
+
     // Ya tiene resultado
     public function has_result(){
          return !is_null($this->visit_points) || !is_null($this->local_points);
     }
 
-    // ¿Gana local?
+    // ¿Quien gana: local o visit?
     public function win(){
         return $this->local_points > $this->visit_points ? 'local' : 'visit';
     }

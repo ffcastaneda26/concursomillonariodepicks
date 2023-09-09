@@ -21,6 +21,8 @@
     </td>
 
 
+    <td class="text-xl {{ $game->handicap*-1 < 0 ? 'text-danger' : '' }}">{{ $game->handicap*-1 != 0 ? number_format($game->handicap*-1, 1, '.', ',') : ''  }}</td>
+
     @include('livewire.picks.pick_visit')
 
     @if( $is_last_game)
@@ -32,6 +34,7 @@
         @include('livewire.picks.pick_pick_result')
     @endif
     @include('livewire.picks.picks_local')
+    <td class="text-xl {{ $game->handicap < 0 ? 'text-danger' : '' }}" >{{ $game->handicap != 0 ? number_format($game->handicap, 1, '.', ',') : ''  }}</td>
 
 
 </tr>

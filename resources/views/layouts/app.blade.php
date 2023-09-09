@@ -60,7 +60,7 @@
         {{-- Inicia Admiria --}}
         @include('layouts.home.javascript_files')
         @yield('scripts')
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             const Toast = Swal.mixin({
                 toast: true,
