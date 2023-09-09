@@ -69,11 +69,9 @@ class Picks extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
 
-        // ¿Participante y no es el usuario 1?
-        if(Auth::user()->hasRole('participante') && Auth::user()->id != 1){
-            if($this->configuration->create_mssing_picks){
-                $this->create_missing_picks_to_user($this->current_round->id);
-            }
+
+        if($this->configuration->create_mssing_picks){
+            $this->create_missing_picks_to_user($this->current_round->id);
         }
 
         $this->receive_round($this->current_round );
