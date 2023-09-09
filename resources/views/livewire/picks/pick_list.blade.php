@@ -9,15 +9,21 @@
 <tr>
     <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td>
         <td>
-        <input type="checkbox"
-               wire:model='selected.{{  $game->id }}'
-
-               {{ !$allow_pick   ? 'disabled' : ''}}
-               {{ isset($pick_user) && $pick_user->selected  ? 'checked' : ''}}
-        />
-        @if(!$allow_pick)
-            <span class="badge rounded-pill bg-danger">NO EDITABLE</span>
+        @if(!$allow_pick && !$pick_user->selected)
+            <span class="badge rounded-pill bg-gray-500">X</span>
+        @else
+            <input type="checkbox"
+                wire:model='selected.{{  $game->id }}'
+                {{ !$allow_pick                                  ? 'disabled' : ''}}
+                class="{{isset($pick_user) && $pick_user->selected && !$allow_pick ? 'bg-gray-500' : ''}}"
+                {{ isset($pick_user) && $pick_user->selected     ? 'checked' : ''}}
+            />
+            @if(!$allow_pick)
+                <span class="badge rounded-pill bg-gray-500">NO EDITABLE</span>
+            @endif
         @endif
+
+
     </td>
 
 

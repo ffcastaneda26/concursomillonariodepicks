@@ -3,7 +3,7 @@
     <input type="radio"
             wire:model='picks.{{ $loop->index }}'
             name="winner-{{ $loop->index }}"
-            class="{{ !$allow_pick  ? 'bg-danger' : ''}}"
+            class="{{ !$allow_pick  ? ' bg-gray-500' : ''}}"
             value="2"
             {{ !$allow_pick  ? 'disabled' : ''}}
             {{ isset($pick_user) && $pick_user->winner == 2 ? 'checked' : ''}}
@@ -18,7 +18,7 @@
     <input type="radio"
                 wire:model='picks.{{ $loop->index }}'
                 name="winner-{{$loop->index}}"
-                class="{{ !$allow_pick  ? 'bg-danger' : ''}}"
+                class="{{ !$allow_pick  ? ' bg-gray-500' : ''}}"
                 value="1"
                 {{ !$allow_pick  ? 'disabled' : ''}}
                 {{ isset($pick_user) && $pick_user->winner == 1 ? 'checked' : ''}}
