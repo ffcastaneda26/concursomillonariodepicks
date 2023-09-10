@@ -18,11 +18,11 @@
                 class="{{isset($pick_user) && $pick_user->selected && !$allow_pick ? 'bg-gray-500' : ''}}"
                 {{ isset($pick_user) && $pick_user->selected     ? 'checked' : ''}}
             />
-            @if(!$allow_pick)
-                <span class="badge rounded-pill bg-gray-500">NO EDITABLE</span>
-            @endif
-        @endif
 
+        @endif
+        @if(!$allow_pick)
+            <span class="badge rounded-pill bg-gray-500">NO EDITABLE</span>
+        @endif
 
     </td>
 
