@@ -1,4 +1,4 @@
-<tr>
+<tr class="text-base">
     <td>{{ $position->position }}</td>
     <td>{{ $position->user->name }}</td>
     <td align="center">{{ $position->hits }}</td>
