@@ -11,7 +11,9 @@
                                     @include('livewire.positions.round.table')
                                     <tbody>
                                         @foreach ($records as $position)
-                                            @include('livewire.positions.round.list')
+                                            @if(!$position->user_id == 1)
+                                                @include('livewire.positions.round.list')
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
