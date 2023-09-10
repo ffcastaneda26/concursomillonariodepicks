@@ -1,4 +1,10 @@
 @role('Admin')
+    @if(env('SHOW_USERS_MENU',false))
+        <x-nav-link href="{{ route('users') }}" :active="request()->routeIs('users')">
+            Usuarios
+        </x-nav-link>
+    @endif
+
     @if(env('SHOW_CONFIGURATION_MENU',false))
         <x-nav-link href="{{ route('configurations') }}" :active="request()->routeIs('configurations')">
             Configuración

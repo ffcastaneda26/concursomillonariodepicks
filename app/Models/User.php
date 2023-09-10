@@ -44,28 +44,32 @@ class User extends Authenticatable
         'paid'
     ];
 
-    protected function Name(): Attribute
+
+
+    public function getFullNameAttribute()
     {
-        return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-            set: fn (string $value) => ucwords(strtolower($value)),
-        );
+        return strtoupper($this->first_name) . ' ' . strtoupper($this->last_name) . ' ' . strtoupper($this->maternal_name);
     }
 
 
-    protected function email(): Attribute
+    public function setNameAttribute($value)
     {
-        return Attribute::make(
-            set: fn (string $value) => strtolower($value),
-        );
+        $this->attributes['name'] = ucwords($value);
     }
 
-    protected function alias(): Attribute
+    public function setEmailAttribute($value)
     {
-        return Attribute::make(
-            set: fn (string $value) => ucwords(strtolower($value)),
-        );
+        $this->attributes['email'] = strtolower($value);
     }
+
+
+    public function setAliasAttribute($value)
+    {
+        $this->attributes['alias'] = ucwords($value);
+    }
+
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -120,6 +124,12 @@ class User extends Authenticatable
       +-----------------+
      */
 
+
+    public function can_be_delete(){
+        return false;
+    }
+
+
     public function has_position_record_round($round_id){
        return $this->positions->where('round_id',$round_id)->count();
     }
@@ -155,7 +165,6 @@ class User extends Authenticatable
 
     // Asignarle los pronósticos que falten
     public function create_missing_picks(){
-
         $games = Game::where('game_day','>=',now())->get();
         foreach($games as $game){
             if($game->allow_pick()){
@@ -177,10 +186,23 @@ class User extends Authenticatable
                     $new_pick->total_points = 7;
                 }
                 $new_pick->save();
-
             }
         }
 
+    }
+
+    /*+-------------------+
+      | Búsquedas         |
+      +-------------------+
+    */
+
+    public function scopeGeneral($query,$valor)
+    {
+        if ( trim($valor) != "") {
+            $query->where('name','LIKE',"%$valor%")
+                 ->orwhere('email','LIKE',"%$valor%")
+                 ->orwhere('alias','LIKE',"%$valor%");
+         }
     }
 
 }

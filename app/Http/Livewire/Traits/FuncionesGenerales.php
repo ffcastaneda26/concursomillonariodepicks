@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-
+use Spatie\Permission\Models\Role;
 
 trait FuncionesGenerales
 {
@@ -22,9 +22,12 @@ trait FuncionesGenerales
     public $round_games     = null;
     public $current_round   = null;
     public $rounds          = null;
+    public $roles           = null;
     public $teams           = null;
     public $team            = null;
     public $round_id        = null;
+    public $role_id        = null;
+
     public $team_id         = null;
     public $game_instance   = null;
     public $configuration   = null;
@@ -38,7 +41,10 @@ trait FuncionesGenerales
         $this->configuration = Configuration::first();
 
     }
-
+    // Lee Roles
+    public function read_roles(){
+        return $this->roles = Role::orderby('name')->get();
+    }
 
     // Lee jornadas
     public function read_rounds(){

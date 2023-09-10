@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name',50)->comment('Nombre(s)');
-            $table->string('alias',15)->unique()->comment('Alias');
+            $table->string('alias',12)->unique()->comment('Alias');
             $table->string('email')->unique()->comment('Correo');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('change_password')->default(0)->comment('¿Necesita Cambiar Clave?');
-            $table->boolean('authorized')->default(0)->comment('¿Necesita Cambiar Clave?');
+            $table->boolean('authorized')->default(0)->comment('¿Autorizado?');
             $table->boolean('active')->default(0)->comment('¿Está activo?');
             $table->string('phone',10)->nullable()->default(null)->comment('Teléfono');
             $table->boolean('adult')->default(0)->comment('¿Es Adulto?');
