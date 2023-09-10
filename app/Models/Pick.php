@@ -27,9 +27,6 @@ class Pick extends Model
         return $this->belongsTo(Game::class);
     }
 
-    /*+-----------------+
-      | Funciones Apoyo |
-      +-----------------+
-     */
+
 
 }

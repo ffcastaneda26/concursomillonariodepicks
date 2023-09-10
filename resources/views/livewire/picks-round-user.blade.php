@@ -1,5 +1,5 @@
 <div class="mt-2">
-    <td>{{ $user->name }}</td>
+    <td class="text-base">{{ $user->name }}</td>
     @foreach($user_picks_round as $user_pick_round)
 
         <td align="center">
@@ -21,8 +21,10 @@
                     <span class="bg-dark text-white text-center text-sm">SEL</span>
                 @endif
             @endif
-
         </td>
+
     @endforeach
+
+    <td class="text-base">{{ $user->hits_round($round->id)}}</td>
 </div>
 

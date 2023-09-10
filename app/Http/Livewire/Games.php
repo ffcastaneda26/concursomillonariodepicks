@@ -25,10 +25,11 @@ class Games extends Component
         'main_record.visit_team_id' => 'required|exists:teams,id',
         'main_record.game_day'      => 'required',
         'main_record.game_time'     => 'required',
-        'main_record.local_points'  => 'nullable|numeric',
-        'main_record.visit_points'  => 'nullable|numeric',
+        'main_record.local_points'  => 'required_with:main_record.visit_points|numeric',
+        'main_record.visit_points'  => 'required_with:main_record.local_points|numeric',
         'main_record.handicap'      => 'nullable|numeric',
     ];
+
 
     public $error_message;
 
@@ -95,15 +96,14 @@ class Games extends Component
             $this->main_record->save();
         }
 
+        // $this->main_record->winner = $this->main_record->local_points +  $this->main_record->handicap >= $this->main_record->visit_points ? 1 : 2;
 
-        $this->main_record->winner = $this->main_record->local_points +  $this->main_record->handicap >= $this->main_record->visit_points ? 1 : 2;
-
+        $this->main_record->winner = $this->main_record->win();
         $this->main_record->save();
 
         // Si se pusieron puntos se procede a calificar pronósticos
         if($this->main_record->local_points || $this->main_record->visit_points){
             $this->qualify_picks($this->main_record);        // Califica pronósticos
-
             if($this->main_record->is_last_game_round()){
                 $this->update_tie_breaker($this->main_record);
             }

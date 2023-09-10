@@ -109,7 +109,7 @@ class User extends Authenticatable
 
     public function positions(): HasMany
     {
-        return $this->hasMany(Position::class);
+        return $this->hasMany(Position::class,'user_id');
     }
 
 
@@ -121,6 +121,10 @@ class User extends Authenticatable
 
     public function has_position_record_round($round_id){
        return $this->positions->where('round_id',$round_id)->count();
+    }
+
+    public function hits_round($round_id){
+        return $this->positions->where('round_id',$round_id)->first()->hits;
     }
 
     public function is_active(){

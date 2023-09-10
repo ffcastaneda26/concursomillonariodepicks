@@ -15,8 +15,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
-Route::get('dime/{round}',function(Round $round){
-    dd($round->user_picks()->count());
+Route::get('dime/',function(){
+    $user = User::find(2);
+    dd($user->position_round(1)->get());
 });
 
 Route::get('/juegos_sin_pronostico_usuario_conectado',function(){

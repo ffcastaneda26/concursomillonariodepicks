@@ -1,4 +1,4 @@
-<tr>
+<tr class="text-base">
 
     <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td>
 
@@ -9,18 +9,31 @@
     </td>
     <td>
         @if ($game->visit_team->logo)
-            <img src="{{Storage::url($game->visit_team->logo)}}" class="avatar-sm" alt="" width="100px" height="100px">
+            <img src="{{Storage::url($game->visit_team->logo)}}" class="avatar-sm" alt="">
+
         @endif
     </td>
 
     <td>{{ $game->visit_team->alias }}</td>
-    <td align="center"><input type="text" value="{{ $game->visit_points }}" disabled size="3"></td>
+    <td align="center">
+        <label class="{{ $game->winner == 2 ? 'text-xl font-extrabold' : '' }}">
+            @if($game->has_result())
+                {{ $game->visit_points ? $game->visit_points : '0'}}
+            @endif
+        </label>
+    </td>
 
+    <td align="center">
+        <label class="{{ $game->winner == 1 ? 'text-2xl font-extrabold' : ''}}">
+            @if($game->has_result())
+                {{ $game->local_points ? $game->local_points : '0'}}
+            @endif
+        </label>
 
-    <td align="center"><input type="text" value="{{ $game->local_points }}" disabled size="3"></td>
+    </td>
     <td>
         @if ($game->local_team->logo)
-            <img src="{{Storage::url($game->local_team->logo)}}" class="avatar-sm" alt="" width="100px" height="100px">
+            <img src="{{Storage::url($game->local_team->logo)}}" class="avatar-sm" alt="">
         @endif
     </td>
     <td>{{ $game->local_team->alias }}</td>

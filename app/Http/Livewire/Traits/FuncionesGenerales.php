@@ -158,7 +158,6 @@ trait FuncionesGenerales
     }
     // // Califica los pronósticos
     public function qualify_picks(Game $game){
-
         $sql = "UPDATE picks pic,games ga ";
 		$sql.="SET ";
 		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
@@ -198,7 +197,7 @@ trait FuncionesGenerales
                     ->Join('games', 'picks.game_id', '=', 'games.id')
                     ->where('games.round_id',$round->id)
                     ->where('users.active','1')
-                    ->where('picks.selected')
+                    // ->where('picks.selected')
                     ->groupBy('users.id')
                     ->get();
 
