@@ -114,6 +114,7 @@ class User extends Authenticatable
 
 
 
+
     /*+-----------------+
       | Funciones Apoyo |
       +-----------------+

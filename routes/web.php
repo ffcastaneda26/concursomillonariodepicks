@@ -32,7 +32,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('results-by-round',Results::class)->name('results-by-round');        // Resultados x Jornada
     Route::get('picks-round-user/{user}/{round}',PicksRoundUser::class)->name('picks-round-user'); // Pronósticos del usuario en una jornada
 
-
 });
 
 

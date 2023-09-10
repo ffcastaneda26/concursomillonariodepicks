@@ -25,8 +25,8 @@ class Games extends Component
         'main_record.visit_team_id' => 'required|exists:teams,id',
         'main_record.game_day'      => 'required',
         'main_record.game_time'     => 'required',
-        'main_record.local_points'  => 'required_with:main_record.visit_points|numeric',
-        'main_record.visit_points'  => 'required_with:main_record.local_points|numeric',
+        'main_record.local_points'  => 'nullable|numeric',
+        'main_record.visit_points'  => 'nullable|numeric',
         'main_record.handicap'      => 'nullable|numeric',
     ];
 

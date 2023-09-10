@@ -2,10 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Game;
-use App\Models\Round;
+use App\Models\Pick;
 use App\Models\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use App\Models\Round;
 use Livewire\Component;
 
 class PicksRoundUser extends Component
@@ -14,15 +13,15 @@ class PicksRoundUser extends Component
     public $user_picks_round=null;
     public $round;
     public function mount(User $user,Round $round){
+        $this->user_picks_round = Pick::select('picks.*')
+                                    ->join('games', 'picks.game_id', '=', 'games.id')
+                                    ->join('users', 'picks.user_id', '=', 'users.id')
+                                    ->where('picks.user_id','=',$user->id)
+                                    ->where('games.round_id','=',$round->id)
+                                    ->orderBy('games.game_day', 'ASC')
+                                    ->orderBy('games.game_time', 'ASC')
+                                    ->get();
 
-        $this->user_picks_round = $user->picks()->wherehas('game',function(Builder $query) use ($round) {
-            $query->where('round_id',$round->id);
-        })->get();
-
-
-        if($round->id != 1){
-            dd( $this->user_picks_round );
-        }
     }
 
     public function render()

@@ -63,6 +63,7 @@ class Results extends Component
                                     $query->where('round_id',$round->id);
                                 });
                             })->get();
+
         }
     }
 }

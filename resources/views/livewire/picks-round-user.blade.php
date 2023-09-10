@@ -11,12 +11,15 @@
                 @else
                     <img src="{{Storage::url($user_pick_round->game->visit_team->logo)}}"  class="avatar-xs" alt="" width="25px" height="25px">
                 @endif
-                <span>
-                    <img src="{{ $user_pick_round->winner== $user_pick_round->game->winner  ?   asset('images/afirmativo.png') : asset('images/negativo.png')}}"
-                                alt="{{$user_pick_round->winner== $user_pick_round->game->winner  ?  __('Yes') : 'No' }}"
-                                height="12px"
-                                width="12px">
-                </span>
+
+                @if( $user_pick_round->game->has_result())
+                    <span>
+                        <img src="{{ $user_pick_round->winner       == $user_pick_round->game->winner  ?   asset('images/afirmativo.png') : asset('images/negativo.png')}}"
+                                    alt="{{$user_pick_round->winner == $user_pick_round->game->winner  ?  __('Yes') : 'No' }}"
+                                    height="12px"
+                                    width="12px">
+                    </span>
+                @endif
                 @if($user_pick_round->selected)
                     <span class="bg-dark text-white text-center text-sm">SEL</span>
                 @endif
@@ -25,6 +28,6 @@
 
     @endforeach
 
-    <td class="text-base">{{ $user->hits_round($round->id)}}</td>
+    <td class="text-base">{{ $user->has_position_record_round($round->id) ? $user->hits_round($round->id) :''}}</td>
 </div>
 
