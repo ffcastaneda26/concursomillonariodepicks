@@ -130,7 +130,7 @@ class Picks extends Component
         foreach($this->gamesids as $game){
             $game_pick = Game::findOrFail($game);
 
-            if($game_pick->allow_pick()){
+            if($game_pick->allow_pick()){ // Se asegura que aún se pueda pronosticar
                 $pick_user = $game_pick->pick_user();
 
                 if( $pick_user){
@@ -140,7 +140,6 @@ class Picks extends Component
                         $pick_user->visit_points = $this->points_visit_last_game;
                         $pick_user->winner = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
                     }
-
                 }else{ // Cuando el juego no tiene pronóstico lo creamos
                     $pick_user = Pick::create([
                         'user_id'   => Auth::user()->id,
@@ -155,9 +154,10 @@ class Picks extends Component
                     }
                 }
 
-                $pick_user->selected = 0;
+                $pick_user->selected = 0; // En caso de que antes hubiera estado seleccionado lo desmarca
                 $pick_user->save();
 
+                // Recorre el arreglo de partidos seleccionados para marcarlos
                 foreach($this->selected as $key => $value) {
                     if($pick_user->game_id == $key && $value){
                         $pick_user->selected = 1;
@@ -170,8 +170,6 @@ class Picks extends Component
         $this->message = "PRONOSTICOS ACTUALIZADOS ";
         $this->error = "success";
         $this->show_alert('success','Pronósticos Guardados Satisfactoriamente');
-
-
     }
 
     // Validación interna
