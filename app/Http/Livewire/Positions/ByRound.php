@@ -29,10 +29,8 @@ class ByRound extends Component
         $this->manage_title = 'Posiciones x Jornada';
         $this->view_table   = null;
         $this->view_list    = null;
-        $this->rounds = $this->read_rounds();
         $round = new Round();
         $this->current_round = $round->read_current_round();
-        $this->selected_round =$this->current_round;
         $this->selected_round =$this->current_round;
         $this->receive_round($this->current_round );
     }
@@ -43,7 +41,6 @@ class ByRound extends Component
     */
 
     public function render(){
-
         return view('livewire.positions.round.index', [
             'records' => $this->selected_round->positions()->orderby('position')->paginate(10),
         ]);

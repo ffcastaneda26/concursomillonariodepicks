@@ -108,9 +108,7 @@ trait FuncionesGenerales
 
     // Actualia criterios de desempate
     public function update_tie_breaker(Game $game){
-
-        // TODO: Revisar por qué borra posiciones y picks sin una condicion
-        // Inicializa campos de desempate;
+        // Inicializa campos de desempate en tabla POSITIONS de la jornada;
         $sql = "UPDATE positions ";
 		$sql.="SET dif_winner_points=NULL,";
         $sql.="dif_total_points=NULL,";
@@ -121,10 +119,12 @@ trait FuncionesGenerales
         $sql.="hit_last_game=0,";
         $sql.="hit_visit=0,";
         $sql.="hit_local=0,";
-        $sql.="hit_last_game=NULL";
+        $sql.="hit_last_game=NULL ";
+        $sql.="WHERE round_id=" . $game->round_id;
 
         DB::update($sql);
 
+        // Inicializa PRONOSTICOS del juego
         $sql = "UPDATE picks ";
 		$sql.="SET dif_points_local=NULL,";
         $sql.="dif_points_visit=NULL,";
@@ -135,8 +135,10 @@ trait FuncionesGenerales
         $sql.="hit_last_game=0,";
         $sql.="dif_points_winner=NULL,";
         $sql.="dif_victory=NULL ";
+        $sql.="WHERE game_id=" . $game->id;
         DB::update($sql);
 
+        // Actualiza PRONOSTICOS del Juego
         $dif_victoria = $game->local_points + $game->visit_points ;
         $sql = "UPDATE picks pic,games ga ";
 		$sql.="SET ";
@@ -172,7 +174,13 @@ trait FuncionesGenerales
         DB::update($sql);
     }
 
-    // Crea el registro en tabla POSITIONS recibiendo ronda y usuario si este es null asume usuario conectado
+    /**+------------------------------------------------------------+
+       | Crea registro en tabla de posicinoes: POSITOINS            |
+       | Recibe:                                                    |
+       |    - Jornada                                               |
+       |    - Usuario_id: Si no viene asume el usuario conectado    |
+       +------------------------------------------------------------+
+     */
     public function create_position_record_round_user($round_id,$user_id=null){
         if(!$user_id){
             $user_id = Auth::user()->id;
@@ -184,6 +192,7 @@ trait FuncionesGenerales
         return  $new_position_record;
 
     }
+
 
     // Crea puntos x jornada
     public function update_total_hits_positions(Round $round){
@@ -203,7 +212,7 @@ trait FuncionesGenerales
                     ->Join('games', 'picks.game_id', '=', 'games.id')
                     ->where('games.round_id',$round->id)
                     ->where('users.active','1')
-                    // ->where('picks.selected')
+                    ->where('picks.selected')
                     ->groupBy('users.id')
                     ->get();
 
@@ -240,8 +249,9 @@ trait FuncionesGenerales
 
     // Asigna posición a tabla de POSITIONS
 
-    public function update_positions(){
-        $this->update_positions_to_null();
+    public function update_positions(Round $round){
+
+        $this->update_positions_to_null($round);
 
         $positions = Position::orderbyDesc('hits')
                             ->orderby('dif_total_points')
@@ -251,6 +261,7 @@ trait FuncionesGenerales
                             ->orderbyDesc('hit_last_game')
                             ->orderby('dif_victory')
                             ->orderby('created_at')
+                            ->where('round_id',$round->id)
                             ->get();
 
         $i=1;
@@ -262,9 +273,10 @@ trait FuncionesGenerales
     }
 
     // Actualiza posiciones a NULL
-    public function update_positions_to_null(){
+    public function update_positions_to_null(Round $round){
         $sql = "UPDATE positions ";
 		$sql.="SET position=NULL ";
+        $sql.="WHERE round_id=" . $round->id;
         DB::update($sql);
     }
 
