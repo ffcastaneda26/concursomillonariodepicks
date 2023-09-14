@@ -12,11 +12,17 @@
 
             @if( $game->has_result())
                 <span>
-                    <img src="{{ $user_pick_round->winner       == $game->winner  ?   asset('images/afirmativo.png') : asset('images/negativo.png')}}"
-                                height="12px"
-                                width="12px">
+                    <img src="{{ $user_pick_round->winner == $game->winner  ?   asset('images/afirmativo.png') : asset('images/negativo.png')}}"
+                                height="10px"
+                                width="10px"
+                        >
                 </span>
             @endif
+
+            @if($user_pick_round->selected)
+                 <label class="bg-secondary text-white text-center">SEL</label>
+            @endif
+
         @endif
     </td>
 
