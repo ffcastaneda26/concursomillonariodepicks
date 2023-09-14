@@ -71,9 +71,11 @@ class Picks extends Component
 
 
         if($this->configuration->create_mssing_picks){
-            $this->create_missing_picks_to_user($this->current_round->id);
+            $this->create_missing_picks_to_user();
+            $this->create_missing_positions_to_user();
         }
 
+        $this->create_positions_to_user_with_role();
         $this->receive_round($this->current_round );
     }
 

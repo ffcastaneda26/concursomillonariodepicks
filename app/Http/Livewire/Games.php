@@ -107,6 +107,7 @@ class Games extends Component
             if($this->main_record->is_last_game_round()){
                 $this->update_tie_breaker($this->main_record);
             }
+
             $this->update_total_hits_positions( $this->selected_round); // Actualiza tabla de aciertos por jornada (POSITIONS)
             $this->update_positions($this->selected_round);             // Asigna posiciones en tabla de POSITIONS
         }

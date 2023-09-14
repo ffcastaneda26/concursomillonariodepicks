@@ -9,7 +9,6 @@
                             <div class="table-responsive">
                                 <table class="table text-xs">
                                     @include('livewire.results.header_game_teams')
-
                                     <tbody>
                                         @foreach ($users_with_picks_round as $pick_user)
                                             <tr>

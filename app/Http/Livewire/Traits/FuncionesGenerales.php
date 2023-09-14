@@ -70,7 +70,7 @@ trait FuncionesGenerales
 
 
     // Crea pronósticos faltantes del usuario
-    public function create_missing_picks_to_user($round_id){
+    public function create_missing_picks_to_user(){
         $games = game::whereDoesntHave('picks', function (Builder $query) {
             $query->where('user_id',Auth::user()->id);
             })->get();
@@ -95,16 +95,38 @@ trait FuncionesGenerales
             }
             $new_pick->save();
         }
+    }
 
-        // Si el usuario no tiene registro en tabla POSITIONS lo crea
+    // Crea registro en tabla de posiciones
+    public function create_missing_positions_to_user(){
 
-        if(!Auth::user()->has_position_record_round($round_id)){
+        $rounds = Round::whereDoesntHave('positions', function (Builder $query) {
+            $query->where('user_id',Auth::user()->id);
+            })->get();
 
-            $this->create_position_record_round_user($round_id);
+        foreach($rounds as $round){
+            if(!Auth::user()->has_position_record_round($round->id)){
+                $this->create_position_record_round_user($round->id);
+            }
         }
 
     }
 
+    // Crea registro de POSICIONES para todos los usuarios con rol participante
+    public function create_positions_to_user_with_role($role = 'participant'){
+        $users = User::role('participante')->get();
+        foreach($users as $user){
+            $rounds = Round::whereDoesntHave('positions', function (Builder $query) use($user) {
+                $query->where('user_id',$user->id);
+                })->get();
+
+            foreach($rounds as $round){
+                if(!$user->has_position_record_round($round->id)){
+                    $this->create_position_record_round_user($round->id,$user->id);
+                }
+            }
+        }
+    }
 
     // Actualia criterios de desempate
     public function update_tie_breaker(Game $game){
@@ -211,19 +233,18 @@ trait FuncionesGenerales
                     ->Join('picks', 'picks.user_id', '=', 'users.id')
                     ->Join('games', 'picks.game_id', '=', 'games.id')
                     ->where('games.round_id',$round->id)
-                    ->where('users.active','1')
-                    ->where('picks.selected')
+                    ->where('users.active',1)
+                    ->where('picks.selected',1)
                     ->groupBy('users.id')
                     ->get();
 
-
         if(!empty($hits)){
             foreach($hits as $hit){
-
                 $user = User::findOrFail($hit->user_id);
                 if(!$user->has_position_record_round($round->id)){
                    $position_record =  $this->create_position_record_round_user($round->id,$user->id);
                 }
+
                 $position_record = Position::where('user_id',$user->id)
                                             ->where('round_id',$round->id)
                                             ->first();

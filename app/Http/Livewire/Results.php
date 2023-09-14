@@ -2,17 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Game;
-use App\Models\Pick;
 use App\Models\Round;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
 use App\Models\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Results extends Component
@@ -29,8 +25,6 @@ class Results extends Component
     public $users_with_picks_round= null;
 
     public function mount(){
-        $this->read_configuration();
-        $this->rounds = $this->read_rounds();
         $round = new Round();
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
@@ -57,12 +51,14 @@ class Results extends Component
             $this->gamesids[]   = $round->games()->select('id')->orderby('id')->get()->toArray();
             $this->round_games  = $round->games()->orderby('game_day')->orderby('game_time')->get();
 
-           $this->users_with_picks_round = User::role('participante')
-                            ->wherehas('picks',function(Builder $query) use ($round){
-                                $query->wherehas('game',function(Builder $query) use ($round){
-                                    $query->where('round_id',$round->id);
-                                });
-                            })->get();
+            $this->users_with_picks_round = User::role('participante')
+                                                ->select('users.*')
+                                                ->Join('picks', 'picks.user_id', '=', 'users.id')
+                                                ->Join('games', 'picks.game_id', '=', 'games.id')
+                                                ->where('games.round_id',$round->id)
+                                                ->where('users.active','1')
+                                                ->groupBy('users.id')
+                                                ->get();
 
         }
     }

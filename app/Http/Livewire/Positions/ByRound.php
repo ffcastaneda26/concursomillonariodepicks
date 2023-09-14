@@ -33,6 +33,8 @@ class ByRound extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
         $this->receive_round($this->current_round );
+        // Genera las posiciones que falten de usuarios
+        $this->create_positions_to_user_with_role();
     }
 
     /*+---------------------------------+
