@@ -113,8 +113,12 @@ class Game extends Model
     }
 
     // Pronóstico del juegoy del usuario
-    public function pick_user(){
-       return $this->picks->where('user_id',Auth::user()->id)->first();
+    public function pick_user($user_id=null){
+        if(!$user_id){
+            $user_id = Auth::user()->id;
+        }
+
+       return $this->picks->where('user_id',$user_id)->first();
     }
 
     // Imprime Resultado?

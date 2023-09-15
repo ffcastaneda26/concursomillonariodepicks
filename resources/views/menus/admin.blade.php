@@ -25,4 +25,10 @@
         Partidos
     </x-nav-link>
 
+    @if(env('ALLOW_EDIT_PICKS_TO_ADMIN',false))
+        <x-nav-link href="{{ route('admin-picks') }}" :active="request()->routeIs('admin-picks')">
+            Pronósticos
+        </x-nav-link>
+    @endif
+
 @endrole

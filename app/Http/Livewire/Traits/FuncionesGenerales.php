@@ -26,7 +26,10 @@ trait FuncionesGenerales
     public $teams           = null;
     public $team            = null;
     public $round_id        = null;
-    public $role_id        = null;
+    public $role_id         = null;
+    public $users           = null;
+    public $user_id         = null;
+    public $user            = null;
 
     public $team_id         = null;
     public $game_instance   = null;
@@ -46,6 +49,11 @@ trait FuncionesGenerales
         return $this->roles = Role::orderby('name')->get();
     }
 
+    // Lee usuarios con algún rol
+    public function read_users_role($role='participante')
+    {
+        return $this->users = User::role($role)->select('id','name')->get();
+    }
     // Lee jornadas
     public function read_rounds(){
         return $this->rounds = Round::orderby('id')->get();

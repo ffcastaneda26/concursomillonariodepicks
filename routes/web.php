@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\AdminPicks;
 use App\Http\Livewire\Games;
 use App\Http\Livewire\Teams;
 use App\Http\Livewire\Rounds;
@@ -48,7 +49,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin']
     Route::get('teams',Teams::class)->name('teams');                    // Equipos
     Route::get('rounds',Rounds::class)->name('rounds');                 // Jornadas
     Route::get('users',Users::class)->name('users');                    // Usuarios
-
+    Route::get('picks-admin',AdminPicks::class)->name('admin-picks');   // Pronósticos x Administrador
 });
 
 Route::get('current_round',SelectRound::class);

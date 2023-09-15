@@ -10,10 +10,11 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 
-class Picks extends Component
+class AdminPicks extends Component
 {
     use AuthorizesRequests;
     use WithPagination;
@@ -59,20 +60,19 @@ class Picks extends Component
     public $picks_selected = 0;
 
     public function mount(){
-        $this->read_configuration();
 
+        $this->read_configuration();
         $this->manage_title = 'Pronósticos';
         $this->rounds = $this->read_rounds();
+
         $round = new Round();
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
-
-
+        $this->users= $this->read_users_role('participante');
         if($this->configuration->create_mssing_picks){
             $this->create_missing_picks_to_user();
             $this->create_missing_positions_to_user();
         }
-
         $this->create_positions_to_user_with_role();
         $this->receive_round($this->current_round );
     }
@@ -82,40 +82,60 @@ class Picks extends Component
       +---------------------------------+
     */
     public function render(){
-        return view('livewire.picks.index');
+        return view('livewire.admin_picks.index');
     }
 
 
     /*+---------------+
-      | Recibe Juegos |
+      | Recibe Jornada |
       +---------------+
     */
 
     public function receive_round(Round $round){
         if($round){
+
             $this->selected_round = $round;
-            $this->round_games = $round->games()->get();
+            $this->reset('round_games','selected','gamesids','picks','points_visit_last_game','points_local_last_game','error','message');
 
+            if(!$this->user){
+                $this->message = 'Por favor seleccione un usuario';
+                return;
+            }
             $i=0;
-            $this->reset('selected','gamesids','picks','points_visit_last_game','points_local_last_game','error','message');
-
+            $this->round_games = $round->games()->get();
             foreach($this->round_games as $game){
-                $this->gamesids[$i] = $game->id;
-                $this->picks_allowed[$i] = false;
-                if($game->pick_user()){
-                    $this->selected[ $game->id] = $game->pick_user()->selected;
-                    $this->picks[$i]=$game->pick_user()->winner;
+                $this->gamesids[$i]     = $game->id;
+                $this->picks_allowed[$i]= false;
+                $pick_user              = $game->pick_user($this->user->id);
+
+                if( $pick_user){
+                    $this->selected[ $game->id] =  $pick_user->selected;
+                    $this->picks[$i]= $pick_user->winner;
                     if($game->is_last_game_round()){
-                        $this->points_visit_last_game = $game->pick_user()->visit_points;
-                        $this->points_local_last_game = $game->pick_user()->local_points;
+                        $this->points_visit_last_game =  $pick_user->visit_points;
+                        $this->points_local_last_game =  $pick_user->local_points;
                     }
                     $i++;
                 }
             }
+
+
+
         }
 
     }
 
+    /*+-------------------------------+
+      | Lee Usuario y sus Pronósticos |
+      +-------------------------------+
+    */
+
+    public function read_user(){
+        if($this->user_id){
+            $this->user = User::findOrFail($this->user_id);
+            $this->receive_round($this->current_round );
+        }
+    }
     /*+-----------------+
       | Guarda Registro |
       +-----------------+
@@ -131,7 +151,7 @@ class Picks extends Component
             $game_pick = Game::findOrFail($game);
 
             if($game_pick->allow_pick()){ // Se asegura que aún se pueda pronosticar
-                $pick_user = $game_pick->pick_user();
+                $pick_user = $game_pick->pick_user($this->user->id);
 
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
@@ -142,7 +162,7 @@ class Picks extends Component
                     }
                 }else{ // Cuando el juego no tiene pronóstico lo creamos
                     $pick_user = Pick::create([
-                        'user_id'   => Auth::user()->id,
+                        'user_id'   => $this->user->id,
                         'game_id'   => $game->id,
                         'winner'    => $this->picks[$i]
                     ]);
@@ -214,5 +234,6 @@ class Picks extends Component
     }
 
 }
+
 
 
