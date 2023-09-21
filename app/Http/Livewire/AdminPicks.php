@@ -32,13 +32,13 @@ class AdminPicks extends Component
         'main_record.visit_points'      => 'nullable',
         'main_record.local_points'      => 'nullable',
         'main_record.dif_points_winner' => 'nullable',
-        'main_record.dif_points_total'  => 'nullable',
+        'main_record.error_abs_local_visita'  => 'nullable',
         'main_record.dif_points_local'  => 'nullable',
         'main_record.dif_points_visit'  => 'nullable',
         'main_record.hit_last_game'     => 'nullable',
         'main_record.hit_local'         => 'nullable',
         'main_record.hit_visit'         => 'nullable',
-        'main_record.dif_victory'       => 'nullable',
+        'main_record.marcador_total'       => 'nullable',
         'main_record.selected'          => 'nullable',
     ];
 

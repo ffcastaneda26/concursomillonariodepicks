@@ -4,9 +4,8 @@
         <th>Participante  </th>
         <th>Aciertos</th>
         <th>¿Partido Desempate?</th>
-        <th>Error Total</th>
-        <th>Best Shot</th>
-        <th>Error Ganador</th>
-        <th>Diferencia Victoria</th>
+        <th>Error Local + Error Visita</th>
+        <th>Error Puntos Ganador</th>
+        <th>Marcador Total</th>
     </tr>
 </thead>

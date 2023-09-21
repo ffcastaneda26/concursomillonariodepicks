@@ -31,13 +31,13 @@ class Picks extends Component
         'main_record.visit_points'      => 'nullable',
         'main_record.local_points'      => 'nullable',
         'main_record.dif_points_winner' => 'nullable',
-        'main_record.dif_points_total'  => 'nullable',
+        'main_record.error_abs_local_visita'  => 'nullable',
         'main_record.dif_points_local'  => 'nullable',
         'main_record.dif_points_visit'  => 'nullable',
         'main_record.hit_last_game'     => 'nullable',
         'main_record.hit_local'         => 'nullable',
         'main_record.hit_visit'         => 'nullable',
-        'main_record.dif_victory'       => 'nullable',
+        'main_record.marcador_total'       => 'nullable',
         'main_record.selected'          => 'nullable',
     ];
 
@@ -155,14 +155,14 @@ class Picks extends Component
                 }
 
                 $pick_user->selected = 0; // En caso de que antes hubiera estado seleccionado lo desmarca
-                $pick_user->user_updated_id = Auth::user()->id;
+                $pick_user->user_id = Auth::user()->id;
                 $pick_user->save();
 
                 // Recorre el arreglo de partidos seleccionados para marcarlos
                 foreach($this->selected as $key => $value) {
                     if($pick_user->game_id == $key && $value){
                         $pick_user->selected = 1;
-                        $pick_user->user_updated_id = Auth::user()->id;
+                        $pick_user->user_id = Auth::user()->id;
                         $pick_user->save();
                     }
                 }

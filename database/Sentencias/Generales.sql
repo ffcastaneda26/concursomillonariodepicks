@@ -1,17 +1,18 @@
 
 TRUNCATE positions;
 TRUNCATE picks;
--- Resultado de un partido
-SELECT us.name AS NOMBRE,
+-- Resultado
+SELECT ga.id AS "JUEGO NO",
+	    us.name AS NOMBRE,
 		 vt.short AS VISITANTE,
  		 lt.short AS LOCAL,
-		 if(ga.winner=1,'Local','Visita') AS Ganador,
-		 IF(pic.winner=1,'Local','Visita') AS PROOSTICO_QUIEN_GANA,
-		 if(ga.winner=pic.winner,'Acerttó','Falló') AS Resultado,
-		 pic.local_points AS "PRON PTOS LOCALES",
-		 ga.local_points AS "PTSO LOCAL",
-		 pic.visit_points AS "PRON PTOS VISITA",
-		 ga.visit_points AS "PTOS VISITA",
+		 if(ga.winner=1,'Local','Visita') AS GANADOR,
+		 IF(pic.winner=1,'Local','Visita') AS PRONOSTICO_QUIEN_GANA,
+		 if(ga.winner=pic.winner,'Acerttó','Falló') AS RESULTADO,
+         if(pic.local_points,pic.local_points,'N/A') AS "PRON PTOS LOCALES",
+		 ga.local_points AS "RES LOCAL",
+         if(pic.visit_points,pic.visit_points,'N/A') AS "PRON PTOS VISITA",
+		 ga.visit_points AS "RES VISITA",
 		 ga.handicap as "HANDICAP",
 		 ga.local_points + ga.handicap AS  "PTOS NETOS LOCAL",
 		 if(ga.local_points + ga.handicap >= ga.visit_points,"Local","Visita") AS GNETO
@@ -20,8 +21,8 @@ WHERE us.id = pic.user_id
   AND ga.id = pic.game_id
   AND lt.id = ga.local_team_id
   AND vt.id = ga.visit_team_id
-  AND  ga.id = 1
-
+  AND pic.selected
+ORDER BY ga.id
 
 
 
@@ -86,10 +87,10 @@ WHERE ga.id = pic.game_id
 UPDATE picks pic,games ga
 SET pic.dif_points_local=abs(2-pic.local_points),
     pic.dif_points_visit= abs(14-pic.visit_points),
-	 pic.dif_points_total= abs(abs(14-pic.visit_points)+abs(2-pic.local_points)),
+	 pic.error_abs_local_visita= abs(abs(14-pic.visit_points)+abs(2-pic.local_points)),
 	 hit_local= CASE WHEN pic.local_points=2 THEN 1 ELSE 0  END,
 	 hit_visit= CASE WHEN pic.visit_points=14 THEN 1 ELSE 0  END,
 	 hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END,
 	 dif_points_winner= CASE WHEN (2>14) THEN abs(pic.local_points - 2) ELSE abs(pic.visit_points - 14)  END,
-	 pic.dif_victory=abs(16-(pic.local_points + pic.visit_points))
+	 pic.marcador_total=abs(16-(pic.local_points + pic.visit_points))
 WHERE ga.id = pic.game_id   AND ga.id=4

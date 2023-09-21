@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Crea usuarios ficticios
-        $count_users = 30;
+        $count_users = 10;
         if($count_users){
             User::factory()
             ->count($count_users)
@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             foreach( $users as $user){
                 $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
             }
+
         }
 
     }

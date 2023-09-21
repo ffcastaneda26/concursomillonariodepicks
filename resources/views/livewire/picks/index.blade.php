@@ -21,8 +21,6 @@
                                 <table class="table table-striped table-hover text-xs">
                                     <thead class="thead">
                                         <tr class="bg-dark text-white text-center">
-                                            {{-- <th>Id</th> --}}
-                                            <th>Fecha</th>
                                             <th>Selecciona</th>
                                             <th>Línea</th>
                                             <th colspan="3">Visita</th>
