@@ -146,6 +146,7 @@ class AdminPicks extends Component
         $this->reset('message');
         if(!$this->validate_data()) return;
 
+
         $i=0;
         foreach($this->gamesids as $game){
             $game_pick = Game::findOrFail($game);
@@ -175,14 +176,14 @@ class AdminPicks extends Component
                 }
 
                 $pick_user->selected = 0; // En caso de que antes hubiera estado seleccionado lo desmarca
-                $pick_user->user_updated_id = Auth::user()->id;
+                $pick_user->user_id = Auth::user()->id;
                 $pick_user->save();
 
                 // Recorre el arreglo de partidos seleccionados para marcarlos
                 foreach($this->selected as $key => $value) {
                     if($pick_user->game_id == $key && $value){
                         $pick_user->selected = 1;
-                        $pick_user->user_updated_id = Auth::user()->id;
+                        $pick_user->user_id = Auth::user()->id;
                         $pick_user->save();
                     }
                 }

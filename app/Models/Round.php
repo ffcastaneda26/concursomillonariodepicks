@@ -3,22 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Enums\RoundTypeEnum;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Support\Facades\Auth;
 
-/**
- * Class Round
- *
- * @property $id
- * @property $start_date
- * @property $end_date
- * @property $type
- *
- * @package App
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
+
 class Round extends Model
 {
 
@@ -31,15 +22,11 @@ class Round extends Model
     ];
 
     protected $casts = [
-        'start_date'  => 'datetime:Y-m-d',
-        'end_date'  => 'datetime:Y-m-d',
+        'start_date'=> 'datetime:Y-m-d',
+        'end_date'  => 'datetime:Y-m-d'
     ];
 
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = ['start_date','end_date','type'];
 
 

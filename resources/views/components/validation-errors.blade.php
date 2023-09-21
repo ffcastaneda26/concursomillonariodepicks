@@ -1,7 +1,7 @@
 @if ($errors->any())
-    <div class="text-danger">
+    <div class="text-red-600 bg-white text-lg">
         <div {{ $attributes }}>
-            <ul class="mt-3 list-disc list-inside text-sm text-red-600 text-danger">
+            <ul class="mt-3 mb-2 list-inside">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
