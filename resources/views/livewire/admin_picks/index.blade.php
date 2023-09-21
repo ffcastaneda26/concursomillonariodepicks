@@ -21,12 +21,21 @@
                     <h1 class=" {{ $error !='success' ? 'text-red-600 text-danger ' : 'text-success bg-green-400' }}text-center text-3xl">{{ $message }}</h1>
                 @endif
             </div>
-            <div class="float-right">
-                <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
+            <div class="float-right {{ $user_id ? '' : 'invisible'}}">
+                <div class="float-right">
+                    <button wire:click="store"
+                            class="btn btn-primary float-right"
+                            wire:loading.remove>
+                            ACTUALIZAR PRONÓSTICOS
+                    </button>
+                    <div wire:loading wire:target="store">
+                        <p class="bg-white text-black font-bold text-2xl">Procesando...</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        @if(isset($round_games ))
+        @if(isset($round_games ) && $user_id)
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
@@ -59,9 +68,17 @@
                                                 <h1 class=" {{ $error !='success' ? 'text-red-600 text-danger ' : 'text-success bg-green-400' }}text-center text-3xl">{{ $message }}</h1>
                                             @endif
                                         </div>
-                                        <div class="float-right">
-                                            <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
-
+                                        <div class="float-right {{ $user_id ? '' : 'invisible'}}">
+                                            <div class="float-right">
+                                                <button wire:click="store"
+                                                        class="btn btn-primary float-right"
+                                                        wire:loading.remove>
+                                                        ACTUALIZAR PRONÓSTICOS
+                                                </button>
+                                                <div wire:loading wire:target="store">
+                                                    <p class="bg-white text-black font-bold text-2xl">Procesando...</p>
+                                                </div>
+                                            </div>
                                         </div>
                                 </div>
                             </div>

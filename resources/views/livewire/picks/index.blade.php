@@ -8,7 +8,14 @@
                 @endif
             </div>
             <div class="float-right">
-                <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
+                <button wire:click="store"
+                        class="btn btn-primary float-right"
+                        wire:loading.remove>
+                        ACTUALIZAR PRONÓSTICOS
+                </button>
+                <div wire:loading wire:target="store">
+                    <p class="bg-white text-black font-bold text-2xl">Procesando...</p>
+                </div>
             </div>
         </div>
 
@@ -44,8 +51,14 @@
                                             @endif
                                         </div>
                                         <div class="float-right">
-                                            <button wire:click="store" class="btn btn-primary float-right">ACTUALIZAR PRONÓSTICOS</button>
-
+                                            <button wire:click="store"
+                                                    class="btn btn-primary float-right"
+                                                    wire:loading.remove>
+                                                    ACTUALIZAR PRONÓSTICOS
+                                            </button>
+                                            <div wire:loading wire:target="store">
+                                                <p class="bg-white text-black font-bold text-2xl">Procesando...</p>
+                                            </div>
                                         </div>
                                 </div>
                             </div>

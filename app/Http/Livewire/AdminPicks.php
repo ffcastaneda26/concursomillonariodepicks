@@ -133,6 +133,10 @@ class AdminPicks extends Component
     public function read_user(){
         if($this->user_id){
             $this->user = User::findOrFail($this->user_id);
+            if($this->configuration->create_mssing_picks){
+                $this->create_missing_picks_user($this->user);
+                $this->create_missing_positions_to_user();
+            }
             $this->receive_round($this->current_round );
         }
     }
@@ -162,17 +166,17 @@ class AdminPicks extends Component
                         $pick_user->winner = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
                     }
                 }else{ // Cuando el juego no tiene pronóstico lo creamos
-                    $pick_user = Pick::create([
-                        'user_id'   => $this->user->id,
-                        'game_id'   => $game->id,
-                        'winner'    => $this->picks[$i]
-                    ]);
+                        $pick_user = Pick::create([
+                            'user_id'   => $this->user->id,
+                            'game_id'   => $game->id,
+                            'winner'    => $this->picks[$i]
+                        ]);
 
-                    if($game->is_last_game_round()){
-                        $pick_user->local_points = $this->points_local_last_game;
-                        $pick_user->visit_points = $this->points_visit_last_game;
-                        $pick_user->winner       = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
-                    }
+                        if($game->is_last_game_round()){
+                            $pick_user->local_points = $this->points_local_last_game;
+                            $pick_user->visit_points = $this->points_visit_last_game;
+                            $pick_user->winner       = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
+                        }
                 }
 
                 $pick_user->selected = 0; // En caso de que antes hubiera estado seleccionado lo desmarca
