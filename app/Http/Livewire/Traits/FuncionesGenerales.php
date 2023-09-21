@@ -171,8 +171,6 @@ trait FuncionesGenerales
         $sql.="error_abs_local_visita=NULL,";
         $sql.="marcador_total=NULL,";
         $sql.="hit_last_game=0,";
-        $sql.="hit_visit=0,";
-        $sql.="hit_local=0,";
         $sql.="hit_last_game=NULL ";
         $sql.="WHERE round_id=" . $game->round_id;
         DB::update($sql);
