@@ -1,5 +1,5 @@
 @php
-    $allow_pick     = $game->allow_pick();
+    $allow_pick     = true;
     $is_last_game   = $game->is_last_game_round();
     $pick_user      = $game->pick_user($user->id);
     $print_score    = $game->print_score();
