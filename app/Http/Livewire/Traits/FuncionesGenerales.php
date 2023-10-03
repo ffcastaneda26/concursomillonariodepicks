@@ -122,7 +122,7 @@ trait FuncionesGenerales
 
     // Crea registro de POSICIONES para todos los usuarios con rol participante
     public function create_positions_to_user_with_role($role = 'participante'){
-        $users = User::role($role)->get();
+        $users = User::role($role)->where('active',1)->get();
         foreach($users as $user){
             $rounds = Round::whereDoesntHave('positions', function (Builder $query) use($user) {
                 $query->where('user_id',$user->id);

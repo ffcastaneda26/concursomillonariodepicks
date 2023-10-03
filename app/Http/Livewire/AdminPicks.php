@@ -69,10 +69,7 @@ class AdminPicks extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
         $this->users= $this->read_users_role('participante');
-        if($this->configuration->create_mssing_picks){
-            $this->create_missing_picks_to_user();
-            $this->create_missing_positions_to_user();
-        }
+
         $this->create_positions_to_user_with_role();
         $this->receive_round($this->current_round );
     }
@@ -82,6 +79,7 @@ class AdminPicks extends Component
       +---------------------------------+
     */
     public function render(){
+
         return view('livewire.admin_picks.index');
     }
 
@@ -98,11 +96,13 @@ class AdminPicks extends Component
             $this->reset('round_games','selected','gamesids','picks','points_visit_last_game','points_local_last_game','error','message');
 
             if(!$this->user){
-                $this->message = 'Por favor seleccione un usuario';
+                $this->message = 'Seleccione Usuario';
                 return;
             }
+
             $i=0;
             $this->round_games = $round->games()->get();
+
             foreach($this->round_games as $game){
                 $this->gamesids[$i]     = $game->id;
                 $this->picks_allowed[$i]= false;
@@ -118,18 +118,17 @@ class AdminPicks extends Component
                     $i++;
                 }
             }
-
-
-
         }
 
     }
 
-    /*+-------------------------------+
-      | Lee Usuario y sus Pronósticos |
-      +-------------------------------+
+    /*+---------------------------------------------+
+      |                 Lee Usuario                 |
+      +---------------------------------------------+
+      | Si no tiene pronósticos los crea            |
+      | Si no tiene registro en posiciones lo crea  |
+      +---------------------------------------------+
     */
-
     public function read_user(){
         if($this->user_id){
             $this->user = User::findOrFail($this->user_id);
@@ -140,11 +139,11 @@ class AdminPicks extends Component
             $this->receive_round($this->current_round );
         }
     }
-    /*+-----------------+
-      | Guarda Registro |
-      +-----------------+
-    */
 
+    /*+---------------------+
+      | Guarda Pronósticos  |
+      +---------------------+
+    */
 
     public function store(){
         $this->reset('message');
@@ -155,8 +154,11 @@ class AdminPicks extends Component
         foreach($this->gamesids as $game){
             $game_pick = Game::findOrFail($game);
 
-            if($game_pick->allow_pick()){ // Se asegura que aún se pueda pronosticar
+            if($game_pick->allow_pick() || Auth::user()->hasRole('Admin')){ // Se asegura que aún se pueda pronosticar
+
                 $pick_user = $game_pick->pick_user($this->user->id);
+
+
 
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
@@ -179,24 +181,25 @@ class AdminPicks extends Component
                         }
                 }
 
+
                 $pick_user->selected = 0; // En caso de que antes hubiera estado seleccionado lo desmarca
-                $pick_user->user_id = Auth::user()->id;
                 $pick_user->save();
 
-                // Recorre el arreglo de partidos seleccionados para marcarlos
                 foreach($this->selected as $key => $value) {
                     if($pick_user->game_id == $key && $value){
                         $pick_user->selected = 1;
-                        $pick_user->user_id = Auth::user()->id;
+                        $pick_user->updated_user_id = Auth::user()->id;
                         $pick_user->save();
                     }
                 }
             }
             $i++;
+
         }
         $this->message = "PRONOSTICOS ACTUALIZADOS ";
         $this->error = "success";
         $this->show_alert('success','Pronósticos Guardados Satisfactoriamente');
+        $this->receive_round($this->current_round);
     }
 
     // Validación interna

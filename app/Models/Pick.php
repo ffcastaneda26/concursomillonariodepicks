@@ -11,7 +11,7 @@ class Pick extends Model
     use HasFactory;
 
     protected $table = 'picks';
-    protected $fillable = ['user_id','game_id','winner'];
+    protected $fillable = ['user_id','game_id','winner','updated_user_id'];
 
     /*+------------+
       | Relaciones |
@@ -27,6 +27,10 @@ class Pick extends Model
         return $this->belongsTo(Game::class);
     }
 
+    public function user_updated(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'updated_user_id');
+    }
 
 
 }

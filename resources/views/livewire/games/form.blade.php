@@ -7,10 +7,12 @@
             <label class="input-group-text mb-2">Jornada</label>
             <label class="input-group-text mb-2">Fecha</label>
             <label class="input-group-text mb-2">Hora</label>
-            <label class="input-group-text mb-2">Local</label>
-            <label class="input-group-text mb-2">Pts Local</label>
+
             <label class="input-group-text mb-2">Visita</label>
             <label class="input-group-text mb-2">Pts Visita</label>
+            <label class="input-group-text mb-2">Local</label>
+            <label class="input-group-text mb-2">Pts Local</label>
+
                <label class="input-group-text mb-2">Línea</label>
         </div>
 
@@ -40,22 +42,7 @@
                     class="form-control  mb-2"
             >
 
-            {{-- Local --}}
-            <select wire:model="main_record.local_team_id"
-                    class="form-select rounded w-auto mb-2">
-                    <option value="">Local</option>
-                    @foreach($teams as $local_team)
-                            <option value="{{ $local_team->id }}">
-                                {{ $local_team->alias }}
-                            </option>
-                    @endforeach
-            </select>
 
-            {{-- Puntos Local --}}
-            <input type="number"
-                    wire:model="main_record.local_points"
-                    class="form-control mb-2 @error('main_record.local_points') is-invalid @enderror"
-            >
 
             {{-- Visita --}}
             <select wire:model="main_record.visit_team_id"
@@ -72,6 +59,22 @@
             <input type="number"
                     wire:model="main_record.visit_points"
                     class="form-control mb-2 @error('main_record.visit_points') is-invalid @enderror"
+            >
+            {{-- Local --}}
+            <select wire:model="main_record.local_team_id"
+                    class="form-select rounded w-auto mb-2">
+                    <option value="">Local</option>
+                    @foreach($teams as $local_team)
+                            <option value="{{ $local_team->id }}">
+                                {{ $local_team->alias }}
+                            </option>
+                    @endforeach
+            </select>
+
+            {{-- Puntos Local --}}
+            <input type="number"
+                    wire:model="main_record.local_points"
+                    class="form-control mb-2 @error('main_record.local_points') is-invalid @enderror"
             >
 
             {{-- Línea --}}

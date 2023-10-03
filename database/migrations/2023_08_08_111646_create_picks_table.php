@@ -2,6 +2,7 @@
 
 use App\Models\Game;
 use App\Models\User;
+use Brick\Math\BigInteger;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,7 +32,9 @@ return new class extends Migration
             $table->tinyInteger('hit_visit')->nullable()->default(null)->comment('¿Acertó visita');
             $table->integer('marcador_total')->nullable()->default(null)->comment('Dif absoluta puntos total del partido - puntos totales pronosticados');
             $table->boolean('selected')->default(0)->comment('¿Seleccionado?');
-
+            $table->unsignedBigInteger('updated_user_id')->nullable()->default(null)->comment('Id Usuario que modificó o creó el pronóstico');      // Usuario que actualizó
+            // Las llaves foraneas
+            $table->foreign('updated_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
