@@ -270,6 +270,7 @@ trait FuncionesGenerales
                     ->where('users.active',1)
                     ->where('picks.selected',1)
                     ->groupBy('users.id')
+                    ->orderby('users.id')
                     ->get();
 
         if(!empty($cursor_hits)){
@@ -363,7 +364,7 @@ trait FuncionesGenerales
     }
 
     // Lee y calcula para poner la tabla General de Posiciones
-
+    // TODO: Pasar a una tabla de posiciones generales
     public function read_records_to_general_positions(){
         $positions = User::role('participante')
                         ->select('users.name as name',
@@ -405,7 +406,6 @@ trait FuncionesGenerales
       | Actualiza tabla de posiciones de todas las jornadas |
       +-----------------------------------------------------+
     */
-
     public function update_acumulated_positions(){
         $rounds = Round::wherehas('games',function($query){
             $query->whereNotNull('local_points')
@@ -420,5 +420,4 @@ trait FuncionesGenerales
             }
         }
     }
-
 }

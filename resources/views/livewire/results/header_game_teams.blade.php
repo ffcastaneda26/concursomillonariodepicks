@@ -1,12 +1,7 @@
 <thead class="thead">
     <tr class="bg-dark text-white text-center text-sm">
-        {{-- <th>Id</th> --}}
         <th rowspan="2" valign="middle">PARTICIPANTE</th>
         @foreach ($round_games as $game)
-            {{-- <td><label  class="{{ $game->winner == 2 ? 'font-bold text-base' : '' }}"> {{ $game->visit_team->short }}</label>
-                -
-                <label  class="{{ $game->winner == 1 ? 'font-bold text-base' : '' }}"> {{ $game->local_team->short }}</label>
-            </td> --}}
             <td class="text-left">
                 <img src="{{Storage::url($game->visit_team->logo)}}" class="avatar-xs">
                 <br>

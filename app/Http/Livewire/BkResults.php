@@ -11,7 +11,7 @@ use App\Http\Livewire\Traits\FuncionesGenerales;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class Results extends Component
+class BkResults extends Component
 {
     use AuthorizesRequests;
     use WithPagination;

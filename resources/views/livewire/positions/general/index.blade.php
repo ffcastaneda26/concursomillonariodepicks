@@ -1,5 +1,4 @@
 <div>
-
     <div class="container-fluid mt-2">
         @if(isset($records ))
             <div class="row">

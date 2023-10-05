@@ -3,9 +3,11 @@
         <th>Pos</th>
         <th>Participante  </th>
         <th>Aciertos</th>
-        <th>¿Partido Desempate?</th>
-        <th>Error Local + Error Visita</th>
-        <th>Error Puntos Ganador</th>
-        <th>Marcador Total</th>
+        @if($tie_breaker_game_played)
+            <th>¿Partido Desempate?</th>
+            <th>Error Local + Error Visita</th>
+            <th>Error Puntos Ganador</th>
+            <th>Marcador Total</th>
+        @endif
     </tr>
 </thead>

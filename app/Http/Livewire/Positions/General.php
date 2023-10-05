@@ -24,8 +24,6 @@ class General extends Component
     */
 
     public function render(){
-
-
         return view('livewire.positions.general.index', [
             'records' => $this->read_records_to_general_positions(),
         ]);
