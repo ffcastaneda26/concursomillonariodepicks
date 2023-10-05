@@ -31,4 +31,11 @@
         </x-nav-link>
     @endif
 
+    @if(env('SHOW_QUALIFY_PICKS_MENU',false))
+        <x-nav-link href="{{ route('qualify-picks') }}" :active="request()->routeIs('qualify-picks')">
+            Califica Pronósticos
+        </x-nav-link>
+    @endif
+
+
 @endrole

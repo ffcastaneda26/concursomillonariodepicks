@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Team;
 use App\Models\Configuration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -154,8 +155,34 @@ class Game extends Model
 
     // ¿Quien gana: local o visit?
     public function win(){
+        if(is_null( $this->local_points) || is_null($this->visit_points)){
+            return false;
+        }
+
+        $this->winner = $this->local_points + $this->handicap  >=  $this->visit_points ? 1 : 2;
+        $this->save();
+        $sql = "UPDATE picks pic,games ga ";
+        $sql.="SET ";
+        $sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
+        $sql.="WHERE ga.id = pic.game_id ";
+        $sql.="  AND ga.id = " . $this->id;
+        DB::update($sql);
+
         return $this->local_points + $this->handicap  >=  $this->visit_points ? 1 : 2;
     }
+
+
+    /*+-------------+
+      | Búsquedas   |
+      +-------------+
+    */
+
+    public function scopeWhitResult($query)
+    {
+        $query->whereNotNull('local_points')
+              ->WhereNotNull('visit_points');
+    }
+
 
 
 

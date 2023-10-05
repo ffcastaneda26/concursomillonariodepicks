@@ -37,6 +37,11 @@ trait FuncionesGenerales
     public $round_positions = null;
     public $round_picks     = null;
 
+    public $games           = null;
+    public $game            = null;
+    public $game_id         = null;
+
+
 
 
     // Lee configuración
@@ -258,7 +263,7 @@ trait FuncionesGenerales
 
         $cursor_hits = User::role('participante')
                     ->select('users.id as user_id',
-                                DB::raw('SUM(picks.hit) as hits'),)
+                              DB::raw('SUM(picks.hit) as hits'),)
                     ->Join('picks', 'picks.user_id', '=', 'users.id')
                     ->Join('games', 'picks.game_id', '=', 'games.id')
                     ->where('games.round_id',$round->id)
@@ -375,4 +380,45 @@ trait FuncionesGenerales
 
         return $positions;
     }
+
+    /*+-----------------------------------------------------------+
+      | Califica pronósticos de todos los partidos con resultados |
+      +-----------------------------------------------------------+
+    */
+
+     public function qualify_all_picks(){
+
+        $this->games = Game::WhitResult()->get();
+        if($this->games->count()){
+            foreach($this->games as $game){
+                $game->win();
+            }
+
+            if($game->is_last_game_round()){
+                $this->update_tie_breaker($game);
+                $this->update_hit_last_game($game);
+            }
+        }
+     }
+
+    /*+-----------------------------------------------------+
+      | Actualiza tabla de posiciones de todas las jornadas |
+      +-----------------------------------------------------+
+    */
+
+    public function update_acumulated_positions(){
+        $rounds = Round::wherehas('games',function($query){
+            $query->whereNotNull('local_points')
+                  ->WhereNotNull('visit_points');
+        })->get();
+
+        if($rounds->count()){
+            foreach($rounds as $round){
+                $this->update_total_hits($round);   // Actualiza tabla de aciertos por jornada (POSITIONS)
+                $this->update_tie_brake($round);    // Actualiza criterios de desempate (POSITIONS)
+                $this->update_positions($round);    // Asigna posiciones en tabla de POSITIONS
+            }
+        }
+    }
+
 }

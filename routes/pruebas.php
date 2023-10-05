@@ -15,9 +15,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
-Route::get('dime/',function(){
-    $user = User::find(2);
-    dd($user->position_round(1)->get());
+Route::get('califica/',function(){
+    $games = Game::WhitResult()->get();
+    foreach($games as $game){
+        $sql = "UPDATE picks pic,games ga ";
+		$sql.="SET ";
+		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
+		$sql.="WHERE ga.id = pic.game_id ";
+        $sql.="  AND ga.id = " . $game->id;
+        DB::update($sql);
+    }
+    return 'Listo todos los partidos deben estar calificados';
+
 });
 
 Route::get('/juegos_sin_pronostico_usuario_conectado',function(){
