@@ -113,6 +113,19 @@ class Game extends Model
         return mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time() > $configuration->minuts_before_picks * 60;
     }
 
+    // ¿El partido es en JUEVES?
+    public function is_tnf(){
+        date_default_timezone_set(env('TIMEZONE','America/Mexico_City'));
+        $configuration = Configuration::first();
+        $year_game      = substr($this->game_day,0,4);
+        $month_game     = substr($this->game_day,5,2);
+        $day_game       = substr($this->game_day,8,2);
+        $hour_game      = substr($this->game_time,0,2);
+        $minutes_game   = substr($this->game_time,3,2);
+        $d = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game);
+        return  date("w", $d) == 4;
+    }
+
     // Pronóstico del juegoy del usuario
     public function pick_user($user_id=null){
         if(!$user_id){

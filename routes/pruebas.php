@@ -16,16 +16,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 
 Route::get('califica/',function(){
-    $games = Game::WhitResult()->get();
-    foreach($games as $game){
-        $sql = "UPDATE picks pic,games ga ";
-		$sql.="SET ";
-		$sql.="hit= CASE WHEN pic.winner=ga.winner THEN 1 ELSE 0 END ";
-		$sql.="WHERE ga.id = pic.game_id ";
-        $sql.="  AND ga.id = " . $game->id;
-        DB::update($sql);
-    }
-    return 'Listo todos los partidos deben estar calificados';
+    date_default_timezone_set(env('TIMEZONE','America/Chihuahua'));
+    $game = Game::findOrFail(65);
+    $year_game      = substr($game->game_day,0,4);
+    $month_game     = substr($game->game_day,5,2);
+    $day_game       = substr($game->game_day,8,2);
+    $hour_game      = substr($game->game_time,0,2);
+    $minutes_game   = substr($game->game_time,3,2);
+    $d = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game);
+    echo 'Veamos='. date("w", $d);
+    dd('El número de día es: ' . $d);
+    echo date('w');
+
 
 });
 
