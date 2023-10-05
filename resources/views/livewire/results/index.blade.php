@@ -2,7 +2,7 @@
     @livewire('select-round')
     <div class="container-fluid mt-2">
         @if(isset($round_games) && !empty($round_games))
-            <div class="row">
+            <div class="flex flex-row justify-center">
                 <div class="col-sm-12">
                     <div class="table-responsive">
                         <table class="table text-xs">
