@@ -4,12 +4,12 @@
     $pick_user      = $game->pick_user();
     $print_score    = $game->print_score();
     $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
-    $is_tnf         = $game->is_tnf();
+    $is_selectable         = $game->is_selectable();
 @endphp
 <tr>
     {{-- <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td> --}}
         <td>
-        @if((!$allow_pick && !$pick_user->selected) || $is_tnf)
+        @if((!$allow_pick && !$pick_user->selected) || !$is_selectable)
             <span class="badge rounded-pill bg-gray-500">X</span>
         @else
             <input type="checkbox"

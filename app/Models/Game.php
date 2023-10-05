@@ -114,7 +114,7 @@ class Game extends Model
     }
 
     // ¿El partido es en JUEVES?
-    public function is_tnf(){
+    public function is_selectable(){
         date_default_timezone_set(env('TIMEZONE','America/Mexico_City'));
         $configuration = Configuration::first();
         $year_game      = substr($this->game_day,0,4);
@@ -123,7 +123,7 @@ class Game extends Model
         $hour_game      = substr($this->game_time,0,2);
         $minutes_game   = substr($this->game_time,3,2);
         $d = mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game);
-        return  date("w", $d) == 4;
+        return  date("w", $d) != 4 &&  date("w", $d) != 5;
     }
 
     // Pronóstico del juegoy del usuario
