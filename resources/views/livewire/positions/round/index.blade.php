@@ -1,12 +1,10 @@
 <div>
     @livewire('select-round')
-    {{-- <div class="container-fluid mt-2"> --}}
         @if(isset($records ))
-        <div class="flex  justify-center justify-items-center">
+            <div class="flex  justify-center justify-items-center">
                 <div class="{{ $tie_breaker_game_played ? 'col-sm-12' : 'col-4'}}">
                     <div class="card">
                         <div class="card-body">
-                            {{-- <div class="table-responsive"> --}}
                                 <table class="table table-striped table-responsive table-hover text-xs">
                                     @if(isset($my_position) && $tie_breaker_game_played )
                                         <tr>                                    <tr>
@@ -41,11 +39,9 @@
                                 <div>
                                     {{ $records->links()}}
                                 </div>
-                            {{-- </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
         @endif
-    {{-- </div> --}}
 </div>
