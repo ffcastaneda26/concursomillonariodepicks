@@ -123,9 +123,14 @@ class User extends Authenticatable
 
     public function positions(): HasMany
     {
-        return $this->hasMany(Position::class,'user_id');
+        return $this->hasMany(Position::class,'user_id')->orderby('round_id');
     }
 
+
+    public function positions_rounds_played($roundsIds){
+        return $this->positions()->whereIn('round_id',$roundsIds);
+
+    }
     /*+-----------------+
       | Funciones Apoyo |
       +-----------------+

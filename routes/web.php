@@ -13,9 +13,11 @@ use App\Http\Livewire\PicksRoundUser;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Positions\ByRound;
 use App\Http\Livewire\Positions\General;
+use App\Http\Livewire\Positions\GeneralPositions;
 use App\Http\Livewire\QualifyGames;
 use App\Http\Livewire\Users;
 use App\Models\Configuration;
+use App\Models\GeneralPosition;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +34,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('picks',Picks::class)->name('picks');                                // Pronósticos
     Route::get('positions-by-round',ByRound::class)->name('positions-by-round');    // Posiciones x Jornada
     Route::get('positions-general',General::class)->name('positions-general');      // Posiciones General
+    Route::get('general-positions',GeneralPositions::class)->name('general-positions'); // Posiciones General
     Route::get('results-by-round',Results::class)->name('results-by-round');        // Resultados x Jornada
 });
 
@@ -53,7 +56,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin']
 });
 
 Route::get('current_round',SelectRound::class);
-
 
 
 
