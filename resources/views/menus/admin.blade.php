@@ -50,6 +50,12 @@
         </x-nav-link>
     @endif
 
+    @if (Route::has('results-by-round'))
+        <x-nav-link href="{{ route('results-by-round') }}" :active="request()->routeIs('results-by-round')">
+            Tabla de Pronósticos
+        </x-nav-link>
+    @endif
+
     @if (Route::has('positions-by-round'))
         <x-nav-link href="{{ route('positions-by-round') }}" :active="request()->routeIs('positions-by-round')">
             Posiciones por Jornada
