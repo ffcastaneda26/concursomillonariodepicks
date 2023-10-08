@@ -12,7 +12,7 @@
                                         <tr>                                    <tr>
                                             <td colspan="7" class="text-base text-center">USTED OCUPA LA POSICION: {{ $my_position->position }}</td>
                                         </tr>
-                                        <tr class="text-base bg-success">
+                                        <tr class="text-base" style="background-color:#9BFDC7;">
                                             <td>{{$my_position->position }}</td>
                                             <td>{{$my_position->user->name }}</td>
                                             <td align="center">{{$my_position->hits }}</td>

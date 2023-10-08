@@ -6,12 +6,15 @@
                 <div class="col-sm-8">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover text-lg">
-                            @include('livewire.positions.general.header_rounds')
-                            {{-- @if(isset($my_position))
+
+                            @if(isset($my_position))
                                 <tr>
-                                    <td colspan="5" class="text-center">SUS DATOS SON: </td>
+                                    <td colspan="20" class="text-center">USTED OCUPA LA POSICION: {{  Auth::user()->general_position()->first()->position }} </td>
                                 </tr>
-                                <tr class="bg-success">
+
+
+                                <tr style="background-color:#9BFDC7;">
+                                    <td align="center">{{  Auth::user()->general_position()->first()->position }}</td>
                                     <td align="center">{{ Auth::user()->name }}</td>
                                     @php
                                         $total = 0;
@@ -25,8 +28,8 @@
                                         </td>
                                     @endforeach
                                     <td align="center">{{ $total ? $total : '' }}</td>                                </tr>
-                             @endif --}}
-
+                             @endif
+                             @include('livewire.positions.general.header_rounds')
                              <tbody>
 
                                 @foreach ($records as $record)

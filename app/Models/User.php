@@ -126,6 +126,10 @@ class User extends Authenticatable
         return $this->hasMany(Position::class,'user_id')->orderby('round_id');
     }
 
+    public function general_position(): HasOne
+    {
+        return $this->hasOne(GeneralPosition::class);
+    }
 
     public function positions_rounds_played($roundsIds){
         return $this->positions()->whereIn('round_id',$roundsIds);

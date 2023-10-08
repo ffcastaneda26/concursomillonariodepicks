@@ -56,8 +56,8 @@
         </x-nav-link>
     @endif
 
-    @if (Route::has('positions-general'))
-        <x-nav-link href="{{ route('positions-general') }}" :active="request()->routeIs('positions-general')">
+    @if (Route::has('general-positions'))
+        <x-nav-link href="{{ route('general-positions') }}" :active="request()->routeIs('general-positions')">
             Posiciones Generales
         </x-nav-link>
     @endif

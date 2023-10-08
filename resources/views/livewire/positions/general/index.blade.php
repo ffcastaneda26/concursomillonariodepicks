@@ -11,7 +11,7 @@
                                 <tr>
                                     <td colspan="5" class="text-center">USTED OCUPA LA POSICION: {{ $my_position->position }}</td>
                                 </tr>
-                                <tr class="bg-success">
+                                <tr style="background-color:#9BFDC7;">
                                     <td align="center">{{ $my_position->position }}</td>
                                     <td>{{ $my_position->user->name }}</td>
                                     <td align="center">{{ $my_position->hits ?  $my_position->hits : '-'}}</td>
