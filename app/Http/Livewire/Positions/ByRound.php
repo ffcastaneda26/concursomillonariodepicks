@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Positions;
 use App\Models\Round;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -19,7 +20,7 @@ class ByRound extends Component
     protected $listeners = ['receive_round'];
 
     public $tie_breaker_game_played = false;
-
+    public $my_position;
     public function mount(){
         $this->manage_title = 'Posiciones x Jornada';
         $this->view_table   = null;
@@ -38,6 +39,10 @@ class ByRound extends Component
 
     public function render(){
         $this->tie_breaker_game_played = $this->selected_round->get_last_game_round()->has_result();
+        if(Auth::user()->hasRole('participante')){
+            $this->my_position = $this->selected_round->positions()->where('user_id',Auth::user()->id)->orderby('position')->first();
+        }
+
         return view('livewire.positions.round.index', [
             'records' => $this->selected_round->positions()->orderby('position')->paginate(10),
         ]);

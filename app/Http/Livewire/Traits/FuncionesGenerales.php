@@ -8,6 +8,7 @@ use App\Models\Team;
 use App\Models\User;
 use App\Models\Round;
 use App\Models\Configuration;
+use App\Models\GeneralPosition;
 use App\Models\Position;
 use Illuminate\Support\Facades\DB;
 
@@ -284,7 +285,7 @@ trait FuncionesGenerales
                                             ->where('round_id',$round->id)
                                             ->first();
 
-                $position_record->hits                      = $hit->hits;
+                $position_record->hits = $hit->hits;
                 $position_record->save();
             }
         }
@@ -334,7 +335,7 @@ trait FuncionesGenerales
 
     // Asigna posición a tabla de POSITIONS
 
-    public function update_positions(Round $round){
+    public function update_positions_by_round(Round $round){
 
         $this->update_positions_to_null($round);
 
@@ -377,7 +378,7 @@ trait FuncionesGenerales
             ->orderbyDesc('hits')
             ->orderbyDesc('hit_last_games')
             ->orderby('error_abs_local_visita')
-            ->paginate(15);
+            ->get();
 
         return $positions;
     }
@@ -414,10 +415,45 @@ trait FuncionesGenerales
 
         if($rounds->count()){
             foreach($rounds as $round){
-                $this->update_total_hits($round);   // Actualiza tabla de aciertos por jornada (POSITIONS)
-                $this->update_tie_brake($round);    // Actualiza criterios de desempate (POSITIONS)
-                $this->update_positions($round);    // Asigna posiciones en tabla de POSITIONS
+                $this->update_total_hits($round);           // Actualiza tabla de aciertos por jornada (POSITIONS)
+                $this->update_tie_brake($round);            // Actualiza criterios de desempate (POSITIONS)
+                $this->update_positions_by_round($round);    // Asigna posiciones en tabla de POSITIONS
+                $this->update_general_positions();          // Actualiza Tabla general de posiciones
             }
         }
+    }
+
+        /**+--------------------------------------------------------+
+       |  Lee tabla de POSICIONES x Cada Participante           |
+       +--------------------------------------------------------+
+       |                Suma                    |  Ordenado x   |
+       +----------------------------------------+---------------+
+       | - Aciertos                             | Descendente   |
+       | - Veces que ha acertado último partido | Descendente   |
+       | - Dferencia total de puntos            | Ascendente    |
+       +--------------------------------------------------------+
+    */
+
+    public function update_general_positions(){
+        $positions = User::role('participante')
+                        ->select('users.id as user_id',
+                                DB::raw('SUM(positions.hits) as hits'),
+                                DB::raw('SUM(positions.hit_last_game)    as hit_last_games'),
+                                DB::raw('SUM(positions.error_abs_local_visita) as error_abs_local_visita'))
+                        ->Join('positions', 'positions.user_id', '=', 'users.id')
+                        ->where('users.active','1')
+                        ->groupBy('users.id')
+                        ->orderbyDesc('hits')
+                        ->orderbyDesc('hit_last_games')
+                        ->orderby('error_abs_local_visita')
+                        ->get();
+
+
+        if($positions){
+            $general_position = new GeneralPosition();
+            $general_position->truncate_me();
+            $general_position->create_positions($positions);
+        }
+
     }
 }

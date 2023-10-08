@@ -116,7 +116,7 @@ class Games extends Component
 
             $this->update_total_hits( $this->selected_round);   // Actualiza tabla de aciertos por jornada (POSITIONS)
             $this->update_tie_brake($this->selected_round);     // Actualiza criterios de desempate (POSITIONS)
-            $this->update_positions($this->selected_round);     // Asigna posiciones en tabla de POSITIONS
+            $this->update_positions_by_round($this->selected_round);     // Asigna posiciones en tabla de POSITIONS
         }
 
         $this->show_alert('success','JUEGO ACTUALIZADO SATISFACTORIAMENTE');

@@ -9,10 +9,90 @@ use App\Models\Profile;
 use App\Models\Position;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
+
+Route::get('carga-inicial',function(){
+    echo '<h1> CARGA INICIAL...................</h1>';
+    echo '<h1> PROCESO YA FUE EJECUTADO </h1>';
+    die();
+    DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); // Desactivamos la revisión de claves foráneas
+    $user_roles = DB::table('user_roles')->where('role_id','>',7)->count();
+    $users = User::where('id','>',7)->orderBy('id')->get();
+    DB::table('user_roles')->where('role_id', 2)->delete();
+    echo '<h3> Roles de Usuarios Eliminados ='  . $user_roles. '<h3>' ;
+
+    echo '<hr>';
+    $i=0;
+
+    echo '<h3> Asignando  rol de participante a '  . $users->count(). ' usuarios <h3>' ;
+    foreach($users as $user){
+        $user->assignRole(env('ROLE_TO_PARTICIPANT','participante'));
+
+        if($i == 0){
+
+            echo 'Se crearán los PRONOSTICOS de todos los usuarios participantes<br>';
+        }
+
+        $games = Game::whereDoesntHave('picks', function (Builder $query) use ($user) {
+            $query->where('user_id',$user->id);
+            })->get();
+
+        foreach($games as $game){
+            $winner = mt_rand(1,2);
+            $new_pick = Pick::create([
+                'user_id'   => $user->id,
+                'game_id'   => $game->id,
+                'winner'    => $winner
+                ]);
+
+            $points = mt_rand(0,47);
+            if($game->is_last_game_round()){
+                if($winner == 1){
+                    $new_pick->local_points = $points;
+                    $new_pick->visit_points = 0;
+                }else{
+                    $new_pick->local_points = 0;
+                    $new_pick->visit_points = $points;
+                }
+                $new_pick->total_points = $points;
+            }
+            $new_pick->save();
+        }
+
+        if($i == 0){
+            echo 'Se crearán los POSICIONES de todos los usuarios participantes<br>';
+        }
+
+        $rounds = Round::whereDoesntHave('positions', function (Builder $query) use($user) {
+            $query->where('user_id',$user->id);
+            })->get();
+
+        foreach($rounds as $round){
+            if(!$user->has_position_record_round($round->id)){
+                $new_position_record = new Position();
+                $new_position_record->round_id = $round->id;
+                $new_position_record->user_id = $user->id;
+                $new_position_record->save();
+            }
+        }
+        echo 'Encriptando clave usuario Id=' . $user->id . '=' . $user->name . '<br>';
+        $user->password = Hash::make($user->password);
+
+        $user->save();
+
+        $i++;
+    }
+
+    echo '<h3>Pronósticos creados' . '</h3>';
+    echo '<hr>';
+    echo '<h3>Encriptamos las claves' . '</h3>';
+
+
+});
 
 
 Route::get('califica/',function(){
@@ -27,8 +107,6 @@ Route::get('califica/',function(){
     echo 'Veamos='. date("w", $d);
     dd('El número de día es: ' . $d);
     echo date('w');
-
-
 });
 
 Route::get('/juegos_sin_pronostico_usuario_conectado',function(){
