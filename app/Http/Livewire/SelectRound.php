@@ -13,11 +13,16 @@ class SelectRound extends Component
     use CrudTrait;
     use FuncionesGenerales;
 
-    public function mount(){
+    public $show_all = true;
+
+    public function mount($show_all=null){
 
         $this->rounds = $this->read_rounds();
         $round = new Round();
         $this->current_round = $round->read_current_round();
+        if($show_all && is_null($show_all)){
+            $this->show_all = $this->current_round;
+        }
     }
 
     public function render()

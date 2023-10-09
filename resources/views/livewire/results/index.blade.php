@@ -1,5 +1,5 @@
 <div>
-    @livewire('select-round')
+    @livewire('select-round', ['show_all'=> false])
     <div class="container-fluid mt-2">
         @if(isset($round_games) && !empty($round_games))
             <div class="flex flex-row justify-center">
