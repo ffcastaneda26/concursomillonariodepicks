@@ -31,10 +31,13 @@ class Games extends Component
     ];
 
 
-    public $error_message;
+    public $error_message=null;
 
     public $min_date = null;
     public $max_date = null;
+
+    public $visit_points = false;
+    public $local_points = false;
 
     public function mount(){
         $this->update_acumulated_positions();
@@ -68,7 +71,6 @@ class Games extends Component
 
         $this->create_button_label = $this->main_record->id ?  'Actualizar Juego' :  ' Crear Juego';
 
-
         return view('livewire.games.index');
     }
 
@@ -79,15 +81,32 @@ class Games extends Component
     */
 
     public function store(){
-        $this->reset('error_message');
+        $this->reset('error_message','visit_points','local_points');
+
+
+        $this->visit_points = strlen($this->main_record->visit_points);
+        $this->local_points = strlen($this->main_record->local_points);
+
+        if($this->visit_points && !$this->local_points){
+            $this->error_message = 'Ingrese Puntos de Local';
+            return false;
+        }
+
+        if($this->local_points && !$this->visit_points){
+            $this->error_message = 'Ingrese Puntos de Local';
+            return false;
+        }
+
+
         $this->validate();
 
+
         $this->main_record->winner = null;
-        if(!$this->main_record->visit_points){
+        if(!$this->visit_points){
             $this->main_record->visit_points = null;
         }
 
-        if(!$this->main_record->local_points){
+        if(!$this->local_points){
             $this->main_record->local_points = null;
         }
 
@@ -140,6 +159,7 @@ class Games extends Component
     public function edit(Game $record){
         $this->main_record  = $record;
         $this->record_id    = $record->id;
+        $this->reset('error_message','visit_points','local_points');
         $this->openModal();
     }
 

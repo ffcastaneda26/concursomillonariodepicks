@@ -1,6 +1,8 @@
 <div class="container">
     <x-validation-errors></x-validation-errors>
-    {{ $error_message }}
+    @if($error_message)
+        <label class="flex flex-row justify-items-center text-red-600 bg-white text-lg"> {{ $error_message }}</label>
+    @endif
 
     <div class="row align-items-start mt-2">
         <div class="col-md-3 flex flex-col">
