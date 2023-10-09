@@ -58,7 +58,7 @@ trait FuncionesGenerales
     // Lee usuarios con algún rol
     public function read_users_role($role='participante')
     {
-        return $this->users = User::role($role)->select('id','name')->get();
+        return $this->users = User::role($role)->select('id','name')->orderby('name')->get();
     }
     // Lee jornadas
     public function read_rounds(){
