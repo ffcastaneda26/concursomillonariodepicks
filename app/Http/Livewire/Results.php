@@ -27,6 +27,7 @@ class Results extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
         $this->receive_round($this->selected_round );
+        $this->search_label = 'Nombre';
     }
 
     /*+---------------------------------+
@@ -41,7 +42,9 @@ class Results extends Component
                             ->Join('games', 'picks.game_id', '=', 'games.id')
                             ->where('games.round_id',$this->selected_round->id)
                             ->where('users.active','1')
+                            ->where('name','LIKE',"%$this->search%")
                             ->groupBy('users.id')
+                            ->orderBy('users.name')
                             ->paginate($this->pagination),
         ]);
     }

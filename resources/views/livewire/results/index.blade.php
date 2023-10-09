@@ -4,6 +4,12 @@
         @if(isset($round_games) && !empty($round_games))
             <div class="flex flex-row justify-center">
                     <div class="card">
+                        @if($view_search)
+                            <div class="card-header flex flex-row justify-start">
+                                <label for="search-bar" class="mr-5">Participante</label>
+                                <div class="ml-2">@include($view_search)</div>
+                            </div>
+                        @endif
                         <div class="card-body ">
                             <div class="col-sm-12">
                                 <div class="table-responsive">
