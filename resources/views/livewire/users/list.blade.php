@@ -10,6 +10,7 @@
         height="24px"
         width="24px">
     </td>
+    <td>{{$record->last_login_at}}</td>
     <td class="px-1 text-center">
         <button
                 wire:click="edit({{ $record->id }})"

@@ -6,6 +6,8 @@
         <th class="text-center">Teléfono</th>
         <th class="text-center">Rol</th>
         <th class="text-center">¿Activo?</th>
+        <th class="text-center">Último Acceso</th>
+
         <th class="text-center">Editar</th>
     </tr>
 </thead>
