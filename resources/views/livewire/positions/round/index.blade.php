@@ -7,7 +7,7 @@
                     <div class="card-body">
                             <table class="table table-striped table-responsive table-hover text-xs">
                                 @if(isset($my_position) && $tie_breaker_game_played )
-                                    <tr>                                    <tr>
+                                    <tr>
                                         <td colspan="7" class="text-base text-center">USTED OCUPA LA POSICION: {{ $my_position->position }}</td>
                                     </tr>
                                     <tr class="text-base" style="background-color:#9BFDC7;">

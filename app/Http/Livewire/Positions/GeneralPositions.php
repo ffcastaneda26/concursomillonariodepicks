@@ -55,7 +55,7 @@ class GeneralPositions extends Component
                             ->where('users.active','1')
                             ->groupBy('users.id','general_positions.position')
                             ->orderby('general_positions.position')
-                            ->paginate($this->pagination),
+                            ->paginate(40),
         ]);
     }
 

@@ -4,17 +4,12 @@
             <div class="flex  justify-center justify-items-center">
                     <div class="card">
                         <div class="card-body ">
-
-
                             <div class="col-sm-12">
                                     <table class="table table-striped table-responsive table-hover text-xs">
-
                                         @if(isset($my_position))
                                             <tr>
                                                 <td colspan="20" class="text-center">USTED OCUPA LA POSICION: {{  Auth::user()->general_position()->first()->position }} </td>
                                             </tr>
-
-
                                             <tr style="background-color:#9BFDC7;">
                                                 <td align="center">{{  Auth::user()->general_position()->first()->position }}</td>
                                                 <td align="center">{{ Auth::user()->name }}</td>
@@ -31,13 +26,11 @@
                                                 @endforeach
                                                 <td align="center">{{ $total ? $total : '' }}</td>                                </tr>
                                         @endif
+
                                         @include('livewire.positions.general.header_rounds')
                                         <tbody>
-
                                             @foreach ($records as $record)
-                                                {{-- <tr class="bg-dark text-white"> --}}
                                                 <tr>
-
                                                     <td align="center">{{ $record->position }}</td>
                                                     <td>{{ $record->name }}</td>
                                                     @php

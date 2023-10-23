@@ -26,8 +26,8 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(function () {
 
     Route::get('/dashboard', function () {
-        $configuration_record = Configuration::first();
-        return view('dashboard',compact('configuration_record'));
+        // $configuration_record = Configuration::first();
+        return view('dashboard');
     })->name('dashboard');
 
     Route::get('games',Games::class)->name('games');                                // Juegos

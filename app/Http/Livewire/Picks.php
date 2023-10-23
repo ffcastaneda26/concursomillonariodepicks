@@ -62,7 +62,7 @@ class Picks extends Component
         $this->read_configuration();
 
         $this->manage_title = 'Pronósticos';
-        $this->rounds = $this->read_rounds();
+        // $this->rounds = $this->read_rounds();
         $round = new Round();
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
@@ -73,7 +73,7 @@ class Picks extends Component
             $this->create_missing_positions_to_user();
         }
 
-        $this->create_positions_to_user_with_role();
+        // $this->create_positions_to_user_with_role();
         $this->receive_round($this->current_round );
     }
 

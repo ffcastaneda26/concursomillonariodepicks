@@ -4,7 +4,7 @@
     $pick_user      = $game->pick_user();
     $print_score    = $game->print_score();
     $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
-    $is_selectable         = $game->is_selectable();
+    $is_selectable  = $game->is_selectable();
 @endphp
 <tr>
     {{-- <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td> --}}
