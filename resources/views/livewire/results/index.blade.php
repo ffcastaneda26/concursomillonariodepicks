@@ -34,12 +34,14 @@
                                                         @endphp
                                                     @endforeach
 
-                                                    <td class="text-base text-center">
-                                                        {{ $pick_user->has_position_record_round($selected_round->id) ? $pick_user->hits_round($selected_round->id) : ''}}
-                                                    </td>
                                                     <td class="text-base text-center {{ $hit_last_game ? 'text-success' : 'text-danger'  }}">
                                                         {{ $visit_points . '-' . $local_points}}
                                                     </td>
+
+                                                    <td class="text-base text-center">
+                                                        {{ $pick_user->has_position_record_round($selected_round->id) ? $pick_user->hits_round($selected_round->id) : ''}}
+                                                    </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>

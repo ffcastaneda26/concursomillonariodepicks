@@ -20,10 +20,7 @@
                 @endif
             </td>
         @endforeach
+         <th>MNF</th>
         <th valign="middle">ACIERTOS</th>
-
-        <th>
-            MNF
-        </th>
     </tr>
 </thead>
