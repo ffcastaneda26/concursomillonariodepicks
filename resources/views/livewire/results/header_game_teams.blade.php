@@ -8,17 +8,22 @@
                 <img src="{{Storage::url($game->local_team->logo)}}" class="avatar-xs">
             </td>
         @endforeach
-        <th rowspan="2" valign="middle">ACIERTOS</th>
+        <th valign="middle" colspan="2"></th>
     </tr>
     <tr class="bg-dark text-white text-center text-sm">
         @foreach ($round_games as $game)
-        <td>
-            @if($game->visit_points || $game->local_pints)
-                {{$game->visit_points ? $game->visit_points : '0' }}
-                -
-                {{ $game->local_points ? $game->local_points : '0' }}
-            @endif
-        </td>
-    @endforeach
+            <td>
+                @if($game->visit_points || $game->local_pints)
+                    {{$game->visit_points ? $game->visit_points : '0' }}
+                    -
+                    {{ $game->local_points ? $game->local_points : '0' }}
+                @endif
+            </td>
+        @endforeach
+        <th valign="middle">ACIERTOS</th>
+
+        <th>
+            MNF
+        </th>
     </tr>
 </thead>

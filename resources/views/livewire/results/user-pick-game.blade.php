@@ -27,12 +27,6 @@
                     <label class="text-black text-center">{{ $user_pick_round->game->visit_team->short }}</label>
                 @endif
             @endif
-
-
-
-            {{-- @if($game_selected)
-                 <label class="bg-secondary text-white text-center">SEL</label>
-            @endif --}}
         @endif
     </td>
 </div>

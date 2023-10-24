@@ -44,7 +44,7 @@ class ByRound extends Component
         }
 
         return view('livewire.positions.round.index', [
-            'records' => $this->selected_round->positions()->orderby('position')->paginate(40),
+            'records' => $this->selected_round->positions()->where('user_id','>',1)->orderby('position')->paginate(40),
         ]);
     }
 

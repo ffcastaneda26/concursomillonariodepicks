@@ -17,13 +17,28 @@
                                         @include('livewire.results.header_game_teams')
                                         <tbody>
                                             @foreach ($records as $pick_user)
+                                                @php
+                                                    $visit_points = null;
+                                                    $local_points = null;
+                                                    $hit_mnf_game = false;
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $pick_user->name }}</td>
                                                     @foreach($selected_round->picks_user($pick_user->id)->get() as $pick)
+
                                                         @livewire('user-pick-game', ['user'=> $pick->user_id,'game'=> $pick->game_id], key($pick->id))
+                                                        @php
+                                                            $visit_points = $pick->visit_points;
+                                                            $local_points = $pick->local_points;
+                                                            $hit_last_game = $pick->winner == $pick->game->winner;
+                                                        @endphp
                                                     @endforeach
+
                                                     <td class="text-base text-center">
                                                         {{ $pick_user->has_position_record_round($selected_round->id) ? $pick_user->hits_round($selected_round->id) : ''}}
+                                                    </td>
+                                                    <td class="text-base text-center {{ $hit_last_game ? 'text-success' : 'text-danger'  }}">
+                                                        {{ $visit_points . '-' . $local_points}}
                                                     </td>
                                                 </tr>
                                             @endforeach
