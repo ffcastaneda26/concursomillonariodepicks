@@ -1,6 +1,6 @@
 <tr class="text-base">
     <td>{{ $position->position }}</td>
-    <td>{{ $position->user->name }}</td>
+    <td class="text-left">{{ $position->user->name }}</td>
     <td align="center">{{ $position->hits }}</td>
     @if($tie_breaker_game_played)
         <td align="center">
