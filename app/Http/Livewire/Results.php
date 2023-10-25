@@ -35,6 +35,7 @@ class Results extends Component
       +---------------------------------+
     */
     public function render(){
+
         return view('livewire.results.index', [
             'records' => User::role('participante')
                             ->select('users.*')
@@ -57,7 +58,11 @@ class Results extends Component
     public function receive_round(Round $round){
         if($round){
             $this->selected_round = $round;
-            $this->round_games  = $this->selected_round->games()->orderby('game_day')->orderby('game_time')->get();
+            $this->round_games  = $this->selected_round->games()
+                                                        ->with(['local_team','visit_team'])
+                                                        ->orderby('game_day')
+                                                        ->orderby('game_time')
+                                                        ->get();
         }
     }
 

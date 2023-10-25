@@ -86,9 +86,9 @@ class Picks extends Component
     }
 
 
-    /*+---------------+
-      | Recibe Juegos |
-      +---------------+
+    /*+-----------------------------+
+      | Recibe Jornada y Lee Juegos |
+      +-----------------------------+
     */
 
     public function receive_round(Round $round){
@@ -102,12 +102,14 @@ class Picks extends Component
             foreach($this->round_games as $game){
                 $this->gamesids[$i] = $game->id;
                 $this->picks_allowed[$i] = false;
-                if($game->pick_user()){
-                    $this->selected[ $game->id] = $game->pick_user()->selected;
-                    $this->picks[$i]=$game->pick_user()->winner;
-                    if($game->is_last_game_round()){
-                        $this->points_visit_last_game = $game->pick_user()->visit_points;
-                        $this->points_local_last_game = $game->pick_user()->local_points;
+                $pick_user_record = $game->pick_user(Auth::user()->id)->first();
+
+                if($pick_user_record){
+                    $this->selected[ $game->id] = $pick_user_record->selected;
+                    $this->picks[$i]=$pick_user_record->winner;
+                    if($game->last_game_round){
+                        $this->points_visit_last_game = $pick_user_record->visit_points;
+                        $this->points_local_last_game = $pick_user_record->local_points;
                     }
                     $i++;
                 }
@@ -131,11 +133,11 @@ class Picks extends Component
             $game_pick = Game::findOrFail($game);
 
             if($game_pick->allow_pick()){ // Se asegura que aún se pueda pronosticar
-                $pick_user = $game_pick->pick_user();
+                $pick_user = $game_pick->pick_user(Auth::user()->id)->first();
 
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
-                    if($game_pick->is_last_game_round()){
+                    if($game_pick->last_game_round){
                         $pick_user->local_points = $this->points_local_last_game;
                         $pick_user->visit_points = $this->points_visit_last_game;
                         $pick_user->winner = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
@@ -147,7 +149,7 @@ class Picks extends Component
                         'winner'    => $this->picks[$i]
                     ]);
 
-                    if($game->is_last_game_round()){
+                    if($game->last_game_round){
                         $pick_user->local_points = $this->points_local_last_game;
                         $pick_user->visit_points = $this->points_visit_last_game;
                         $pick_user->winner       = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;

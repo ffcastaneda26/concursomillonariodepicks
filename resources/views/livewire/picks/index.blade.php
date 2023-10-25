@@ -1,7 +1,7 @@
 <div class="mt-5">
     @livewire('select-round')
     <div class="container-fluid mt-2">
-        <div class="flex justify-between">
+        <div class="flex justify-center justify-items-centern">
             <div >
                @if(isset($message))
                     <h1 class=" {{ $error !='success' ? 'text-red-600 text-danger ' : 'text-success bg-green-400' }}text-center text-3xl">{{ $message }}</h1>
@@ -19,13 +19,15 @@
             </div>
         </div>
 
+
         @if(isset($round_games ))
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
+            <div class="flex justify-center justify-items-center">
+                {{-- <div class="col-sm-12"> --}}
+                    <div class="card text-center">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover text-xs">
+                                <table class="table table-auto table-striped table-responsive table-hover text-xs">
+                                    {{-- Encabezados --}}
                                     <thead class="thead">
                                         <tr class="bg-dark text-white text-center">
                                             <th>Selecciona</th>
@@ -44,6 +46,8 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
+                                {{-- Avisos de Error + Botón para actualizar pronósticos --}}
                                 <div class="flex justify-between">
                                         <div >
                                            @if(isset($message))
@@ -64,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                {{-- </div> --}}
             </div>
         @endif
     </div>

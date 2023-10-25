@@ -106,7 +106,7 @@ class AdminPicks extends Component
             foreach($this->round_games as $game){
                 $this->gamesids[$i]     = $game->id;
                 $this->picks_allowed[$i]= false;
-                $pick_user              = $game->pick_user($this->user->id);
+                $pick_user              = $game->pick_user($this->user->id)->first();
 
                 if( $pick_user){
                     $this->selected[ $game->id] =  $pick_user->selected;
@@ -156,13 +156,13 @@ class AdminPicks extends Component
 
             if($game_pick->allow_pick() || Auth::user()->hasRole('Admin')){ // Se asegura que aún se pueda pronosticar
 
-                $pick_user = $game_pick->pick_user($this->user->id);
+                $pick_user = $game_pick->pick_user($this->user->id)->first();
 
 
 
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
-                    if($game_pick->is_last_game_round()){
+                    if($game_pick->last_game_round){
                         $pick_user->local_points = $this->points_local_last_game;
                         $pick_user->visit_points = $this->points_visit_last_game;
                         $pick_user->winner = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
@@ -174,7 +174,7 @@ class AdminPicks extends Component
                             'winner'    => $this->picks[$i]
                         ]);
 
-                        if($game->is_last_game_round()){
+                        if($game->last_game_round){
                             $pick_user->local_points = $this->points_local_last_game;
                             $pick_user->visit_points = $this->points_visit_last_game;
                             $pick_user->winner       = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;

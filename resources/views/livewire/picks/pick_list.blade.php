@@ -1,22 +1,22 @@
 @php
-    $allow_pick     = $game->allow_pick();
-    $is_last_game   = $game->is_last_game_round();
-    $pick_user      = $game->pick_user();
+    $allow_pick     = $game->allow_pick($configuration->minuts_before_picks);
+    $is_last_game   = $game->last_game_round;
+    $pick_user      = $game->pick_user(Auth::user()->id)->first();
     $print_score    = $game->print_score();
-    $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
-    $is_selectable  = $game->is_selectable();
+    $acerto         = $pick_user->hit;
+    $is_selectable  = $game->selectable;
+    $selected       = $pick_user->selected;
 @endphp
-<tr>
-    {{-- <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td> --}}
-        <td>
-        @if((!$allow_pick && !$pick_user->selected) || !$is_selectable)
+<tr class="h-2">
+    <td>
+        @if((!$allow_pick && !$selected) || !$is_selectable)
             <span class="badge rounded-pill bg-gray-500">X</span>
         @else
             <input type="checkbox"
                 wire:model='selected.{{  $game->id }}'
                 {{ !$allow_pick  ? 'disabled' : ''}}
-                class="{{isset($pick_user) && $pick_user->selected && !$allow_pick ? 'bg-gray-500' : ''}}"
-                {{ isset($pick_user) && $pick_user->selected     ? 'checked' : ''}}
+                class="{{isset($pick_user) && $selected && !$allow_pick ? 'bg-gray-500' : ''}}"
+                {{ isset($pick_user) && $selected     ? 'checked' : ''}}
             />
 
         @endif

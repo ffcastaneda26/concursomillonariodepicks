@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use function PHPUnit\Framework\isNull;
+
 class Game extends Model
 {
     protected $table = 'games';
@@ -69,6 +71,18 @@ class Game extends Model
         return $this->hasMany(Pick::class);
     }
 
+
+    // Pronóstico del juego y del usuario
+    public function pick_user($user_id=null): HasMany
+    {
+        if(!$user_id){
+            $user_id = Auth::user()->id;
+        }
+        return $this->hasMany(Pick::class)->where('user_id',$user_id);
+    }
+
+
+
     public function team_tie_breaker(): HasMany
     {
         return $this->hasMany(Configuration::class);
@@ -102,15 +116,34 @@ class Game extends Model
 
     // ¿Permite pronosticar?
 
-    public function allow_pick(){
+    public function allow_pick($minuts_before_picks=null){
+
+        if(date("Y-m-d") > $this->game_day->format('Y-m-d') ) // Juego ya pasó
+        {
+            return false;
+        }
+        if(date("Y-m-d") < $this->game_day->format('Y-m-d') ) // Fecha futura
+        {
+            return true;
+        }
+
+        // Mismo día a hora ya pasó
+        if(date("Y-m-d") == $this->game_day->format('Y-m-d') && date('H:i:s') >  $this->game_time) // La hora ya pasó
+        {
+            return false;
+        }
+
         date_default_timezone_set(env('TIMEZONE','America/Mexico_City'));
-        $configuration = Configuration::first();
+        if(!$minuts_before_picks){
+            $configuration = Configuration::first();
+            $minuts_before_picks = $configuration->minuts_before_picks;
+        }
         $year_game      = substr($this->game_day,0,4);
         $month_game     = substr($this->game_day,5,2);
         $day_game       = substr($this->game_day,8,2);
         $hour_game      = substr($this->game_time,0,2);
         $minutes_game   = substr($this->game_time,3,2);
-        return mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time() > $configuration->minuts_before_picks * 60;
+        return mktime($hour_game,$minutes_game,00,$month_game,$day_game,$year_game) - time() > $minuts_before_picks * 60;
     }
 
     // ¿El partido es en JUEVES?
@@ -126,14 +159,7 @@ class Game extends Model
         return  date("w", $d) != 4 &&  date("w", $d) != 5;
     }
 
-    // Pronóstico del juegoy del usuario
-    public function pick_user($user_id=null){
-        if(!$user_id){
-            $user_id = Auth::user()->id;
-        }
 
-       return $this->picks->where('user_id',$user_id)->first();
-    }
 
     // Imprime Resultado?
     public function print_score(){
@@ -141,7 +167,10 @@ class Game extends Model
     }
 
     // ¿Es el último partido de la jornada?
-    public function is_last_game_round(){
+    public function is_last_game_round($use_team_to_tie_breaker = false,$team_id_to_tie_breaker = null){
+        if($use_team_to_tie_breaker && isNull($team_id_to_tie_breaker)){
+
+        }
         $configuration_record = Configuration::first();
 
         if( $configuration_record->use_team_to_tie_breaker){

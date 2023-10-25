@@ -1,22 +1,23 @@
 @php
     $allow_pick     = true;
-    $is_last_game   = $game->is_last_game_round();
-    $pick_user      = $game->pick_user($user->id);
+    $is_last_game   = $game->last_game_round;
+    $pick_user      = $game->pick_user($user->id)->first();
     $print_score    = $game->print_score();
-    $acerto         = $game->has_result() && $pick_user && $pick_user->winner == $game->winner;
-
+    $acerto         = $pick_user->hit;
+    $selected       = $pick_user->selected;
 @endphp
+
 <tr>
     <td>{{$game->game_day->format('j-M-y')}} {{$game->hour }}</td>
         <td>
-        @if(!$allow_pick && !$pick_user->selected)
+        @if(!$allow_pick && !$selected)
             <span class="badge rounded-pill bg-gray-500">X</span>
         @else
             <input type="checkbox"
                 wire:model='selected.{{  $game->id }}'
                 {{ !$allow_pick                                  ? 'disabled' : ''}}
-                class="{{isset($pick_user) && $pick_user->selected && !$allow_pick ? 'bg-gray-500' : ''}}"
-                {{ isset($pick_user) && $pick_user->selected     ? 'checked' : ''}}
+                class="{{isset($pick_user) && $selected && !$allow_pick ? 'bg-gray-500' : ''}}"
+                {{ isset($pick_user) && $selected     ? 'checked' : ''}}
             />
 
         @endif
