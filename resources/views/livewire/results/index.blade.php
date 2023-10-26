@@ -21,6 +21,7 @@
                                                     $visit_points = null;
                                                     $local_points = null;
                                                     $hit_mnf_game = false;
+                                                    $allow_pick   = false;
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $pick_user->name }}</td>
@@ -31,11 +32,16 @@
                                                             $visit_points = $pick->visit_points;
                                                             $local_points = $pick->local_points;
                                                             $hit_last_game = $pick->winner == $pick->game->winner;
+                                                            $allow_pick    = $pick->game->allow_pick($configuration->minuts_before_picks);
                                                         @endphp
                                                     @endforeach
-
                                                     <td class="text-base text-center {{ $hit_last_game ? 'text-success' : 'text-danger'  }}">
-                                                        {{ $visit_points . '-' . $local_points}}
+                                                        @if ($allow_pick)
+                                                            <img src="{{ asset('images/reloj.jpg') }}" alt="" width="32px" height="32px">
+                                                        @else
+                                                            {{  $visit_points . '-' . $local_points}}
+                                                        @endif
+
                                                     </td>
 
                                                     <td class="text-base text-center">

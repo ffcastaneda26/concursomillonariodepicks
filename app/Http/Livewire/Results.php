@@ -23,6 +23,7 @@ class Results extends Component
     public $cols_show= [];
 
     public function mount(){
+        $this->read_configuration();
         $round = new Round();
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
