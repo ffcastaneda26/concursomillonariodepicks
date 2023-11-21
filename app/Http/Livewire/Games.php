@@ -40,9 +40,6 @@ class Games extends Component
     public $local_points = false;
 
     public function mount(){
-        $this->update_acumulated_positions();
-        $this->qualify_all_picks();
-
         $this->manage_title = 'Gestionar Juegos';
         $this->search_label = 'Jornada';
         $this->view_search  =  null;
@@ -58,8 +55,6 @@ class Games extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
         $this->receive_round($this->current_round );
-
-
     }
 
     /*+---------------------------------+
