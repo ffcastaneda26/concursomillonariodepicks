@@ -63,6 +63,7 @@ class Results extends Component
                                                         ->with(['local_team','visit_team'])
                                                         ->orderby('game_day')
                                                         ->orderby('game_time')
+                                                        ->orderby('id')
                                                         ->get();
         }
     }
