@@ -85,9 +85,17 @@ class Round extends Model
         $current_round = $this::where('start_date','<=',$dt)
                             ->where('end_date','>=',$dt)
                             ->first();
-        $current_round->active = 1;
-        $current_round->save();
-        return $current_round;
+        if(!$current_round){
+            $current_round=$this::where('id',$this->max('id'))->first();
+        }
+
+        if($current_round){
+            $current_round->active = 1;
+            $current_round->save();
+            return $current_round;
+        }
+        return null;
+
      }
 
      // ¿Es el último partido de la jornada?

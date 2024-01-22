@@ -15,11 +15,15 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+Route::get('update-passwords',function(){
+
+});
+
 Route::get('update_allow_picks',function(){
     $round = new Round();
     $current_round = $round->read_current_round();
     $games = Game::where('round_id','>=',$current_round->id)->get();
-    
+
 });
 
 Route::get('carga-inicial',function(){
