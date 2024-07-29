@@ -28,9 +28,12 @@ class Configurations extends Component
         'main_record.create_mssing_picks'           => 'nullable',
         'main_record.assig_role_to_user'            => 'nullable',
         'main_record.use_team_to_tie_breaker'       => 'nullable',
-
-
+        'rounds_to_substract_points'    => 'nullable',
+        'type_substract_points'         => 'nullable',
+        'user_rounds_participation'     => 'nullable',
+        'subtract_from_round'           => 'nullable'
     ];
+
 
 
     public $configuration;
@@ -42,8 +45,11 @@ class Configurations extends Component
     public $assig_role_to_user              = false;
     public $add_user_to_stripe              = false;
     public $use_team_to_tie_breaker         = false;
-
-
+    public $substract_points_accumulated    = false;
+    public $type_substract_points           = null;
+    public $rounds_to_substract_points;
+    public $user_rounds_participation;
+    public $subtract_from_round;
 
     public function mount(){
         $this->manage_title = 'Configuración General';
@@ -85,13 +91,58 @@ class Configurations extends Component
         $this->rules['main_record.website_url'] = $this->main_record->id  ? "required|min:10|max:150|unique:configuration,website_url,{$this->main_record->id}"
                                                                           : 'required|min:10|max:150|unique:configuration,website_url';
 
+        $this->main_record->rounds_to_substract_points  = $this->rounds_to_substract_points;
+        $this->main_record->type_substract_points       = $this->type_substract_points ?  $this->type_substract_points : null;
+        $this->main_record->user_rounds_participation   = $this->user_rounds_participation ? $this->user_rounds_participation : null;
+        $this->main_record->subtract_from_round         = $this->subtract_from_round ? $this->subtract_from_round : null;
+
+
+
+        if($this->substract_points_accumulated){
+            $this->rules['rounds_to_substract_points'] = 'required';
+        }
+
+        if($this->substract_points_accumulated){
+            if($this->type_substract_points == 'U'){
+                $this->rules['user_rounds_participation'] =  'required';
+            }
+
+            if($this->type_substract_points == 'R'){
+                $this->rules['subtract_from_round'] =  'required';
+                $this->validate([
+                    'subtract_from_round' => 'required'
+                ]);
+
+            }
+        }
+
         $this->validate();
+
+        $this->main_record->substract_points_accumulated = $this->substract_points_accumulated ? 1 : 0;
+
+
+        if($this->main_record->substract_points_accumulated){
+            if($this->main_record->type_substract_points == 'U'){
+                $this->main_record->subtract_from_round = null;
+            }
+            if($this->main_record->type_substract_points == 'R'){
+                $this->main_record->user_rounds_participation = null;
+            }
+        }else{
+            $this->main_record->subtract_from_round = null;
+            $this->main_record->user_rounds_participation = null;
+            $this->main_record->rounds_to_substract_points = null;
+        }
+
+
 
         $this->main_record->score_picks = $this->score_picks ? 1 : 0;
         $this->main_record->allow_tie = $this->allow_tie ? 1 : 0;
         $this->main_record->create_mssing_picks = $this->create_mssing_picks ? 1 : 0;
         $this->main_record->assig_role_to_user = $this->assig_role_to_user ? 1 : 0;
         $this->main_record->use_team_to_tie_breaker = $this->use_team_to_tie_breaker ? 1 : 0;
+
+
 
         if(!$this->use_team_to_tie_breaker){
             $this->main_record->team_id = 0;

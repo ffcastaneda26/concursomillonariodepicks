@@ -3,7 +3,7 @@
         <x-validation-errors></x-validation-errors>
         <div class="row align-items-start">
 
-
+            Tipo de descuento de puntos: {{ $type_substract_points }}
 
             <div class="col flex flex-col mt-2">
                 {{-- Nombre del Sitio --}}
@@ -163,7 +163,73 @@
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+                @endif
 
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">¿Descontar Puntos en Acumulado?</span>
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio"
+                                wire:model="substract_points_accumulated" class="btn-check" name="substract_points_accumulated" id="substract_points_accumulated_yes" value="1">
+                            <label class="mr-2 btn btn-outline-success" for="substract_points_accumulated_yes">
+                                <img src="{{asset('images/afirmativo.png')}}" alt="SI" width="24px" height="24px">
+                            </label>
+
+                            <input type="radio"
+                            wire:model="substract_points_accumulated" class="btn-check ml-4" name="substract_points_accumulated" id="substract_points_accumulated_no" value="0">
+                            <label class="ml-5 btn btn-outline-danger" for="substract_points_accumulated_no">
+                                <img src="{{asset('images/negativo.png')}}" alt="NO" width="24px" height="24px">
+                            </label>
+                        </div>
+                        @if($substract_points_accumulated)
+                            <span class="input-group-text mr-10" id="basic-addon1">¿Cuantas Jornadas se deben descontar?</span>
+                            <input type="number"
+                                wire:model="rounds_to_substract_points"
+                                class="mb-2 ml-25 {{ $errors->has('rounds_to_substract_points') ? ' is-invalid' : '' }}"
+                                size="3"
+                                min="1"
+                                max="18"
+                                maxlength="2">
+                        @endif
+                </div>
+                @if($substract_points_accumulated)
+
+                    <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">¿Como descontar puntos?</span>
+                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" wire:model="type_substract_points" class="btn-check" name="type_substract_points" id="type_substract_points_user" value="U">
+                                <label class="mr-2 btn btn-outline-success" for="type_substract_points_user">
+                                    Usuario haya participado en N Jornadas
+                                </label>
+
+                                <input type="radio" wire:model="type_substract_points" class="btn-check ml-4" name="type_substract_points" id="type_substract_points_round" value="R">
+                                <label class="ml-5 btn btn-outline-danger" for="type_substract_points_round">
+                                    A partir de una cierta jornada
+                                </label>
+                            </div>
+
+                        @if ($main_record->type_substract_points == 'U')
+                            <span class="input-group-text mr-10" id="basic-addon1">¿Cuantas Jornadas?</span>
+                            <input type="number"
+
+                                wire:model="user_rounds_participation"
+                                class="mb-2 ml-25 {{ $errors->has('user_rounds_participation') ? ' is-invalid' : '' }}"
+                                size="3"
+                                min="1"
+                                max="18"
+                                maxlength="2">
+                        @endif
+
+                        @if ($type_substract_points == 'R')
+                            <span class="input-group-text mr-10" id="basic-addon1">¿A partir de que Jornada?</span>
+                            <input type="number"
+                                wire:model="subtract_from_round"
+                                class="mb-2 ml-25 {{ $errors->has('subtract_from_round') ? ' is-invalid' : '' }}"
+                                size="3"
+                                min="1"
+                                max="18"
+                                maxlength="2">
+                        @endif
                     </div>
                 @endif
 

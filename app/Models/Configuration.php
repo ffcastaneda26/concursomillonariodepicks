@@ -14,8 +14,7 @@ class Configuration extends Model
     static $rules = [
 		'website_name'                  => 'required',
 		'website_url'                   => 'required',
-		'email'                         => 'required',
-		'email'                         => 'email',
+		'email'                         => 'required|email',
 		'score_picks'                   => 'nullable',
 		'minuts_before_picks'           => 'required',
 		'allow_tie'                     => 'nullable',
@@ -25,7 +24,15 @@ class Configuration extends Model
         'assig_role_to_user'            => 'nullable',
         'add_user_to_stripe'            => 'nullable',
         'use_team_to_tie_breaker'       => 'nullable',
-        'team_id'                       => 'nullable'
+        'team_id'                       => 'nullable',
+        'rounds_to_substract_points'    => 'nullable',
+        'type_substract_points'         => 'nullable',
+        'user_rounds_participation'     => 'nullable',
+        'subtract_from_round'           => 'nullable'
+    ];
+
+    static $messages = [
+        'website_name.required' => 'Introduzca nombre del sitio',
     ];
 
     protected $perPage = 20;
@@ -48,8 +55,12 @@ class Configuration extends Model
             'assig_role_to_user',
             'add_user_to_stripe',
             'use_team_to_tie_breaker',
-            'team_id'
-
+            'team_id',
+            'substract_points_accumulated',
+            'type_substract_points',
+            'user_rounds_participation',
+            'subtract_from_round',
+            'rounds_to_substract_points',
     ];
 
     /*+------------+
