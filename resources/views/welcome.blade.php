@@ -23,6 +23,42 @@
             height: 100vh;
             width: 100vw;
         }
+        @media (max-width: 768px) and (orientation: landscape) {
+            h1, h2, p {
+                font-size: 90%; /* Reduce el tamaño de la fuente */
+                line-height: 1.2; /* Ajusta el espaciado */
+            }
+            ul {
+                margin-left: 1rem; /* Ajusta los márgenes del listado */
+            }
+            .section-class {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            p {
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+
+        /* Oculta la sección por defecto */
+.only-mobile-landscape {
+    display: none;
+}
+
+/* Muestra la sección en móviles (pantallas pequeñas) */
+@media (max-width: 768px) {
+    .only-mobile-landscape {
+        display: block;
+    }
+}
+
+/* Muestra la sección cuando el dispositivo esté en modo horizontal (cualquier pantalla) */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .only-mobile-landscape {
+        display: block;
+    }
+}
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -47,9 +83,14 @@
             </p>
         </div>
     </section>
-
+    <section class="only-mobile-landscape" style="background-image: url('{{ asset('images/fondo.png') }}');">
+        <div class="text-center px-4 text-white">
+            <h2 class="text-4xl font-bold mb-4">&nbsp;&nbsp;</h2>
+            <p class="text-xl">&nbsp;</p>
+        </div>
+    </section>
     <section class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
-        <div class="max-w-2xl text-center px-4 text-white">
+        <div class="max-w-2xl text-center px-4 md:p-2 text-white">
             <h2 class="text-4xl md:text-5xl font-bold mb-4">Bases del Concurso:</h2>
             <p class="text-2xl md:text-3xl leading-relaxed text-left  mt-2 mb-4">Premios Acumulados</p>
             <ul class="list-none space-y-4 text-left text-lg md:text-2xl ml-24">
@@ -65,12 +106,22 @@
             <p class="text-lg md:text-xl mt-6">Además se repartirán <strong>3 premios extras de 1,000 MXN</strong> al azar a aquellas personas que terminen fuera de la zona de premios, pero que hayan participado en al menos 16 de las 18 semanas.<sup class="text-sm">1</sup></p>
         </div>
     </section>
-
+    <section class="only-mobile-landscape" style="background-image: url('{{ asset('images/fondo.png') }}');">
+        <div class="text-center px-8 text-white">
+            <h2 class="text-4xl font-bold mb-8">&nbsp;</h2>
+            <p class="text-xl">&nbsp;</p>
+        </div>
+    </section>
     <section class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
         <div class="max-w-4xl text-center px-4 text-white">
             <p class="text-2xl md:text-3xl leading-relaxed mb-4">SEMANAS DE DESCANSO</p>
             <p class="text-lg md:text-xl leading-relaxed">Para limitar el daño de una mala semana, este año eliminaremos tus dos peores puntajes semanales de la tabla final. Esto significa que solo sumaremos 16 semanas al ranking.</p>
             <p class="text-lg md:text-xl leading-relaxed mt-6">Si una semana se te olvidó mandar tus picks, tuviste una situación personal que te mantuvo ocupado o simplemente te fuiste 0 de 5, no te preocupes, tienes otra oportunidad para recuperarte.</p>
+            <br>
+        </div>
+    </section>
+    <section class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
+        <div class="max-w-4xl text-center px-4 text-white">
             <p class="text-2xl md:text-3xl leading-relaxed mt-8">¿Cómo participar?</p>
             <p class="text-lg md:text-xl leading-relaxed mt-4">Si eres de México regístrate en <a class="underline" href="https://bit.ly/3M74UY4">https://bit.ly/3M74UY4</a> y haz una apuesta de 300 pesos MXN en el deporte que quieras. Envíanos la captura de pantalla a <a class="underline" href="mailto:nacionapuestas@gmail.com">nacionapuestas@gmail.com</a> y listo, ¡estás dentro!</p>
             <p class="text-lg md:text-xl leading-relaxed mt-4">Si eres de El Salvador, Honduras, Guatemala, Nicaragua, Panamá, Belice, Costa Rica, Rep. Dominicana, Ecuador, Bolivia, Perú, Chile o Uruguay regístrate en <a class="underline" href="https://bit.ly/3Ycs7xt">https://bit.ly/3Ycs7xt</a> y haz una apuesta de 17 USD / equivalente en moneda local, envíanos la captura de pantalla a nacionapuestas@gmail.com y listo, ¡estás dentro!</p>
