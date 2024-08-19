@@ -73,27 +73,8 @@
         @include('welcome_navigation')
     </div>
 
-    {{-- <section id="portada" class="only-mobile-landscape" style="background-image: url('{{ asset('images/fondo.png') }}');">
-        <div class="text-center px-4 text-white">
-            <img src="{{ asset('images/portada.png') }}" alt="">
-        </div>
-    </section> --}}
-
     {{-- ¿Que es el concurso? --}}
-    <section id="que-es" class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
-        <div class="max-w-4xl text-center px-4 text-white">
-            <h1 class="font-bold mb-4 text-4xl md:text-5xl" style="font-weight: 600; letter-spacing: 5.5px; line-height: 1.2; text-transform: uppercase;">
-                Más de 100 mil pesos en premios
-            </h1>
-            <p class="text-xl md:text-3xl leading-relaxed mb-6">
-                ¿Te gusta la NFL? ¿Eres bueno pronosticando resultados? Entonces este concurso es para ti.
-            </p>
-            <p class="text-xl md:text-3xl leading-relaxed">
-                Escoge <strong>5 picks contra el spread</strong> cada semana. Gana <strong> un punto por cada acierto. </strong> Quien acumule más aciertos en toda la temporada es el ganador.
-            </p>
-
-        </div>
-    </section>
+    @include(' concurso_que_es')
 
     {{-- Solo Espacios --}}
     <section class="only-mobile-landscape" style="background-image: url('{{ asset('images/fondo.png') }}');">
@@ -104,26 +85,7 @@
     </section>
 
     {{-- Bases --}}
-    <section id="bases" class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
-        <div class="max-w-4xl text-center px-4 text-white">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4">Bases del Concurso:</h2>
-            <div class="max-w-2xl text-center px-4 md:p-2 text-white">
-                <p class="text-2xl md:text-3xl leading-relaxed text-center  mt-2 mb-4">Premios Acumulados</p>
-                <ul class="list-none space-y-4 text-center text-lg sm:text-2xl">
-                    <li><strong>1er lugar 🏆: 20,000 MXN</strong></li>
-                    <li><strong>2do lugar🥈: 10,000 MXN</strong></li>
-                    <li><strong>3er lugar🥉: 5,000 MXN</strong></li>
-                    <li><strong>4to lugar 💵: 3,000 MXN</strong></li>
-                    <li><strong>5to lugar: 1,500 MXN</strong></li>
-                    <li><strong>6to lugar: 1,000 MXN</strong></li>
-                    <li><strong>7to lugar: 1,000 MXN</strong></li>
-                </ul>
-            </div>
-            <p class="text-lg md:text-xl mt-6"><strong>Último lugar del concurso 🤡: 3,000 MXN.</strong> Para ser elegible para este premio tienes que mandar picks al menos 16 de las 18 semanas, si dejas de mandar estás fuera.</p>
-            <p class="text-lg md:text-xl mt-6">Además se repartirán <strong>3 premios extras de 1,000 MXN</strong> al azar a aquellas personas que terminen fuera de la zona de premios, pero que hayan participado en al menos 16 de las 18 semanas.<sup class="text-sm">1</sup></p>
-            <br>
-        </div>
-    </section>
+    @include('concurso_bases')
 
     {{-- Solo Espacios --}}
     <section class="only-mobile-landscape" style="background-image: url('{{ asset('images/fondo.png') }}');">
@@ -134,14 +96,8 @@
     </section>
 
     {{-- Semanas de Descanso --}}
-    <section id="semanas-descanso" class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
-        <div class="max-w-4xl text-center px-4 text-white">
-            <p class="text-2xl md:text-3xl leading-relaxed mb-4">SEMANAS DE DESCANSO</p>
-            <p class="text-lg md:text-xl leading-relaxed">Para limitar el daño de una mala semana, este año eliminaremos tus dos peores puntajes semanales de la tabla final. Esto significa que solo sumaremos 16 semanas al ranking.</p>
-            <p class="text-lg md:text-xl leading-relaxed mt-6">Si una semana se te olvidó mandar tus picks, tuviste una situación personal que te mantuvo ocupado o simplemente te fuiste 0 de 5, no te preocupes, tienes otra oportunidad para recuperarte.</p>
-            <br>
-        </div>
-    </section>
+    @include('concurso_semanas_descanso')
+
 
     {{-- Cómo participar --}}
     <section id="como-participar"  class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center" style="background-image: url('{{ asset('images/fondo.png') }}');">

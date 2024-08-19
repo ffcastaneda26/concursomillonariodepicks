@@ -92,18 +92,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Responsive Settings Options -->
-            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-
-                <div class="mt-3 space-y-1">
-                    <!-- Account Management -->
-
-
-
-
-                </div>
-            </div>
         </div>
     </nav>
 </header>
