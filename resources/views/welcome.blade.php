@@ -23,6 +23,9 @@
             height: 100vh;
             width: 100vw;
         }
+        .text-extra-xs {
+            font-size: 0.5rem;
+        }
         @media (max-width: 768px) and (orientation: landscape) {
             h1, h2, p {
                 font-size: 90%; /* Reduce el tamaño de la fuente */
@@ -45,33 +48,49 @@
         }
 
         /* Oculta la sección por defecto */
-.only-mobile-landscape {
-    display: none;
-}
+        .only-mobile-landscape {
+            display: none;
+        }
 
-/* Muestra la sección en móviles (pantallas pequeñas) */
-@media (max-width: 768px) {
-    .only-mobile-landscape {
-        display: block;
-    }
-}
+        /* Muestra la sección en móviles (pantallas pequeñas) */
+        @media (max-width: 768px) {
+            .only-mobile-landscape {
+                display: block;
+            }
+        }
 
-/* Muestra la sección cuando el dispositivo esté en modo horizontal (cualquier pantalla) */
-@media (max-width: 1024px) and (orientation: landscape) {
-    .only-mobile-landscape {
-        display: block;
-    }
-}
+        /* Muestra la sección cuando el dispositivo esté en modo horizontal (cualquier pantalla) */
+        @media (max-width: 1024px) and (orientation: landscape) {
+            .only-mobile-landscape {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px)  {
+            .portada_grande {
+                display: block;
+            }
+            .font-size-menu-concurso {
+                font-size: 8px;
+            }
+        }
+
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 <body class="antialiased">
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen selection:text-white bg-no-repeat bg-cover bg-center sm:bg-auto"
-    style="background-image: url('{{ asset('images/portada.png') }}');">
+    <div class="mt-10 relative sm:flex sm:justify-center sm:items-center min-h-screen selection:text-white bg-no-repeat bg-cover bg-center sm:bg-auto">
         @include('welcome_navigation')
+        <section class="h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center items-center">
+            <div class="max-w-4xl text-center px-4 text-white">
+               <img src="{{ asset('images/portada.png') }}" alt="" class="h-90 sm:portada_grande">
+            </div>
+        </section>
     </div>
+
+
 
     {{-- ¿Que es el concurso? --}}
     @include(' concurso_que_es')

@@ -11,19 +11,19 @@
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <div>
-                            <div class="container fmx-auto px-4 py-2 justify-between items-center gap-2 sm:gap-8">
+                    {{-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"> --}}
+                        <div class="container flex ml-10">
+                            <div class="px-2 py-2 justify-between items-center gap-4 sm:gap-8">
                                 <ul class="flex  space-x-4 justify-between">
-                                    <li><a href="#" class="text-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">PORTADA</a></li>
-                                    <li><a href="#que-es" class="text-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">¿QUE ES EL CONCURSO?</a></li>
-                                    <li><a href="#bases" class="text-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">BASES</a></li>
-                                    <li><a href="#semanas-descanso" class="text-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">SEMANAS DE DESCANSO</a></li>
-                                    <li><a href="#como-participar" class="text-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">COMO PARTICIPAR</a></li>
+                                    {{-- <li><a href="#" class="text-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">PORTADA</a></li> --}}
+                                    <li><a href="#que-es" class="text-extra-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">¿QUE ES EL CONCURSO?</a></li>
+                                    <li><a href="#bases" class="text-extra-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">BASES</a></li>
+                                    <li><a href="#semanas-descanso" class="text-extra-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">SEMANAS DE DESCANSO</a></li>
+                                    <li><a href="#como-participar" class="text-extra-xs sm:text-lg hover:underline hover:bg-blue-500 hover:text-white ">COMO PARTICIPAR</a></li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    {{-- </div> --}}
                 </div>
                 <div class="flex">
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -32,7 +32,7 @@
                                 <li>
                                     <a href="{{ route('login') }}"
                                         class="font-semibold text-gray-500 hover:text-gray-700 focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                                        INGRESAR
+                                        Ingresar
                                     </a>
                                 </li>
                                 @if (Route::has('register'))
@@ -84,7 +84,7 @@
                 </div>
                 <div class="container mx-auto px-4 py-2 justify-between items-center gap-2">
                     <ul class="flex flex-col justify-start">
-                        <li><a href="#" class="hover:underline">PORTADA</a></li>
+                        {{-- <li><a href="#" class="hover:underline">PORTADA</a></li> --}}
                         <li><a href="#que-es" class="hover:underline">¿QUE ES EL CONCURSO?</a></li>
                         <li><a href="#bases" class="hover:underline">BASES</a></li>
                         <li><a href="#semanas-descanso" class="hover:underline">SEMANAS DE DESCANSO</a></li>
