@@ -42,31 +42,34 @@
         }
 
         /* Oculta la sección por defecto */
-.only-mobile-landscape {
-    display: none;
-}
+        .only-mobile-landscape {
+            display: none;
+        }
 
-/* Muestra la sección en móviles (pantallas pequeñas) */
-@media (max-width: 768px) {
-    .only-mobile-landscape {
-        display: block;
-    }
-}
-
-/* Muestra la sección cuando el dispositivo esté en modo horizontal (cualquier pantalla) */
-@media (max-width: 1024px) and (orientation: landscape) {
-    .only-mobile-landscape {
-        display: block;
-    }
-}
+        @media (orientation: landscape) {
+            .sm\:bg-auto {
+                background-size: contain; /* Ajusta la imagen para que quepa en su totalidad */
+            }
+            .only-mobile-landscape {
+                display: block;
+            }
+        }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 <body class="antialiased">
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen selection:text-white bg-no-repeat bg-cover bg-center sm:bg-auto"
-    style="background-image: url('{{ asset('images/portada.png') }}');">
+    <br>
+    <br>
+    <!-- Para Desktop y Móvil Horizontal -->
+    <div class="hidden sm:block relative sm:flex sm:justify-center sm:items-center min-h-screen selection:text-white bg-no-repeat bg-cover bg-center sm:bg-auto"
+        style="background-image: url('{{ asset('images/fondo_horizontal.png') }}'); background-size: cover;">
+        @include('welcome_encabezado')
+    </div>
+    <!-- Para Móvil Vertical -->
+    <div class="block sm:hidden relative sm:flex sm:justify-center sm:items-center min-h-screen selection:text-white bg-no-repeat bg-cover bg-center sm:bg-auto"
+        style="background-image: url('{{ asset('images/fondo_vertical.png') }}');">
         @include('welcome_encabezado')
     </div>
 
