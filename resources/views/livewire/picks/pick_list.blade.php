@@ -1,11 +1,14 @@
 @php
     $allow_pick     = $game->allow_pick($configuration->minuts_before_picks);
-    $is_last_game   = $game->last_game_round;
+    // $is_last_game   = $game->last_game_round;
+    $is_last_game   = $game->is_last_game_round();
     $pick_user      = $game->pick_user(Auth::user()->id)->first();
     $print_score    = $game->print_score();
     $acerto         = $pick_user->hit;
     $is_selectable  = $game->selectable;
     $selected       = $pick_user->selected;
+    $points_visit_last_game = $game->visit_points;
+    $points_local_last_game = $game->local_points;
 @endphp
 <tr class="h-2">
     <td>
@@ -32,6 +35,13 @@
     @include('livewire.picks.pick_visit')
 
     @if( $is_last_game)
+        @php
+            $pick_user = $game->pick_user()->first();
+            if($pick_user){
+                $this->points_visit_last_game = $pick_user->visit_points;
+                $this->points_local_last_game = $pick_user->local_points;
+            }
+        @endphp
         <td><input type='number'
                     wire:model="points_visit_last_game"
                     min=0 max=99

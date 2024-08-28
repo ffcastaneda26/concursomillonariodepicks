@@ -134,10 +134,11 @@ class Picks extends Component
 
             if($game_pick->allow_pick()){ // Se asegura que aún se pueda pronosticar
                 $pick_user = $game_pick->pick_user(Auth::user()->id)->first();
-
+                
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
-                    if($game_pick->last_game_round){
+                    // if($game_pick->last_game_round){
+                    if($game_pick->is_last_game_round()){
                         $pick_user->local_points = $this->points_local_last_game;
                         $pick_user->visit_points = $this->points_visit_last_game;
                         $pick_user->winner = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
@@ -149,7 +150,8 @@ class Picks extends Component
                         'winner'    => $this->picks[$i]
                     ]);
 
-                    if($game->last_game_round){
+                    // if($game->last_game_round){
+                    if($game_pick->is_last_game_round()){
                         $pick_user->local_points = $this->points_local_last_game;
                         $pick_user->visit_points = $this->points_visit_last_game;
                         $pick_user->winner       = $pick_user->local_points + $game_pick->handicap >= $pick_user->visit_points ? 1 : 2;
@@ -196,6 +198,11 @@ class Picks extends Component
             $this->message = "Faltan pronósticos";
             $this->error = 'faltan';
         }
+        if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
+            $this->message = "Debe introducir marcador para Último Partido";
+            $this->error = 'tie';
+            return false;
+        }
 
         if( strlen($this->points_visit_last_game) < 1 ){
             $this->message = "Debe Introducir Puntos Para Equipo VISITANTE del Último Partido";
@@ -210,10 +217,16 @@ class Picks extends Component
         }
 
         if($this->points_visit_last_game == $this->points_local_last_game){
-            $this->message = "El últimoo partido no puede ser EMPATE";
+            $this->message = "El último partido no puede ser EMPATE";
             $this->error = 'tie';
             return false;
         }
+        if($this->points_visit_last_game == 1 || $this->points_local_last_game == 1){
+            $this->message = "No se permite el marcador 1";
+            $this->error = 'tie';
+            return false;
+        }
+
         return true;
     }
 
