@@ -92,6 +92,14 @@ class Users extends Component
 
         $this->main_record->active = $this->main_record->active ? 1 : 0;
 
+        if($this->record_id){
+            if(empty($this->password)){
+                $user_record = User::findOrFail($this->record_id);
+                if($user_record){
+                    $this->password = $user_record->password;
+                }
+            }
+        }
 
         if(!empty($this->password)){
             $this->main_record->password = Hash::make($this->password);
