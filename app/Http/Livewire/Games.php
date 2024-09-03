@@ -88,7 +88,7 @@ class Games extends Component
         }
 
         if($this->local_points && !$this->visit_points){
-            $this->error_message = 'Ingrese Puntos de Local';
+            $this->error_message = 'Ingrese Puntos de Visita';
             return false;
         }
 
