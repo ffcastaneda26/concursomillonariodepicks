@@ -7,8 +7,8 @@
     $acerto         = $pick_user->hit;
     $is_selectable  = $game->selectable;
     $selected       = $pick_user->selected;
-    $points_visit_last_game = $game->visit_points;
-    $points_local_last_game = $game->local_points;
+    $points_visit_last_game = $pick_user->visit_points;
+    $points_local_last_game = $pick_user->local_points;
 @endphp
 <tr class="h-2">
     <td>
@@ -26,22 +26,13 @@
         @if(!$allow_pick)
             <span class="badge rounded-pill bg-gray-500">NO EDITABLE</span>
         @endif
-
     </td>
 
 
     <td class="text-xl {{ $game->handicap*-1 < 0 ? 'text-danger' : '' }}">{{ $game->handicap*-1 != 0 ? number_format($game->handicap*-1, 1, '.', ',') : ''  }}</td>
 
     @include('livewire.picks.pick_visit')
-
     @if( $is_last_game)
-        @php
-            $pick_user = $game->pick_user()->first();
-            if($pick_user  && !$message){
-                $this->points_visit_last_game = $pick_user->visit_points;
-                $this->points_local_last_game = $pick_user->local_points;
-            }
-        @endphp
         <td>
             <input type='number'
                     wire:model="points_visit_last_game"

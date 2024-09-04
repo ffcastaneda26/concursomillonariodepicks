@@ -10,6 +10,7 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,6 +58,7 @@ class Picks extends Component
     public $allow_select = true;
     public $picks_allowed = array();
     public $picks_selected = 0;
+    public $read_points_last_game = true;
 
     public function mount(){
         $this->read_configuration();
@@ -92,6 +94,7 @@ class Picks extends Component
     */
 
     public function receive_round(Round $round){
+
         if($round){
             $this->selected_round = $round;
             $this->round_games = $round->games()->get();
@@ -107,7 +110,7 @@ class Picks extends Component
                 if($pick_user_record){
                     $this->selected[ $game->id] = $pick_user_record->selected;
                     $this->picks[$i]=$pick_user_record->winner;
-                    if($game->last_game_round){
+                    if($game->is_last_game_round()){
                         $this->points_visit_last_game = $pick_user_record->visit_points;
                         $this->points_local_last_game = $pick_user_record->local_points;
                     }
@@ -119,7 +122,7 @@ class Picks extends Component
     }
 
     public function update_points_last_game(Game $game){
-        $this->reset('message','error');
+        $this->reset('error','message');
         if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
             $this->message = "Debe introducir marcador para Último Partido";
             $this->error = 'tie';
@@ -151,11 +154,13 @@ class Picks extends Component
         $pick_user = $game->pick_user()->first();
         $pick_user->visit_points = $this->points_visit_last_game;
         $pick_user->local_points = $this->points_local_last_game;
+        $pick_user->winner = $this->points_local_last_game > $this->points_visit_last_game ? 1 : 2;
+
         $pick_user->save();
+        $pick_user->refresh();
+
         $this->message = "Marcador Último Partido Actualizado ";
         $this->error = "success";
-        // $this->show_alert('success','Pronósticos Guardados Satisfactoriamente');
-
     }
     /*+-----------------+
       | Guarda Registro |

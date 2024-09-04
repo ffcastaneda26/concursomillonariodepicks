@@ -167,19 +167,8 @@ class Game extends Model
     }
 
     // ¿Es el último partido de la jornada?
-    public function is_last_game_round($use_team_to_tie_breaker = false,$team_id_to_tie_breaker = null){
-        if($use_team_to_tie_breaker && isNull($team_id_to_tie_breaker)){
-
-        }
-        $configuration_record = Configuration::first();
-
-        if( $configuration_record->use_team_to_tie_breaker){
-            return ( $this->local_team_id == $configuration_record->team_id  || $this->visit_team_id == $configuration_record->team_id);
-        }
-
-        return $this->round->get_last_game_round()->id == $this->id;
-
-
+    public function is_last_game_round(){
+       return $this->round->get_last_game_round()->id == $this->id;
     }
 
     // ¿Es el partido del desempate?
