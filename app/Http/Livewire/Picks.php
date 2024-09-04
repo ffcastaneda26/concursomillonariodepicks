@@ -118,6 +118,45 @@ class Picks extends Component
 
     }
 
+    public function update_points_last_game(Game $game){
+        $this->reset('message','error');
+        if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
+            $this->message = "Debe introducir marcador para Último Partido";
+            $this->error = 'tie';
+            return false;
+        }
+
+        if( strlen($this->points_visit_last_game) < 1 ){
+            $this->message = "Debe Introducir Puntos Para Equipo VISITANTE del Último Partido";
+            $this->error = 'visit';
+            return false;
+        }
+
+        if( strlen($this->points_local_last_game) < 1 ){
+            $this->message = "Debe Introducir Puntos Para Equipo LOCAL del Último Partido";
+            $this->error = 'local';
+            return false;
+        }
+
+        if($this->points_visit_last_game == $this->points_local_last_game){
+            $this->message = "El último partido no puede ser EMPATE";
+            $this->error = 'tie';
+            return false;
+        }
+        if($this->points_visit_last_game == 1 || $this->points_local_last_game == 1){
+            $this->message = "No se permite el marcador 1";
+            $this->error = 'tie';
+            return false;
+        }
+        $pick_user = $game->pick_user()->first();
+        $pick_user->visit_points = $this->points_visit_last_game;
+        $pick_user->local_points = $this->points_local_last_game;
+        $pick_user->save();
+        $this->message = "Marcador Último Partido Actualizado ";
+        $this->error = "success";
+        // $this->show_alert('success','Pronósticos Guardados Satisfactoriamente');
+
+    }
     /*+-----------------+
       | Guarda Registro |
       +-----------------+
@@ -134,7 +173,7 @@ class Picks extends Component
 
             if($game_pick->allow_pick()){ // Se asegura que aún se pueda pronosticar
                 $pick_user = $game_pick->pick_user(Auth::user()->id)->first();
-                
+
                 if( $pick_user){
                     $pick_user->winner = $this->picks[$i];
                     // if($game_pick->last_game_round){

@@ -48,16 +48,15 @@
                                 </table>
 
                                 {{-- Avisos de Error + Botón para actualizar pronósticos --}}
-                                <div class="flex justify-between">
-                                        <div >
+                                <div class="flex justify-between"  wire:loading.remove>
+                                        <div>
                                            @if(isset($message))
                                                 <h1 class=" {{ $error !='success' ? 'text-red-600 text-danger ' : 'text-success bg-green-400' }}text-center text-3xl">{{ $message }}</h1>
                                             @endif
                                         </div>
                                         <div class="float-right">
                                             <button wire:click="store"
-                                                    class="btn btn-primary float-right"
-                                                    wire:loading.remove>
+                                                    class="btn btn-primary float-right">
                                                     ACTUALIZAR PRONÓSTICOS
                                             </button>
                                             <div wire:loading wire:target="store">

@@ -1,6 +1,6 @@
 @php
     $allow_pick     = $game->allow_pick($configuration->minuts_before_picks);
-    // $is_last_game   = $game->last_game_round;
+    $is_last_game   = $game->last_game_round;
     $is_last_game   = $game->is_last_game_round();
     $pick_user      = $game->pick_user(Auth::user()->id)->first();
     $print_score    = $game->print_score();
@@ -37,26 +37,30 @@
     @if( $is_last_game)
         @php
             $pick_user = $game->pick_user()->first();
-            if($pick_user){
+            if($pick_user  && !$message){
                 $this->points_visit_last_game = $pick_user->visit_points;
                 $this->points_local_last_game = $pick_user->local_points;
             }
         @endphp
-        <td><input type='number'
+        <td>
+            <input type='number'
                     wire:model="points_visit_last_game"
+                    wire:change="update_points_last_game({{ $game }})"
                     min=0 max=99
                     class="{{ $error =='visit' || $error =='tie' ? 'bg-red-500' : ''}}"
                     {{ !$allow_pick ? 'disabled' : ''}}
                     >
-            </td>
+        </td>
         {{-- Icono si acertó/falló o aún no se sabe --}}
         @include('livewire.picks.pick_icono_acerto')
-        <td><input type='number'
+        <td>
+            <input type='number'
                     wire:model="points_local_last_game"
+                    wire:change="update_points_last_game({{ $game }})"
                     min=0 max=99
                     class="{{ $error =='local' || $error =='tie' ? 'bg-red-500' : ''}}"
                     {{ !$allow_pick ? 'disabled' : ''}}>
-            </td>
+        </td>
     @else
         @include('livewire.picks.pick_pick_result')
     @endif
