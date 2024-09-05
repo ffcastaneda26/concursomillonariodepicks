@@ -78,6 +78,7 @@ class Game extends Model
         if(!$user_id){
             $user_id = Auth::user()->id;
         }
+
         return $this->hasMany(Pick::class)->where('user_id',$user_id);
     }
 

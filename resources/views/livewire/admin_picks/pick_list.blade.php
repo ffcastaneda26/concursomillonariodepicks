@@ -1,6 +1,6 @@
 @php
     $allow_pick     = true;
-    $is_last_game   = $game->last_game_round;
+    $is_last_game   = $game->is_last_game_round();
     $pick_user      = $game->pick_user($user->id)->first();
     $print_score    = $game->print_score();
     $acerto         = $pick_user->hit;
@@ -33,10 +33,22 @@
     @include('livewire.admin_picks.pick_visit')
 
     @if( $is_last_game)
-        <td><input type='number' wire:model="points_visit_last_game" min=0 max=99 class="{{ $error =='visit' || $error =='tie' ? 'bg-red-500' : ''}}"></td>
+        <td>
+            <input type='number'
+                    wire:model="points_visit_last_game"
+                    wire:change="update_points_last_game({{ $game }})"
+                    min=0 max=99
+                    class="{{ $error =='visit' || $error =='tie' ? 'bg-red-500' : ''}}">
+        </td>
         {{-- Icono si acertó/falló o aún no se sabe --}}
         @include('livewire.admin_picks.pick_icono_acerto')
-        <td><input type='number' wire:model="points_local_last_game" min=0 max=99 class="{{ $error =='local' || $error =='tie' ? 'bg-red-500' : ''}}"></td>
+        <td>
+            <input type='number'
+                    wire:model="points_local_last_game"
+                    wire:change="update_points_last_game({{ $game }})"
+                    min=0 max=99
+                    class="{{ $error =='local' || $error =='tie' ? 'bg-red-500' : ''}}">
+        </td>
     @else
         @include('livewire.admin_picks.pick_pick_result')
     @endif

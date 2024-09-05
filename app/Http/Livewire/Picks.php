@@ -121,6 +121,11 @@ class Picks extends Component
 
     }
 
+    /**
+     * Actualiza puntos del último partido
+     * @param \App\Models\Game $game
+     * @return void
+     */
     public function update_points_last_game(Game $game){
         $this->reset('error','message');
         if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
@@ -154,7 +159,7 @@ class Picks extends Component
         $pick_user = $game->pick_user()->first();
         $pick_user->visit_points = $this->points_visit_last_game;
         $pick_user->local_points = $this->points_local_last_game;
-        $pick_user->winner = $this->points_local_last_game > $this->points_visit_last_game ? 1 : 2;
+        $pick_user->winner = $pick_user->local_points + $game->handicap >= $pick_user->visit_points ? 1 : 2;
 
         $pick_user->save();
         $pick_user->refresh();
@@ -162,6 +167,8 @@ class Picks extends Component
         $this->message = "Marcador Último Partido Actualizado ";
         $this->error = "success";
     }
+
+
     /*+-----------------+
       | Guarda Registro |
       +-----------------+
