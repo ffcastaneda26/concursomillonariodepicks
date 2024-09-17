@@ -80,6 +80,16 @@ class Round extends Model
 
     // Jornada actual segun las fechas de inicio y final
      public function  read_current_round(){
+        // $star_date = Carbon::now()->toDateString();
+        // $end_date =  Carbon::now()->addDays(6)->toDateString();
+
+        // $current_round = $this::whereBetween('start_date', [$star_date, $end_date])
+        //                 ->whereBetween('end_date', [$star_date, $end_date])
+        //                 ->first();
+        // if(!$current_round){
+        //     $current_round =Round::orderByDesc('start_date')->first();
+        // }
+
         $dt = Carbon::now()->toDateString();
 
         $current_round = $this::where('start_date','<=',$dt)

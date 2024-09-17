@@ -248,6 +248,8 @@ class AdminPicks extends Component
      * @return bool
      */
     public function update_points_last_game(Game $game){
+
+
         $this->reset('error','message');
         if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
             $this->message = "Debe introducir marcador para Último Partido";
@@ -284,6 +286,7 @@ class AdminPicks extends Component
         $pick_user->winner = $this->points_local_last_game + $game->handicap >= $this->points_visit_last_game ? 1 : 2;
         $pick_user->save();
         $pick_user->refresh();
+        // dd('Locales =' .$pick_user->local_points . ' Visita=' . $pick_user->visit_points . ' Línea= ' .  $game->handicap . ' Winner=' . $pick_user->winner );
 
         $this->message = "Marcador Último Partido Actualizado ";
         $this->error = "success";

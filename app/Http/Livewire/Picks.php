@@ -61,6 +61,7 @@ class Picks extends Component
     public $read_points_last_game = true;
 
     public function mount(){
+
         $this->read_configuration();
 
         $this->manage_title = 'Pronósticos';
@@ -127,6 +128,7 @@ class Picks extends Component
      * @return void
      */
     public function update_points_last_game(Game $game){
+        dd('A QUE LAS DESTAS DE JUANA ' . now());
         $this->reset('error','message');
         if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
             $this->message = "Debe introducir marcador para Último Partido";
@@ -160,7 +162,7 @@ class Picks extends Component
         $pick_user->visit_points = $this->points_visit_last_game;
         $pick_user->local_points = $this->points_local_last_game;
         $pick_user->winner = $pick_user->local_points + $game->handicap >= $pick_user->visit_points ? 1 : 2;
-
+        dd($pick_user);
         $pick_user->save();
         $pick_user->refresh();
 

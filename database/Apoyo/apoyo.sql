@@ -36,3 +36,53 @@ SET selectable = CASE
     ELSE 0
 END;
 
+---- ANALISIS DE PRONOSTICOS DEL PARTIDO DE DESEMPATE -
+---- Mostrar pronósticos erróneos en un juego según untos de ventaja del juego
+SELECT     if(pic.selected,"SI","NO") as 'Seleccionado',
+	us.name,
+	tv.name AS 'Visita',
+    tl.name AS 'Local',
+	pic.visit_points AS 'Puntos Visita',
+	pic.local_points AS 'Puntos Local',
+	ga.handicap AS 'Pts Ventaja',
+	(pic.local_points + ga.handicap) as "Comparar",
+	if(pic.local_points + ga.handicap > pic.visit_points,1,2) AS 'Calculado',
+	pic.winner as "Pronosticado"
+FROM users us, games ga, teams tv, teams tl, picks pic
+WHERE us.id = pic.user_id
+  AND tv.id = ga.visit_team_id
+  AND tl.id = ga.local_team_id
+  AND ga.id = pic.game_id
+  AND ga.id IN (32)
+  AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner
+ORDER BY us.name;
+
+-- Actualizar si hay diferencias
+USE concursomillonariodepicks;
+UPDATE  users us,games ga,picks pic set pic.winner = if(pic.local_points + ga.handicap > pic.visit_points,1,2)
+WHERE us.id = pic.user_id
+  AND ga.id = pic.game_id
+  AND ga.id IN (16)
+  AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner
+
+
+  -- Listado de pronósticos que se actualizó el WINNER
+  SELECT     if(pic.selected,"SI","NO") as 'Seleccionado',
+	us.name,
+	tv.name AS 'Visita',
+    tl.name AS 'Local',
+	pic.visit_points AS 'Puntos Visita',
+	pic.local_points AS 'Puntos Local',
+	ga.handicap AS 'Pts Ventaja',
+	(pic.local_points + ga.handicap) as "Comparar",
+	if(pic.local_points + ga.handicap > pic.visit_points,1,2) AS 'Calculado',
+	pic.winner as "Pronosticado"
+FROM users us, games ga, teams tv, teams tl, picks pic
+WHERE us.id = pic.user_id
+  AND tv.id = ga.visit_team_id
+  AND tl.id = ga.local_team_id
+  AND ga.id = pic.game_id
+  AND ga.id IN (16,32)
+  AND pic.created_at != pic.updated_at
+  AND DATE_FORMAT(pic.updated_at, "%Y-%m-%d") = '2024-09-17'
+ORDER BY us.name;

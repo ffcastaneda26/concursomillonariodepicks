@@ -190,7 +190,7 @@ class Game extends Model
         if(is_null( $this->local_points) || is_null($this->visit_points)){
             return false;
         }
-
+            
         $this->winner = $this->local_points + $this->handicap  >=  $this->visit_points ? 1 : 2;
         $this->save();
         $sql = "UPDATE picks pic,games ga ";
