@@ -38,7 +38,11 @@ END;
 
 ---- ANALISIS DE PRONOSTICOS DEL PARTIDO DE DESEMPATE -
 ---- Mostrar pronósticos erróneos en un juego según untos de ventaja del juego
-SELECT     if(pic.selected,"SI","NO") as 'Seleccionado',
+SELECT ga.id as GAMID,
+	ga.round_id as JORNADA,
+    ga.game_day as FECHA,
+    ga.game_time as HORA,
+	if(pic.selected,"SI","NO") as 'Seleccionado',
 	us.name,
 	tv.name AS 'Visita',
     tl.name AS 'Local',
@@ -53,9 +57,10 @@ WHERE us.id = pic.user_id
   AND tv.id = ga.visit_team_id
   AND tl.id = ga.local_team_id
   AND ga.id = pic.game_id
-  AND ga.id IN (32)
-  AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner
+  AND if(pic.local_points + ga.handicap > pic.visit_points,1,2) <> pic.winner
+  AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL)
 ORDER BY us.name;
+
 
 -- Actualizar si hay diferencias
 USE concursomillonariodepicks;
