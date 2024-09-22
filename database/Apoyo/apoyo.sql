@@ -36,6 +36,10 @@ SET selectable = CASE
     ELSE 0
 END;
 
+-- Asigna a todos los usuarios clave= password
+UPDATE users SET password='$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+
+
 ---- ANALISIS DE PRONOSTICOS DEL PARTIDO DE DESEMPATE -
 ---- Mostrar pronósticos erróneos en un juego según untos de ventaja del juego
 SELECT ga.id as GAMID,
@@ -52,6 +56,17 @@ SELECT ga.id as GAMID,
 	(pic.local_points + ga.handicap) as "Comparar",
 	if(pic.local_points + ga.handicap > pic.visit_points,1,2) AS 'Calculado',
 	pic.winner as "Pronosticado"
+FROM users us, games ga, teams tv, teams tl, picks pic
+WHERE us.id = pic.user_id
+  AND tv.id = ga.visit_team_id
+  AND tl.id = ga.local_team_id
+  AND ga.id = pic.game_id
+  AND if(pic.local_points + ga.handicap > pic.visit_points,1,2) <> pic.winner
+  AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL)
+ORDER BY us.name;
+
+-- Partidos que traen diferencias
+SELECT distinct ga.id
 FROM users us, games ga, teams tv, teams tl, picks pic
 WHERE us.id = pic.user_id
   AND tv.id = ga.visit_team_id

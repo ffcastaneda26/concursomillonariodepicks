@@ -128,7 +128,7 @@ class Picks extends Component
      * @return void
      */
     public function update_points_last_game(Game $game){
-        dd('A QUE LAS DESTAS DE JUANA ' . now());
+
         $this->reset('error','message');
         if($this->points_visit_last_game < 1 && $this->points_local_last_game < 1 ){
             $this->message = "Debe introducir marcador para Último Partido";
@@ -159,12 +159,14 @@ class Picks extends Component
             return false;
         }
         $pick_user = $game->pick_user()->first();
-        $pick_user->visit_points = $this->points_visit_last_game;
-        $pick_user->local_points = $this->points_local_last_game;
-        $pick_user->winner = $pick_user->local_points + $game->handicap >= $pick_user->visit_points ? 1 : 2;
-        dd($pick_user);
-        $pick_user->save();
+        $pick_user->winner($this->points_local_last_game,$this->points_visit_last_game);
+        $pick_user = $game->pick_user()->first();
         $pick_user->refresh();
+
+        // $pick_user->visit_points = $this->points_visit_last_game;
+        // $pick_user->local_points = $this->points_local_last_game;
+        // $pick_user->winner = $pick_user->local_points + $game->handicap >= $pick_user->visit_points ? 1 : 2;
+        // $pick_user->save();
 
         $this->message = "Marcador Último Partido Actualizado ";
         $this->error = "success";

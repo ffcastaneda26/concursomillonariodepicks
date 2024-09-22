@@ -33,4 +33,15 @@ class Pick extends Model
     }
 
 
+    public function winner($local_points,$visit_points){
+        if(is_null( $local_points) || is_null($visit_points)){
+            return false;
+        }
+
+        $this->local_points = $local_points;
+        $this->visit_points = $visit_points;
+        $this->winner = $local_points + $this->game->handicap  >=  $visit_points ? 1 : 2;
+        $this->save();
+        return $this->whnner;
+    }
 }
