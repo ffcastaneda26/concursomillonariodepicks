@@ -21,6 +21,10 @@ class ByRound extends Component
 
     public $tie_breaker_game_played = false;
     public $my_position;
+    public $last_game_visit_points;
+    public $last_game_local_points;
+    public $last_game_round;
+
     public function mount(){
         $this->manage_title = 'Posiciones x Jornada';
         $this->view_table   = null;
@@ -38,7 +42,12 @@ class ByRound extends Component
     */
 
     public function render(){
-        $this->tie_breaker_game_played = $this->selected_round->get_last_game_round()->has_result();
+        $this->last_game_round = $this->selected_round->get_last_game_round();
+
+        $this->tie_breaker_game_played = $this->last_game_round->has_result();
+        $this->last_game_visit_points = $this->tie_breaker_game_played ? $this->last_game_round->visit_points : null;
+        $this->last_game_local_points = $this->tie_breaker_game_played ? $this->last_game_round->local_points : null;
+
         if(Auth::user()->hasRole('participante')){
             $this->my_position = $this->selected_round->positions()->where('user_id',Auth::user()->id)->orderby('position')->first();
         }
