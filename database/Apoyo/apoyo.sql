@@ -36,6 +36,75 @@ SET selectable = CASE
     ELSE 0
 END;
 
+-- Usuarios con pronósticos diferentes a 272
+SELECT us.id,us.name,count(*)
+FROM users us,picks pic
+WHERE us.id = pic.user_id
+GROUP BY pic.user_id
+HAVING count(*) != 272
+
+user_id IN (271,283)
+-- Partidos seleccionados
+SELECT ga.id as GAMID,
+	ga.round_id as JORNADA,
+    ga.game_day as FECHA,
+    ga.game_time as HORA,
+	if(pic.selected,"SI","NO") as 'Seleccionado',
+	us.name,
+	tv.name AS 'Visita',
+    tl.name AS 'Local',
+	pic.visit_points AS 'Puntos Visita',
+	pic.local_points AS 'Puntos Local',
+	ga.handicap AS 'Pts Ventaja',
+	(pic.local_points + ga.handicap) as "Comparar",
+	if(pic.local_points + ga.handicap > pic.visit_points,1,2) AS 'Calculado',
+	pic.winner as "Pronosticado"
+FROM users us, games ga, teams tv, teams tl, picks pic
+WHERE us.id = pic.user_id
+  AND tv.id = ga.visit_team_id
+  AND tl.id = ga.local_team_id
+  AND ga.id = pic.game_id
+  AND pic.selected
+  AND pic.user_id = 271
+ORDER BY us.name;
+
+-- Actualizar los picks de un usuario de una jornada
+UPDATE picks SET selected = 1
+WHERE user_id = 271
+  AND game_id  IN (38,39,40,42,43);
+
+UPDATE picks
+SET pic.visit_points = 7,pic.local_points=21,winner=1
+WHERE pic_user = 271
+  AND game_id = 48;
+
+-- Datos del MNF de un usuario y una jornada
+SELECT ga.id as GAMID,
+	ga.round_id as JORNADA,
+    ga.game_day as FECHA,
+    ga.game_time as HORA,
+	if(pic.selected,"SI","NO") as 'Seleccionado',
+	us.name,
+	tv.name AS 'Visita',
+    tl.name AS 'Local',
+	pic.visit_points AS 'Puntos Visita',
+	pic.local_points AS 'Puntos Local',
+	ga.handicap AS 'Pts Ventaja',
+	(pic.local_points + ga.handicap) as "Comparar",
+	if(pic.local_points + ga.handicap > pic.visit_points,1,2) AS 'Calculado',
+	pic.winner as "Pronosticado"
+FROM users us, games ga, teams tv, teams tl, picks pic
+WHERE us.id = pic.user_id
+  AND tv.id = ga.visit_team_id
+  AND tl.id = ga.local_team_id
+  AND ga.id = pic.game_id
+  AND pic.user_id = 271
+  AND round_id = 3
+  AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL)
+ORDER BY us.name;
+
+
+
 -- Asigna a todos los usuarios clave= password
 UPDATE users SET password='$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
 
