@@ -117,7 +117,7 @@ class Game extends Model
 
     // ¿Permite pronosticar?
 
-    public function allow_pick($minuts_before_picks=null){
+    public function allow_pick($minuts_before_picks=5){
 
         if(date("Y-m-d") > $this->game_day->format('Y-m-d') ) // Juego ya pasó
         {
@@ -190,7 +190,7 @@ class Game extends Model
         if(is_null( $this->local_points) || is_null($this->visit_points)){
             return false;
         }
-            
+
         $this->winner = $this->local_points + $this->handicap  >=  $this->visit_points ? 1 : 2;
         $this->save();
         $sql = "UPDATE picks pic,games ga ";

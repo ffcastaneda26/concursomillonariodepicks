@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\AdminPicks;
+use App\Http\Livewire\Bets;
 use App\Http\Livewire\Games;
 use App\Http\Livewire\Teams;
 use App\Http\Livewire\Rounds;
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'role:Admin']
     Route::get('users',Users::class)->name('users');                    // Usuarios
     Route::get('picks-admin',AdminPicks::class)->name('admin-picks');   // Pronósticos x Administrador
     Route::get('qualify-picks',QualifyGames::class)->name('qualify-picks'); // Califica pronósticos
+    Route::get('bets',Bets::class)->name('bets');
 });
 
 Route::get('current_round',SelectRound::class);

@@ -39,6 +39,10 @@
                         Partidos
                     </x-nav-link>
 
+                    <x-dropdown-link href="{{ route('bets') }}">
+                        Apuestas
+                    </x-nav-link>
+
                 </div>
             </x-slot>
         </x-dropdown>

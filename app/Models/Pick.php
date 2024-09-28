@@ -17,6 +17,10 @@ class Pick extends Model
       | Relaciones |
       +------------+
      */
+    public function bet(): BelongsTo
+    {
+        return $this->belongsTo(Bet::class);
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
