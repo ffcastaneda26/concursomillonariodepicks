@@ -54,7 +54,20 @@
     @endif
     @include('livewire.admin_picks.picks_local')
     <td class="text-xl {{ $game->handicap < 0 ? 'text-danger' : '' }}" >{{ $game->handicap != 0 ? number_format($game->handicap, 1, '.', ',') : ''  }}</td>
-
+    {{-- Apuesta --}}
+    @if($user->require_bet)
+        <td>
+            <select wire:model='bets_selected.{{  $game->id}}'
+                class="form-select search-input">
+                <option value="">Apuesta</option>
+                @foreach($bets as $bet)
+                    <option value="{{ $bet->id }}">
+                        {{ $bet->name }}
+                    </option>
+                @endforeach
+            </select>
+        </td>
+    @endif
 
 </tr>
 

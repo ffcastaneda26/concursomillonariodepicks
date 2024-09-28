@@ -58,6 +58,9 @@
                                             <th colspan="3">Pronóstico  </th>
                                             <th colspan="3">Local</th>
                                             <th>Línea</th>
+                                            <th class="{{ $user->require_bet ? 'block' : 'hidden' }}">
+                                                Apuesta
+                                            </th>
                                         </tr>
                                     </thead>
 

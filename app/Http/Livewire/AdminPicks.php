@@ -10,6 +10,7 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
+use App\Models\Bet;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,8 @@ class AdminPicks extends Component
     public $gamesids= array();
     public $picks = array();
     public $selected = array();
-
+    public $bets_selected = array();
+    public $count_bets;
     public $message = null;
     // public $games_to_pick = array();
     public $old_picks = array();
@@ -59,6 +61,9 @@ class AdminPicks extends Component
     public $allow_select = true;
     public $picks_allowed = array();
     public $picks_selected = 0;
+
+    public $bets;
+    public $bet_id;
 
     public function mount(){
 
@@ -111,6 +116,7 @@ class AdminPicks extends Component
 
                 if( $pick_user){
                     $this->selected[ $game->id] =  $pick_user->selected;
+                    $this->bets_selected[$game->id] = $pick_user->bet_id;
                     $this->picks[$i]= $pick_user->winner;
                     if($game->is_last_game_round()){
                         $this->points_visit_last_game =  $pick_user->visit_points;
@@ -136,6 +142,11 @@ class AdminPicks extends Component
             if($this->configuration->create_mssing_picks){
                 $this->create_missing_picks_user($this->user);
                 $this->create_missing_positions_to_user();
+            }
+            if($this->user->require_bet){
+                $this->bets = Bet::orderBy('name')->get();
+            }else{
+                $this->bets = null;
             }
             $this->receive_round($this->current_round );
         }
@@ -188,6 +199,14 @@ class AdminPicks extends Component
                     if($pick_user->game_id == $key && $value){
                         $pick_user->selected = 1;
                         $pick_user->updated_user_id = Auth::user()->id;
+                        if($pick_user->user->require_bet){
+                            foreach($this->bets_selected as $key => $bet){
+                                if($pick_user->game_id == $key && $bet){
+                                    $pick_user->bet_id = $bet;
+                                }
+                            }
+                        }
+
                         $pick_user->save();
                     }
                 }
@@ -203,7 +222,7 @@ class AdminPicks extends Component
 
     // Validación interna
     private function validate_data(){
-        $this->reset('message','error','picks_selected');
+        $this->reset('message','error','picks_selected','count_bets');
 
         $this->picks_selected = 0;
         foreach($this->selected as $key => $value) {
@@ -238,6 +257,39 @@ class AdminPicks extends Component
             $this->message = "El últimoo partido no puede ser EMPATE";
             $this->error = 'tie';
             return false;
+        }
+
+        // Valida las apuestas
+        if($this->user->require_bet){
+
+            foreach($this->bets_selected as $key => $value){
+                if($value) $this->count_bets++;
+            }
+
+            if($this->count_bets  != $this->configuration->picks_to_select ){
+                $this->message = "Pronósticos NO ACTUALIZADOS Debe Seleccionar " . $this->configuration->picks_to_select . " apuestas";
+                $this->error = 'Cantidad de Apuestas';
+                return false;
+            }
+
+            $games_selected = array_keys($this->selected, 1, true);
+            $all_games_selected_has_bet = array_diff($games_selected, array_keys( $this->bets_selected)) === [];
+            if(!$all_games_selected_has_bet){
+                $this->message = "Partidos Seleccionados sin Apuesta";
+                $this->error = 'Partidos sin Apuesta';
+                return false;
+            }
+
+            // Revisar que se hayan seleccionado apuestas diferentes en todos los partidos
+            $invertedArray = array_flip($this->bets_selected);
+            $uniqueInvertedArray = array_unique($invertedArray);
+            $belts_selected_unique = array_flip($uniqueInvertedArray);
+            $bets_ok = count($this->bets_selected) == count($belts_selected_unique);
+            if(!$bets_ok){
+                $this->message = "Revise las apuestas hay duplicadas";
+                $this->error = 'Partidos sin Apuesta';
+                return false;
+            }
         }
         return true;
     }
