@@ -19,7 +19,7 @@ class Bets extends Component
     public $name;
     protected $listeners = ['destroy'];
     protected $rules = [
-        'main_record.name' => 'required|min:3|max:50|unique:teams,name',
+        'main_record.name' => 'required|min:3|max:50|unique:bets,name',
     ];
 
     public function mount(){
@@ -30,6 +30,7 @@ class Bets extends Component
         $this->view_list    = 'livewire.bets.list';
         $this->main_record  = new Bet();
         $this->sort         = 'name';
+        $this->view_search = null;
     }
 
     /*+---------------------------------+

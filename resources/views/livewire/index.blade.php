@@ -33,7 +33,7 @@
                             </div>
 
                             @if($show_back)
-                            <div class="d-flex flex-row align-items-end  mb-2">
+                                <div class="d-flex flex-row align-items-end  mb-2">
                                     <h1>
                                         @if(isset($manage_title))
                                             {{__($manage_title)}}
