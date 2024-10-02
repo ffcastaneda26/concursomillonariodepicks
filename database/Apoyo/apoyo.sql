@@ -98,9 +98,10 @@ WHERE us.id = pic.user_id
   AND tv.id = ga.visit_team_id
   AND tl.id = ga.local_team_id
   AND ga.id = pic.game_id
-  AND pic.user_id = 271
-  AND round_id = 3
+  AND pic.user_id = 104
+  AND round_id = 4
   AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL)
+  AND Calculado != Pronosticado
 ORDER BY us.name;
 
 
@@ -175,3 +176,12 @@ WHERE us.id = pic.user_id
   AND pic.created_at != pic.updated_at
   AND DATE_FORMAT(pic.updated_at, "%Y-%m-%d") = '2024-09-17'
 ORDER BY us.name;
+
+
+--- SQL QUE SE DEBE EJECUTAR EN EL SERVIDOR --
+UPDATE  users us,games ga,picks pic set pic.winner = if(pic.local_points + ga.handicap > pic.visit_points,1,2) 
+WHERE us.id = pic.user_id   
+  AND ga.id = pic.game_id  
+  AND pic.local_points IS NOT NULL  
+  AND pic.visit_points IS NOT NULL   
+  AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner

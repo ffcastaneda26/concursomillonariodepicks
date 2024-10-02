@@ -46,6 +46,6 @@ class Pick extends Model
         $this->visit_points = $visit_points;
         $this->winner = $local_points + $this->game->handicap  >=  $visit_points ? 1 : 2;
         $this->save();
-        return $this->whnner;
+        return $this->winner;
     }
 }

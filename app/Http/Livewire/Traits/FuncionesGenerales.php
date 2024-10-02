@@ -45,6 +45,7 @@ trait FuncionesGenerales
 
 
 
+
     // Lee configuración
     public function read_configuration(){
         $this->configuration = Configuration::first();

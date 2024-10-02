@@ -6,6 +6,7 @@ use App\Models\Game;
 use App\Models\Round;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -55,8 +56,27 @@ class Games extends Component
         $this->current_round = $round->read_current_round();
         $this->selected_round =$this->current_round;
         $this->receive_round($this->current_round );
+        $this->update_false_winner();
     }
 
+    private function update_false_winner(){
+        $sql="SELECT COUNT(*) ";
+        $sql.="FROM  games ga, picks pic ";
+        $sql.="WHERE ga.id = pic.game_id";
+        $sql.="  AND if(pic.local_points + ga.handicap > pic.visit_points,1,2) <> pic.winner";
+        $sql.="  AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL) ";
+
+        $false_winner_exist = DB::update($sql);
+        if($false_winner_exist){
+            $sql= "UPDATE  users us,games ga,picks pic set pic.winner = if(pic.local_points + ga.handicap > pic.visit_points,1,2) ";
+            $sql.= "WHERE us.id = pic.user_id ";
+            $sql.= "  AND ga.id = pic.game_id";
+            $sql.= "  AND pic.local_points IS NOT NULL";
+            $sql.= "  AND pic.visit_points IS NOT NULL";
+            $sql.="   AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner";
+            DB::update($sql);
+        }
+    }
     /*+---------------------------------+
       | Regresa Vista con Resultados    |
       +---------------------------------+

@@ -10,6 +10,28 @@
     $points_visit_last_game = $pick_user->visit_points;
     $points_local_last_game = $pick_user->local_points;
 @endphp
+@if( $is_last_game)
+    <tr class="h-2">
+        <td colspan="5">&nbsp</td>
+        <td>
+            <input type="radio"
+                    class="bg-gray-500"
+                    disabled
+                    {{ isset($pick_user) && $pick_user->winner == 2 ? 'checked' : ''}}
+            />
+        </td>
+        {{-- Icono si acertó/falló o aún no se sabe --}}
+        <td>&nbsp</td>
+        <td>
+            <input type="radio"
+                    class="bg-gray-500"
+                    disabled
+                    {{ isset($pick_user) && $pick_user->winner == 1 ? 'checked' : ''}}
+            />
+        </td>
+  </tr>
+@endif
+
 <tr class="h-2">
     <td>
         @if((!$allow_pick && !$selected) || !$is_selectable)
@@ -36,7 +58,7 @@
         <td>
             <input type='number'
                     wire:model="points_visit_last_game"
-                    wire:change="update_points_last_game({{ $game }})"
+                    wire:change.debounce.500="store"
                     min=0 max=99
                     class="{{ $error =='visit' || $error =='tie' ? 'bg-red-500' : ''}}"
                     {{ !$allow_pick ? 'disabled' : ''}}
@@ -47,7 +69,7 @@
         <td>
             <input type='number'
                     wire:model="points_local_last_game"
-                    wire:change="update_points_last_game({{ $game }})"
+                    wire:change.debounce.500="store"
                     min=0 max=99
                     class="{{ $error =='local' || $error =='tie' ? 'bg-red-500' : ''}}"
                     {{ !$allow_pick ? 'disabled' : ''}}>
@@ -57,7 +79,5 @@
     @endif
     @include('livewire.picks.picks_local')
     <td class="text-xl {{ $game->handicap < 0 ? 'text-danger' : '' }}" >{{ $game->handicap != 0 ? number_format($game->handicap, 1, '.', ',') : ''  }}</td>
-
-
 </tr>
 

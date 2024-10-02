@@ -6,13 +6,14 @@ use App\Models\Game;
 use App\Models\Pick;
 use App\Models\Round;
 use Livewire\Component;
+use GuzzleHttp\Psr7\Message;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Traits\CrudTrait;
 use App\Http\Livewire\Traits\FuncionesGenerales;
-use GuzzleHttp\Psr7\Message;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Auth;
 
 class Picks extends Component
 {
@@ -78,7 +79,9 @@ class Picks extends Component
 
         // $this->create_positions_to_user_with_role();
         $this->receive_round($this->current_round );
+        $this->update_false_winner();
     }
+
 
     /*+---------------------------------+
       | Regresa Vista con Resultados    |
@@ -88,7 +91,24 @@ class Picks extends Component
         return view('livewire.picks.index');
     }
 
+    private function update_false_winner(){
+        $sql="SELECT COUNT(*) ";
+        $sql.="FROM  games ga, picks pic ";
+        $sql.="WHERE ga.id = pic.game_id";
+        $sql.="  AND if(pic.local_points + ga.handicap > pic.visit_points,1,2) <> pic.winner";
+        $sql.="  AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL) ";
+        $false_winner_exist = DB::update($sql);
 
+        if($false_winner_exist){
+            $sql= "UPDATE  users us,games ga,picks pic set pic.winner = if(pic.local_points + ga.handicap > pic.visit_points,1,2) ";
+            $sql.= "WHERE us.id = pic.user_id ";
+            $sql.= "  AND ga.id = pic.game_id";
+            $sql.= "  AND pic.local_points IS NOT NULL";
+            $sql.= "  AND pic.visit_points IS NOT NULL";
+            $sql.="   AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner";
+            DB::update($sql);
+        }
+    }
     /*+-----------------------------+
       | Recibe Jornada y Lee Juegos |
       +-----------------------------+
@@ -163,10 +183,7 @@ class Picks extends Component
         $pick_user = $game->pick_user()->first();
         $pick_user->refresh();
 
-        // $pick_user->visit_points = $this->points_visit_last_game;
-        // $pick_user->local_points = $this->points_local_last_game;
-        // $pick_user->winner = $pick_user->local_points + $game->handicap >= $pick_user->visit_points ? 1 : 2;
-        // $pick_user->save();
+
 
         $this->message = "Marcador Último Partido Actualizado ";
         $this->error = "success";
@@ -180,6 +197,7 @@ class Picks extends Component
 
 
     public function store(){
+
         $this->reset('message');
         if(!$this->validate_data()) return;
 
