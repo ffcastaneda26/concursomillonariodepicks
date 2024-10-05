@@ -127,7 +127,7 @@ class AdminPicks extends Component
 
             $i=0;
             $this->round_games = $round->games()->get();
-
+            $this->bets_selected = [];
             foreach($this->round_games as $game){
                 $this->gamesids[$i]     = $game->id;
                 $this->picks_allowed[$i]= false;
@@ -135,7 +135,9 @@ class AdminPicks extends Component
 
                 if( $pick_user){
                     $this->selected[ $game->id] =  $pick_user->selected;
-                    $this->bets_selected[$game->id] = $pick_user->bet_id;
+                    if($pick_user->selected){
+                        $this->bets_selected[$game->id] = $pick_user->bet_id;
+                    }
                     $this->picks[$i]= $pick_user->winner;
                     if($game->is_last_game_round()){
                         $this->points_visit_last_game =  $pick_user->visit_points;
@@ -285,6 +287,7 @@ class AdminPicks extends Component
                 if($value) $this->count_bets++;
             }
 
+
             if($this->count_bets  != $this->configuration->picks_to_select ){
                 $this->message = "Pronósticos NO ACTUALIZADOS Debe Seleccionar " . $this->configuration->picks_to_select . " apuestas";
                 $this->error = 'Cantidad de Apuestas';
@@ -300,10 +303,12 @@ class AdminPicks extends Component
             }
 
             // Revisar que se hayan seleccionado apuestas diferentes en todos los partidos
-            $invertedArray = array_flip($this->bets_selected);
+            $filteredArray = array_filter($this->bets_selected);
+            $invertedArray = array_flip($filteredArray);
             $uniqueInvertedArray = array_unique($invertedArray);
             $belts_selected_unique = array_flip($uniqueInvertedArray);
-            $bets_ok = count($this->bets_selected) == count($belts_selected_unique);
+            $bets_ok = count($filteredArray) == count($belts_selected_unique);
+
             if(!$bets_ok){
                 $this->message = "Revise las apuestas hay duplicadas";
                 $this->error = 'Partidos sin Apuesta';
