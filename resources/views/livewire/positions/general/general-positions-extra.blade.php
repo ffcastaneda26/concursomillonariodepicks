@@ -12,37 +12,29 @@
                                             @endphp
                                             <tr>
                                                 <td colspan="20" class="text-center">USTED OCUPA LA POSICION:
-                                                    {{  $my_position_record->position }}
+                                                    {{  $my_position_record->position_extra_contest }}
                                                 </td>
                                             </tr>
                                             <tr style="background-color:#9BFDC7;">
-                                                <td align="center">{{  $my_position_record->position }}</td>
+                                                <td align="center">{{  $my_position_record->position_extra_contest }}</td>
                                                 <td align="center">{{ Auth::user()->name }}</td>
-                                                <td align="center">{{ $my_position_record->hits }}</td>
+                                                <td align="center">{{ $my_position_record->hits_extra_contest }}</td>
                                             </tr>
                                         @endif
 
-                                        @include('livewire.positions.general.header_rounds')
+                                        @include('livewire.positions.general.header_rounds_extra')
                                         <tbody>
                                             @foreach ($records as $record)
+
                                                 <tr>
-                                                    <td align="center">{{ $record->position }}</td>
+                                                    <td align="center">{{ $record->position_extra_contest }}</td>
                                                     <td>{{ $record->name }}</td>
-                                                    @php
-                                                        $discount = 0;
-                                                    @endphp
                                                     @foreach($record->positions_rounds_played($roundsIds)->get() as $position)
-                                                        @php
-                                                             if ($position->exclude)
-                                                                $discount= $discount + $position->hits
-                                                        @endphp
-                                                        <td align="center" class="{{ $position->exclude  ? 'text-red-500 font-bold' : '' }}">
+                                                        <td align="center">
                                                             {{ $position->hits ? $position->hits : '0' }}
                                                         </td>
                                                     @endforeach
-                                                    <td align="center">{{  $record->total + $discount }}</td>
                                                     <td align="center">{{  $record->total ? $record->total : '' }}</td>
-
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -57,3 +49,4 @@
         @endif
     </div>
 </div>
+

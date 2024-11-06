@@ -49,7 +49,6 @@ trait FuncionesGenerales
     // Lee configuración
     public function read_configuration(){
         $this->configuration = Configuration::first();
-
     }
     // Lee Roles
     public function read_roles(){
@@ -329,9 +328,6 @@ trait FuncionesGenerales
                     $position_record->save();
                 }
             }
-
-
-
         }
 
     // Asigna posición a tabla de POSITIONS
@@ -364,6 +360,8 @@ trait FuncionesGenerales
         $sql.="WHERE round_id=" . $round->id;
         DB::update($sql);
     }
+
+
 
     // Lee y calcula para poner la tabla General de Posiciones
     // TODO: Pasar a una tabla de posiciones generales
@@ -436,6 +434,7 @@ trait FuncionesGenerales
     */
 
     public function update_general_positions(){
+        $this->update_position_exclude();
         $positions = User::role('participante')
                         ->select('users.id as user_id',
                                 DB::raw('SUM(positions.hits) as hits'),
@@ -443,18 +442,97 @@ trait FuncionesGenerales
                                 DB::raw('SUM(positions.error_abs_local_visita) as error_abs_local_visita'))
                         ->Join('positions', 'positions.user_id', '=', 'users.id')
                         ->where('users.active','1')
+                        ->where('positions.exclude',0)
                         ->groupBy('users.id')
                         ->orderbyDesc('hits')
                         ->orderbyDesc('hit_last_games')
                         ->orderby('error_abs_local_visita')
                         ->get();
 
-
         if($positions){
             $general_position = new GeneralPosition();
             $general_position->truncate_me();
             $general_position->create_positions($positions);
         }
+        $this->update_general_positions_extra_contest();
+    }
+    /*+-------------------------------------------------------------------------+
+      | Actualiza hits y posición para concurso de la jornada 10 en adelante    |
+      +-------------------------------------------------------------------------+
+     */
+    public function update_general_positions_extra_contest()
+    {
+        $this->read_configuration();
+
+        $posiciones_nuevas = User::role('participante')
+            ->select('users.id as user_id',
+                    DB::raw('SUM(positions.hits) as hits'),
+                    DB::raw('SUM(positions.hit_last_game)    as hit_last_games'),
+                    DB::raw('SUM(positions.error_abs_local_visita) as error_abs_local_visita'))
+            ->Join('positions', 'positions.user_id', '=', 'users.id')
+            ->where('users.active','1')
+            ->where('positions.round_id','>=',$this->configuration->round_to_extra_context)
+            ->groupBy('users.id')
+            ->orderbyDesc('hits')
+            ->orderbyDesc('hit_last_games')
+            ->orderby('error_abs_local_visita')
+            ->get();
+
+        if($posiciones_nuevas){
+            $position = 0;
+            foreach($posiciones_nuevas as $position_nueva){
+                $general_position = GeneralPosition::where('user_id',$position_nueva->user_id)->first();
+                if($general_position){
+                    $general_position->hits_extra_contest = $position_nueva->hits;
+                    $general_position->position_extra_contest = ++$position;
+                    $general_position->save();
+                }
+            }
+        }
+    }
+
+      // Actualiza todas las jornadas en posiciones a NO EXCLUIR
+    public function update_position_exclude(){
+        DB::table('positions')->update(['exclude' => 0]);
+
+        $max_round = Round::wherehas('games',function($query){
+            $query->whereNotNull('local_points')
+                  ->WhereNotNull('visit_points');
+        })->max('id');
+
+
+        $users = User::wherehas('positions',function($query) use ($max_round) {
+            $query->where('round_id','<=',$max_round);
+        })->get();
+
+
+        foreach ($users as $user) {
+            $positions = Position::where('user_id',$user->id)
+                                ->where('round_id','<=',$max_round)
+                                ->orderBy('hits')
+                                ->limit(2)
+                                ->get();
+
+
+            foreach ($positions as $position) {
+                $position->update(['exclude' => 1]);
+            }
+        }
+
+
+        // $users = User::wherhas('positions',function($query) use $max_round {
+        //     $query->where('round_id','<=',$max_round);
+        // })->get();
+
+
+        // User::whereHas('positions')->get()
+        //     ->each(function ($user,$max_round) {
+        //     $user->positions()
+        //         ->where('round_id','<=',$max_round)
+        //         ->orderBy('hits', 'asc')
+        //         ->take(2)->update(['exclude' => 1]);
+        // });
 
     }
+
 }

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Positions\ByRound;
 use App\Http\Livewire\Positions\General;
 use App\Http\Livewire\Positions\GeneralPositions;
+use App\Http\Livewire\Positions\GeneralPositionsExtra;
 use App\Http\Livewire\QualifyGames;
 use App\Http\Livewire\Users;
 use App\Models\Configuration;
@@ -37,6 +38,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session')])->group(func
     Route::get('positions-general',General::class)->name('positions-general');      // Posiciones General
     Route::get('general-positions',GeneralPositions::class)->name('general-positions'); // Posiciones General
     Route::get('results-by-round',Results::class)->name('results-by-round');        // Resultados x Jornada
+    // Route::get('concurso-consola',GeneralPositionsExtra::class)->name('concurso-consola'); // Concurso consola
 });
 
 

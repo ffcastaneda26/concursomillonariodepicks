@@ -23,6 +23,7 @@ return new class extends Migration
             $table->tinyInteger('dif_winner_points')->nullable()->default(null)->comment('Dif Puntos del ganador');
             $table->tinyInteger('marcador_total')->nullable()->default(null)->comment('Dif de la victoria');
             $table->tinyInteger('position')->nullable()->default(null)->comment('Posición en la jornada');
+            $table->boolean('exclude')->default(0)->comment('¿Excluir en acumulados?');
             $table->timestamps();
         });
     }

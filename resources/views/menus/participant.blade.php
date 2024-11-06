@@ -24,6 +24,11 @@
                     </x-nav-link>
                 @endif
 
+                @if (Route::has('concurso-consola'))
+                <x-nav-link href="{{ route('concurso-consola') }}" :active="request()->routeIs('concurso-consola')">
+                    Concurso Consola
+                </x-nav-link>
+            @endif
                 @if (Route::has('picks-review'))
                     <x-nav-link href="{{ route('picks-review') }}" :active="request()->routeIs('picks-review')">
                         Resultados por Jornada

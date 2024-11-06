@@ -27,7 +27,8 @@ class Position extends Model
         'hit_last_game',
         'hit_visit',
         'hit_local',
-        'position'
+        'position',
+        'exclude'
     ];
 
     /*+------------+

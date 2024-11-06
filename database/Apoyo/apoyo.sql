@@ -1,3 +1,6 @@
+-- Actualiza passwords
+UPDATE users SET password='$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+
 /*
 +--------------------+
 |  Día semana MySql |
@@ -132,7 +135,9 @@ WHERE us.id = pic.user_id
   AND tl.id = ga.local_team_id
   AND ga.id = pic.game_id
   AND if(pic.local_points + ga.handicap > pic.visit_points,1,2) <> pic.winner
-  AND (pic.local_points IS NOT NULL OR pic.visit_points IS NOT NULL)
+  AND (pic.local_points IS NOT NULL AND pic.visit_points IS NOT NULL)
+  AND ga.local_points IS NOT NULL
+  AND ga.visit_points IS NOT NULL
 ORDER BY us.name;
 
 -- Partidos que traen diferencias
@@ -179,9 +184,16 @@ ORDER BY us.name;
 
 
 --- SQL QUE SE DEBE EJECUTAR EN EL SERVIDOR --
-UPDATE  users us,games ga,picks pic set pic.winner = if(pic.local_points + ga.handicap > pic.visit_points,1,2) 
-WHERE us.id = pic.user_id   
-  AND ga.id = pic.game_id  
-  AND pic.local_points IS NOT NULL  
-  AND pic.visit_points IS NOT NULL   
+UPDATE  users us,games ga,picks pic set pic.winner = if(pic.local_points + ga.handicap > pic.visit_points,1,2)
+WHERE us.id = pic.user_id
+  AND ga.id = pic.game_id
+  AND pic.local_points IS NOT NULL
+  AND pic.visit_points IS NOT NULL
   AND if(pic.local_points + ga.handicap >= pic.visit_points,1,2) <> pic.winner
+
+  -- Juegos ganados y perdidos por jornada
+  SELECT bets.name AS 'Nombre de la apuesta',
+        COUNT(CASE WHEN picks.hit = 1 THEN 1 END) AS 'GANADOS',
+        COUNT(CASE WHEN picks.hit = 0 THEN 1 END) AS 'PERDIDOS'
+FROM bets JOIN picks ON bets.id = picks.bet_id
+GROUP BY bets.name;

@@ -5,4 +5,5 @@
             <td class="text-center">J-{{ $round->id }}</td>
         @endforeach
         <th rowspan="2" valign="middle">TOTAL</th>
+        <th rowspan="2" valign="middle">CONCURSO</th>
     </tr>
